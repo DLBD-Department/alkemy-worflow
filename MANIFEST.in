@@ -1,0 +1,2 @@
+include README.rst LICENSE requirements.txt requirements-dev.txt alkemy_workflow/VERSION
+prune test*
