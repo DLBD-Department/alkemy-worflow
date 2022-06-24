@@ -1,0 +1,231 @@
+{
+  "tasks": [
+    {
+      "id": "32wffg3",
+      "custom_id": null,
+      "name": "Git Workflow tool",
+      "text_content": null,
+      "description": null,
+      "status": {
+        "status": "in_progress",
+        "color": "#FF7FAB",
+        "type": "custom",
+        "orderindex": 1
+      },
+      "orderindex": "10253146.00026500000000000000000000000000",
+      "date_created": "1656063425509",
+      "date_updated": "1656070730429",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [
+        {
+          "id": 99999999,
+          "username": "Test Test",
+          "color": "#e65100",
+          "initials": "TT",
+          "email": "test@example.com",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+        }
+      ],
+      "watchers": [],
+      "checklists": [],
+      "tags": [],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": "1656036000000",
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/32wffg3",
+      "permission_level": "create",
+      "list": {
+        "id": "162736888",
+        "name": "Infrastructure - Phase_1",
+        "access": true
+      },
+      "project": {
+        "id": "96821275",
+        "name": "hidden",
+        "hidden": true,
+        "access": true
+      },
+      "folder": {
+        "id": "96821275",
+        "name": "hidden",
+        "hidden": true,
+        "access": true
+      },
+      "space": {
+        "id": "42364964"
+      }
+    },
+    {
+      "id": "32ppkv2",
+      "custom_id": null,
+      "name": "Test task",
+      "text_content": null,
+      "description": null,
+      "status": {
+        "status": "in_progress",
+        "color": "#FF7FAB",
+        "type": "custom",
+        "orderindex": 1
+      },
+      "orderindex": "10253132.00099410000000000000000000000000",
+      "date_created": "1655914370489",
+      "date_updated": "1655991040289",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "text@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "infrastructure",
+          "tag_fg": "#800000",
+          "tag_bg": "#800000",
+          "creator": 36359410
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": "1655949600000",
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/32ppkv2",
+      "permission_level": "create",
+      "list": {
+        "id": "152553177",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "86494446",
+        "name": "SmartDigitalSignage",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "86494446",
+        "name": "SmartDigitalSignage",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "42380971"
+      }
+    },
+    {
+      "id": "24cc5nj",
+      "custom_id": null,
+      "name": "SPM - Delete Yolo person detection",
+      "text_content": "Simplify the sensor processing module:\nface detection (openCV's DNN)\ntracking (unchanged)\nage/gender classificator (unchanged)",
+      "description": "Simplify the sensor processing module:\nface detection (openCV's DNN)\ntracking (unchanged)\nage/gender classificator (unchanged)",
+      "status": {
+        "status": "done",
+        "color": "#2ecd6f",
+        "type": "done",
+        "orderindex": 3
+      },
+      "orderindex": "1154017.00003630000000000000000000000000",
+      "date_created": "1647863660818",
+      "date_updated": "1648220220300",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 36360498,
+        "username": "davide giannuzzi",
+        "color": "#ea80fc",
+        "email": "davide.giannuzzi@nunatac.it",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/36360498_m1o.jpg"
+      },
+      "assignees": [
+        {
+          "id": 36360498,
+          "username": "davide giannuzzi",
+          "color": "#ea80fc",
+          "initials": "DG",
+          "email": "davide.giannuzzi@nunatac.it",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/36360498_m1o.jpg"
+        }
+      ],
+      "watchers": [],
+      "checklists": [
+        {
+          "id": "b758e865-a42e-41ec-9bf6-886e401046fe",
+          "task_id": "24cc5nj",
+          "name": "Checklist",
+          "date_created": "1647864285684",
+          "orderindex": 1,
+          "creator": 36360498,
+          "resolved": 0,
+          "unresolved": 0,
+          "items": []
+        }
+      ],
+      "tags": [
+        {
+          "name": "r&d",
+          "tag_fg": "#E50000",
+          "tag_bg": "#E50000",
+          "creator": 36359410
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/24cc5nj",
+      "permission_level": "create",
+      "list": {
+        "id": "170479144",
+        "name": "Sprint 4 [V0.2.0] (21/3/22 - 3/4/22)",
+        "access": true
+      },
+      "project": {
+        "id": "86494446",
+        "name": "SmartDigitalSignage",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "86494446",
+        "name": "SmartDigitalSignage",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "42380971"
+      }
+    }
+  ]
+}

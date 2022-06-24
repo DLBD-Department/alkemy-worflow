@@ -1,0 +1,82 @@
+{
+  "id": "99abcd99",
+  "custom_id": null,
+  "name": "workflow tool tests",
+  "text_content": null,
+  "description": null,
+  "status": {
+    "id": "sc60000008_PCY1lhLs",
+    "status": "to do",
+    "color": "#d3d3d3",
+    "orderindex": 1,
+    "type": "custom"
+  },
+  "orderindex": "1.00000000000000000000000000000000",
+  "date_created": "1656067922670",
+  "date_updated": "1656082074896",
+  "date_closed": null,
+  "archived": false,
+  "creator": {
+    "id": 99999999,
+    "username": "Test Test",
+    "color": "#e65100",
+    "email": "test@example.com",
+    "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+  },
+  "assignees": [
+    {
+      "id": 99999999,
+      "username": "Test Test",
+      "color": "#e65100",
+      "initials": "TT",
+      "email": "test@example.com",
+      "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+    }
+  ],
+  "watchers": [
+    {
+      "id": 99999999,
+      "username": "Test Test",
+      "color": "#e65100",
+      "initials": "TT",
+      "email": "test@example.com",
+      "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+    }
+  ],
+  "checklists": [],
+  "tags": [],
+  "parent": "32wffg3",
+  "priority": null,
+  "due_date": null,
+  "start_date": "1656036000000",
+  "points": null,
+  "time_estimate": null,
+  "time_spent": 0,
+  "custom_fields": [],
+  "dependencies": [],
+  "linked_tasks": [],
+  "team_id": "11111111",
+  "url": "https://app.clickup.com/t/99abcd99",
+  "permission_level": "create",
+  "list": {
+    "id": "60000008",
+    "name": "Infrastructure - Phase_1",
+    "access": true
+  },
+  "project": {
+    "id": "30002005",
+    "name": "hidden",
+    "hidden": true,
+    "access": true
+  },
+  "folder": {
+    "id": "20000005",
+    "name": "hidden",
+    "hidden": true,
+    "access": true
+  },
+  "space": {
+    "id": "10000004"
+  },
+  "attachments": []
+}

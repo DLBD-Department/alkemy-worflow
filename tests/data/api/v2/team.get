@@ -1,0 +1,50 @@
+{
+  "teams": [
+    {
+      "id": "11111111",
+      "name": "Test Team",
+      "color": "#40BC86",
+      "avatar": null,
+      "members": [
+         {
+          "user": {
+            "id": 99999999,
+            "username": "Test Test",
+            "email": "test@example.com",
+            "color": "#e65100",
+            "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg",
+            "initials": "TT",
+            "role": 3,
+            "custom_role": null,
+            "last_active": "1656138130048",
+            "date_joined": "1652699252414",
+            "date_invited": "1652695836912"
+          },
+          "invited_by": {
+            "id": 88888888,
+            "username": "Test 1",
+            "color": "#0388d1",
+            "email": "test1@exmaple.com",
+            "initials": "T1",
+            "profilePicture": "https://attachments.clickup.com/profilePictures/88888888_EW3.jpg"
+          }
+        },
+        {
+          "user": {
+            "id": 88888888,
+            "username": "Test 1",
+            "email": "test1@example.com",
+            "color": "#0388d1",
+            "profilePicture": "https://attachments.clickup.com/profilePictures/88888888_EW3.jpg",
+            "initials": "T1",
+            "role": 1,
+            "custom_role": null,
+            "last_active": "1656132658858",
+            "date_joined": "1634718534688",
+            "date_invited": "1634718534688"
+          }
+        }
+      ]
+    }
+  ]
+}

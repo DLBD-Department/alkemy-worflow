@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from .exceptions import InvalidOption, CommandNotFound, ShowHelp
-from .utils import Config
+from .utils import Workflow
 
 __all__ = [
     'cmd',
@@ -14,17 +14,14 @@ __all__ = [
 cmds = []
 
 
-def cmd(usage="", load_config=True, defaults=None):
+def cmd(usage="", defaults=None):
     "Command decorator"
 
     def wrap(f):
         def wrapped_f(argv):
             kargs = parse_args(argv, usage, defaults)
-            if load_config:
-                config = Config(kargs.get("C"))
-            else:
-                config = None
-            f(kargs, config)
+            wf = Workflow(kargs.get("C"))
+            f(kargs, wf)
 
         wrapped_f.__name__ = f.__name__
         wrapped_f.usage = usage
@@ -54,6 +51,8 @@ def parse_args(args, usage, defaults=None):
             value = arg
             kargs[opt] = value
             opt = None
+        elif arg in ('--help', '-h', '-?'):
+            raise ShowHelp()
         elif required:  # required positional argument
             result.append(arg)
             required.pop(0)
