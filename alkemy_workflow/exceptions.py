@@ -9,6 +9,8 @@ __all__ = [
     'CommandNotFound',
     'ShowHelp',
     'GitException',
+    'ConfigException',
+    'ClickUpException',
 ]
 
 
@@ -42,3 +44,11 @@ class ShowHelp(GenericException):
 
 class GitException(GenericException):
     "Git exception"
+
+
+class ConfigException(GenericException):
+    "Missing configuration exception"
+
+
+class ClickUpException(GenericException):
+    "ClickUp exception"

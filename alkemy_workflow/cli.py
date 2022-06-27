@@ -1,19 +1,23 @@
 #!/usr/bin/env python
 
-import os
 import sys
 import fnmatch
-import configparser
 from datetime import datetime
 from .exceptions import GenericWarning, GenericException, GitException, ShowHelp
-from .clickup import ClickUpClient, Task
 from .cmds import cmd, cmds, lookup_cmd
-from .utils import Config, Git
-
+from .utils import Config
 
 EXIT_SUCCESS = 0
 EXIT_FAILURE = 1
 EXIT_PARSER_ERROR = 2
+
+__all__ = ['main']
+
+
+class AttrDict(dict):
+    def __init__(self, *args, **kwargs):
+        super(AttrDict, self).__init__(*args, **kwargs)
+        self.__dict__ = self
 
 
 def match(kargs, key, target, target_key=None):
@@ -27,18 +31,17 @@ def match(kargs, key, target, target_key=None):
 
 
 @cmd("[-C=cwd] [--space=space] [--noheaders]", defaults={"op_noheaders": False})
-def cmd_spaces(kargs, config):
+def cmd_spaces(kargs, wf):
     """
     List spaces
     Example: spaces --space 'test*' --noheaders
     """
-    client = ClickUpClient(config)
     header = not kargs["op_noheaders"]
     fmt = "{name:40}"
     if header:
         print(fmt.format(name="Space"))
         print("-" * 70)
-    spaces = client.get_spaces()
+    spaces = wf.client.get_spaces()
     for space in spaces:
         if match(kargs, "space", space, "name"):
             print(fmt.format(**space))
@@ -48,36 +51,32 @@ def cmd_spaces(kargs, config):
     "[-C=cwd] [--noheaders] [--long] [--id=id] [--status=status] [--space=space] [--folder=folder] [--list=list] [--title=title]",
     defaults={"op_noheaders": False, "op_long": False},
 )
-def cmd_tasks(kargs, config):
+def cmd_tasks(kargs, wf):
     """
     List tasks
-    Example: tasks --name 'test*' --noheaders --long
+    Example: tasks --title 'test*' --noheaders --long
     """
-    client = ClickUpClient(config)
     header = not kargs["op_noheaders"]
     if kargs["op_long"]:
-        fmt = "{id:10} {status:20} {space:20} {folder:20} {list:30} {name:60}"
+        fmt = "{task.task_id:10} {task.status:20} {task.space:20} {task.folder:20} {task.list:30} {task.title:60}"
     else:
-        fmt = "{id:10} {status:20} {name:60}"
+        fmt = "{task.task_id:10} {task.status:20} {task.title:60}"
     if header:
         print(
             fmt.format(
-                id="Id",
-                status="Status",
-                space="Space",
-                folder="Folder",
-                list="List",
-                name="Title",
+                task=AttrDict(
+                    task_id="Id",
+                    status="Status",
+                    space="Space",
+                    folder="Folder",
+                    list="List",
+                    title="Title",
+                )
             )
         )
         print("-" * 120)
-    tasks = client.get_tasks()["tasks"]
-    spaces = client.get_spaces_id_name_map()
+    tasks = wf.client.get_tasks()
     for task in tasks:
-        task["space"] = spaces.get(task["space"]["id"])
-        task["folder"] = task.get("folder", {}).get("name", "-")
-        task["status"] = task.get("status", {}).get("status", "-")
-        task["list"] = task.get("list", {}).get("name", "-")
         if not match(kargs, "id", task):
             continue
         if not match(kargs, "status", task):
@@ -88,30 +87,31 @@ def cmd_tasks(kargs, config):
             continue
         if not match(kargs, "list", task):
             continue
-        if not match(kargs, "title", task, "name"):
+        if not match(kargs, "title", task):
             continue
-        print(fmt.format(**task))
+        print(fmt.format(task=task))
 
 
 @cmd("[-C=cwd] task_id")
-def cmd_branch(kargs, config):
+def cmd_branch(kargs, wf):
     """
     Open a task and create a new git branch
     Example: branch 1234
     """
     task_id = kargs['positional'][0]
-    client = ClickUpClient(config)
-    git = Git(config)
-    task = Task(client, task_id)
+    task = wf.client.get_task_by_id(task_id)
     branch_already_exists = False
     # Create a new branch a switch to it
-    git.run("checkout", config.git_base_branch)
+    wf.git.run("checkout", wf.config.git_base_branch)
     try:
-        git.run("checkout", "-b", task.branch_name)
-        git.run("push", "--set-upstream", "origin", task.branch_name)
+        wf.git.run("checkout", "-b", task.branch_name)
     except GitException:
         branch_already_exists = True
-        git.run("checkout", task.branch_name)
+        wf.git.run("checkout", task.branch_name)
+    try:
+        wf.git.run("push", "--set-upstream", "origin", task.branch_name)
+    except GitException:
+        pass
     # Update the task
     start_date = task.data.get("start_date") or int(
         datetime.utcnow().timestamp() * 1000
@@ -125,90 +125,66 @@ def cmd_branch(kargs, config):
 
 
 @cmd("[-C=cwd] [-m=message]")
-def cmd_commit(kargs, config):
+def cmd_commit(kargs, wf):
     """
     Create a new commit an the current feature branch
     Example: commit
     """
-    client = ClickUpClient(config)
-    git = Git(config)
     # Get task_id by branch name
-    current_branch = git.get_current_branch()
+    current_branch = wf.git.get_current_branch()
     task_id = current_branch.split('-')[0]
-    if task_id == config.git_base_branch:
+    if task_id == wf.config.git_base_branch:
         raise GenericException(
-            f"Please commit from feature branches, not {config.git_base_branch}"
+            f"Please commit from feature branches, not {wf.config.git_base_branch}"
         )
-    task = Task(client, task_id)
+    task = wf.client.get_task_by_id(task_id)
     # Prepare the commit message
     message = f"[{task.data['id']}] {task.data['name']}"
     if kargs.get('m'):
         message = message + ' - ' + kargs['m']
     # Commit
-    print(git.run("commit", "-m", message))
+    print(wf.git.run("commit", "-m", message))
 
 
 @cmd("[-C=cwd]")
-def cmd_status(kargs, config):
+def cmd_status(kargs, wf):
     """
     Status
     Example: status
     """
-    client = ClickUpClient(config)
-    git = Git(config)
     # Get task_id by branch name
-    current_branch = git.get_current_branch()
+    current_branch = wf.git.get_current_branch()
     task_id = current_branch.split('-')[0]
     # Print task
-    if task_id != config.git_base_branch:
-        task = Task(client, task_id)
-        spaces = client.get_spaces_id_name_map()
-        task.data["space"] = spaces.get(task.data["space"]["id"])
-        task.data["folder"] = task.data.get("folder", {}).get("name", "-")
-        task.data["status"] = task.data.get("status", {}).get("status", "-")
-        task.data["list"] = task.data.get("list", {}).get("name", "-")
+    if task_id != wf.config.git_base_branch:
+        task = wf.client.get_task_by_id(task_id)
         fmt = """\
-Task id: {id}
-Status:  {status}
-Space:   {space}
-Folder:  {folder}
-List:    {list:30}
-Title:   {name}
+Task id: {task.task_id}
+Status:  {task.status}
+Space:   {task.space}
+Folder:  {task.folder}
+List:    {task.list}
+Title:   {task.title}
 """
-        print(fmt.format(**task.data))
-    print(git.run("status"))
+        print(fmt.format(task=task))
+    print(wf.git.run("status"))
 
 
-@cmd(load_config=False)
-def cmd_configure(kargs, config):
+@cmd("[--clickup-token=token]")
+def cmd_configure(kargs, wf):
     """
     Configures credentials (Clickup API token).
     Example: configure
     """
     prompt = "ClickUP API token: "
-    token = input(prompt).strip()
+    token = kargs['clickup-token'] or input(prompt).strip()
     if token:
-        if not token.startswith('pk_'):
-            raise GenericException("Tokens will always begin with pk_")
-        credentials_path = Config.get_credentials_path()
-        cp = configparser.ConfigParser()
-        if credentials_path.exists():
-            cp.read(credentials_path)
-        if not cp.has_section('default'):
-            cp['default'] = {}
-        cp.set('default', 'clickup_token', token)
-        os.makedirs(credentials_path.parent, exist_ok=True)
-        with open(credentials_path, 'w') as f:
-            cp.write(f)
-    config = Config()
-    client = ClickUpClient(config)
-    response = client.get_user()
-    if 'err' in response:
-        raise GenericException(response['err'])
+        Config.write_credentials(token)
+    wf.client.get_user()
 
 
-@cmd("[command]", load_config=False)
-def cmd_help(kargs, config):
+@cmd("[command]")
+def cmd_help(kargs, wf):
     """
     Display information about commands.
     """

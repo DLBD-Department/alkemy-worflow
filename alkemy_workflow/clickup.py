@@ -1,14 +1,17 @@
 #!/usr/bin/env python
 
 import re
+import os
+import json
 import requests
 import urllib
-from .exceptions import TaskNotFound, StatusNotFound
+from pathlib import Path
+from .exceptions import TaskNotFound, StatusNotFound, ClickUpException
 
 BRANCH_SEPARATOR = "-"
 SERVER_URL = "https://api.clickup.com/api/v2/"
 
-__all__ = ['ClickUpClient', 'Task']
+__all__ = ['ClickUpClient']
 
 
 class ClickUpClient:
@@ -30,16 +33,38 @@ class ClickUpClient:
         response = requests.request(
             method=method, url=url, headers=headers, **request_args
         )
-        return response.json()
+        # self.save_response(response)
+        payload = response.json()
+        if "err" in payload:
+            raise ClickUpException(payload["err"])
+        return payload
+
+    def save_response(self, response):
+        rqs = response.request
+        path_url = (
+            rqs.path_url.strip('/').replace('..', '').split('?')[0]
+            + '.'
+            + rqs.method.lower()
+        )
+        filename = Path.cwd() / 'tests' / 'data' / Path(*path_url.split('/'))
+        print(filename)
+        os.makedirs(filename.parent, exist_ok=True)
+        with open(filename, 'wb') as f:
+            f.write(response.content)
+        headers_filename = filename.parent / (filename.name + '.headers')
+        with open(headers_filename, 'w') as f:
+            headers = dict(response.headers)
+            headers['__Status__'] = response.status_code
+            json.dump(headers, f, indent=2)
 
     def get_user(self):
-        return self.send_request("user")
+        return self.send_request("user")["user"]
 
-    def get_team(self):
-        return self.send_request("team")
+    def get_teams(self):
+        return self.send_request("team")["teams"]
 
     def retrieve_team_id(self, index=0):
-        teams = self.get_team().get("teams", [])
+        teams = self.get_teams()
         self.team_id = teams[index].get("id", None)
 
     def get_spaces(self, archived=False):
@@ -66,24 +91,24 @@ class ClickUpClient:
             archived=archived,
         )
 
-    def get_folder_by_name(self, space_id, name):
-        folders = self.get_folders(space_id).get("folders", [])
-        return [folder for folder in folders if folder.get("name") == name][0]
-
-    def get_tasks(self, include_closed=False):
+    def get_tasks(self, include_closed=False, spaces=None):
         if self.team_id is None:
             self.retrieve_team_id()
-        return self.send_request(
+        if spaces is None:
+            spaces = self.get_spaces_id_name_map()
+        response = self.send_request(
             "team/{team_id}/task?include_closed={include_closed}",
             team_id=self.team_id,
             include_closed=include_closed,
         )
+        return [Task(self, data) for data in response["tasks"]]
 
     def get_task_by_id(self, task_id):
-        result = self.send_request("task/{task_id}/", task_id=task_id.lstrip("#"))
-        if "err" in result:
+        try:
+            data = self.send_request("task/{task_id}/", task_id=task_id.lstrip("#"))
+        except ClickUpException:
             raise TaskNotFound("Task not found")
-        return result
+        return Task(self, data)
 
     def update_task_by_id(self, task_id, payload):
         return self.send_request(
@@ -115,20 +140,25 @@ class ClickUpClient:
 
 
 class Task:
-    def __init__(self, client, task_id):
-        self.task_id = task_id
+    def __init__(self, client, data):
+        self.task_id = data["id"]
         self.client = client
         self.config = client.config
-        self.load()
-
-    def load(self):
-        "Load task by id"
-        self.data = self.client.get_task_by_id(self.task_id)
+        self.data = data
 
     def update(self, **kargs):
         "Update task"
         self.client.update_task_by_id(self.task_id, kargs)
         self.data.update(kargs)
+
+    def post_task_comment(self, comment_text, notify_all=None, assignee=None):
+        "Create task command"
+        payload = {"comment_text": comment_text}
+        if notify_all is not None:
+            payload["notify_all"] = notify_all
+        if assignee is not None:
+            payload["assignee"] = assignee
+        self.client.post_task_comment(self.task_id, payload)
 
     @property
     def branch_name(self):
@@ -144,14 +174,32 @@ class Task:
         )
         return branch_name
 
-    def post_task_comment(self, comment_text, notify_all=None, assignee=None):
-        "Create task command"
-        payload = {"comment_text": comment_text}
-        if notify_all is not None:
-            payload["notify_all"] = notify_all
-        if assignee is not None:
-            payload["assignee"] = assignee
-        self.client.post_task_comment(self.task_id, payload)
+    @property
+    def space(self):
+        spaces = self.client.get_spaces_id_name_map()
+        return spaces.get(self.data["space"]["id"])
+
+    @property
+    def list(self):
+        return self.data.get("list", {}).get("name", "-")
+
+    @property
+    def status(self):
+        return self.data.get("status", {}).get("status", "-")
+
+    @property
+    def folder(self):
+        return self.data.get("folder", {}).get("name", "-")
+
+    @property
+    def title(self):
+        return self.data.get("name")
+
+    def __getitem__(self, key):
+        try:
+            return getattr(self, key)
+        except AttributeError:
+            return self.data[key]
 
     def __repr__(self):
         return repr(self.data)

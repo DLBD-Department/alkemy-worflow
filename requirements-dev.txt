@@ -4,3 +4,4 @@ mypy
 black
 twine
 pytest
+pytest-mock

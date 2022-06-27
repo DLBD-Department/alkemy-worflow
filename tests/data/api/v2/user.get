@@ -1,0 +1,13 @@
+{
+  "user": {
+    "id": 99999999,
+    "username": "Test Test",
+    "email": "test@example.com",
+    "color": "#e65100",
+    "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg",
+    "initials": "TT",
+    "week_start_day": 1,
+    "global_font_support": true,
+    "timezone": "Europe/Rome"
+  }
+}
