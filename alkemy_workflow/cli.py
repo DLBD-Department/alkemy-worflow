@@ -11,7 +11,7 @@ EXIT_SUCCESS = 0
 EXIT_FAILURE = 1
 EXIT_PARSER_ERROR = 2
 
-__all__ = ['main']
+__all__ = ["main"]
 
 
 class AttrDict(dict):
@@ -27,7 +27,7 @@ def match(kargs, key, target, target_key=None):
     if not pat:
         return True
     else:
-        return fnmatch.fnmatch(target.get(target_key, '').lower(), pat.lower())
+        return fnmatch.fnmatch(target.get(target_key, "").lower(), pat.lower())
 
 
 @cmd("[-C=cwd] [--space=space] [--noheaders]", defaults={"op_noheaders": False})
@@ -98,7 +98,7 @@ def cmd_branch(kargs, wf):
     Open a task and create a new git branch
     Example: branch 1234
     """
-    task_id = kargs['positional'][0]
+    task_id = kargs["positional"][0]
     task = wf.client.get_task_by_id(task_id)
     branch_already_exists = False
     # Create a new branch a switch to it
@@ -132,7 +132,7 @@ def cmd_commit(kargs, wf):
     """
     # Get task_id by branch name
     current_branch = wf.git.get_current_branch()
-    task_id = current_branch.split('-')[0]
+    task_id = current_branch.split("-")[0]
     if task_id == wf.config.git_base_branch:
         raise GenericException(
             f"Please commit from feature branches, not {wf.config.git_base_branch}"
@@ -140,8 +140,8 @@ def cmd_commit(kargs, wf):
     task = wf.client.get_task_by_id(task_id)
     # Prepare the commit message
     message = f"[{task.data['id']}] {task.data['name']}"
-    if kargs.get('m'):
-        message = message + ' - ' + kargs['m']
+    if kargs.get("m"):
+        message = message + " - " + kargs["m"]
     # Commit
     print(wf.git.run("commit", "-m", message))
 
@@ -154,7 +154,7 @@ def cmd_status(kargs, wf):
     """
     # Get task_id by branch name
     current_branch = wf.git.get_current_branch()
-    task_id = current_branch.split('-')[0]
+    task_id = current_branch.split("-")[0]
     # Print task
     if task_id != wf.config.git_base_branch:
         task = wf.client.get_task_by_id(task_id)
@@ -177,10 +177,19 @@ def cmd_configure(kargs, wf):
     Example: configure
     """
     prompt = "ClickUP API token: "
-    token = kargs['clickup-token'] or input(prompt).strip()
+    token = kargs["clickup-token"] or input(prompt).strip()
     if token:
         Config.write_credentials(token)
     wf.client.get_user()
+
+
+@cmd("[-C=cwd] [--base-branch=git-base-branch]")
+def cmd_init(kargs, wf):
+    """
+    Write alkemy_workflow.ini config file into the project root folder
+    Example: init --base-branch=main
+    """
+    wf.config.write_config(base_branch=kargs.get("base-branch"))
 
 
 @cmd("[command]")
@@ -189,7 +198,7 @@ def cmd_help(kargs, wf):
     Display information about commands.
     """
     try:
-        command = kargs['positional'][0]
+        command = kargs["positional"][0]
     except KeyError:
         command = None
     if command:
@@ -219,7 +228,7 @@ def main(argv=None):
         f(argv)
         return EXIT_SUCCESS
     except ShowHelp:
-        cmd_help([argv[0], 'help', argv[1]])
+        cmd_help([argv[0], "help", argv[1]])
         return EXIT_SUCCESS
     except GenericWarning as ex:
         print(f"{argv[0]}: {ex}")
