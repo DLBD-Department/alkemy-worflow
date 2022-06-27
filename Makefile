@@ -17,7 +17,7 @@ lint:
 	flake8 alkemy_workflow
 
 black:
-	black -S alkemy_workflow setup.py aw.py tests
+	black alkemy_workflow setup.py aw.py tests
 
 clean:
 	-rm -rf build dist

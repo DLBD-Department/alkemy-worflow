@@ -25,7 +25,7 @@ class TestConfig:
         "Credentials in environment"
         monkeypatch.setattr(Path, "home", lambda: git_path)
         monkeypatch.setenv("CLICKUP_TOKEN", X20)
-        assert 'CLICKUP_TOKEN' in os.environ
+        assert "CLICKUP_TOKEN" in os.environ
         config = Config(git_path)
         assert config.git_dir == git_path
         assert config.default_clickup_token == X20
@@ -34,7 +34,7 @@ class TestConfig:
         "Config in environment not a git repo"
         monkeypatch.setattr(Path, "home", lambda: tmp_path)
         monkeypatch.setenv("CLICKUP_TOKEN", X20)
-        assert 'CLICKUP_TOKEN' in os.environ
+        assert "CLICKUP_TOKEN" in os.environ
         with pytest.raises(GitException):
             Config(tmp_path)
 
@@ -73,13 +73,13 @@ class TestGit:
         monkeypatch.chdir(git_path_credentials_config)
         config = Config()
         git = Git(config)
-        os.makedirs(git_path_credentials_config / 'aaaa' / 'bbbb')
+        os.makedirs(git_path_credentials_config / "aaaa" / "bbbb")
         monkeypatch.chdir(git_path_credentials_config)
         assert git.get_toplevel() == git_path_credentials_config
-        monkeypatch.chdir(git_path_credentials_config / 'aaaa')
+        monkeypatch.chdir(git_path_credentials_config / "aaaa")
         assert git.get_toplevel() == git_path_credentials_config
         assert (
-            git.get_toplevel(git_path_credentials_config / 'aaaa' / 'bbbb')
+            git.get_toplevel(git_path_credentials_config / "aaaa" / "bbbb")
             == git_path_credentials_config
         )
 
@@ -87,4 +87,4 @@ class TestGit:
         monkeypatch.chdir(git_path_credentials_config)
         config = Config()
         git = Git(config)
-        assert 'alkemy_workflow.ini' in git.run('status', '--porcelain')
+        assert "alkemy_workflow.ini" in git.run("status", "--porcelain")

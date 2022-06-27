@@ -4,11 +4,11 @@ from .exceptions import InvalidOption, CommandNotFound, ShowHelp
 from .utils import Workflow
 
 __all__ = [
-    'cmd',
-    'cmds',
-    'lookup_cmd',
-    'parse_args',
-    'parse_usage',
+    "cmd",
+    "cmds",
+    "lookup_cmd",
+    "parse_args",
+    "parse_usage",
 ]
 
 cmds = []
@@ -38,20 +38,20 @@ def parse_args(args, usage, defaults=None):
     required, optionals, arguments = parse_usage(usage)
     result = []
     kargs = dict(defaults or {})
-    kargs['positional'] = result
+    kargs["positional"] = result
     opt = None
     args = list(args)
     if args:
-        kargs['exe'] = args.pop(0)  # args[0] is the executable file name
+        kargs["exe"] = args.pop(0)  # args[0] is the executable file name
     if args:
-        kargs['cmd'] = args.pop(0)  # args[0] is the command
+        kargs["cmd"] = args.pop(0)  # args[0] is the command
     while args:
         arg = args.pop(0)
         if opt is not None:  # arguments value
             value = arg
             kargs[opt] = value
             opt = None
-        elif arg in ('--help', '-h', '-?'):
+        elif arg in ("--help", "-h", "-?"):
             raise ShowHelp()
         elif required:  # required positional argument
             result.append(arg)
@@ -69,7 +69,7 @@ def parse_args(args, usage, defaults=None):
             if not arg.startswith("-"):
                 raise InvalidOption(f"invalid option: {arg}")
             t = arg.lstrip("-")
-            if t in ('help', 'h', '?'):
+            if t in ("help", "h", "?"):
                 raise ShowHelp()
             if arguments.get(t) == bool:  # boolean arg
                 kargs["op_" + t] = True

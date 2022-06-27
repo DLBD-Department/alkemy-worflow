@@ -11,7 +11,7 @@ from .exceptions import TaskNotFound, StatusNotFound, ClickUpException
 BRANCH_SEPARATOR = "-"
 SERVER_URL = "https://api.clickup.com/api/v2/"
 
-__all__ = ['ClickUpClient']
+__all__ = ["ClickUpClient"]
 
 
 class ClickUpClient:
@@ -42,19 +42,19 @@ class ClickUpClient:
     def save_response(self, response):
         rqs = response.request
         path_url = (
-            rqs.path_url.strip('/').replace('..', '').split('?')[0]
-            + '.'
+            rqs.path_url.strip("/").replace("..", "").split("?")[0]
+            + "."
             + rqs.method.lower()
         )
-        filename = Path.cwd() / 'tests' / 'data' / Path(*path_url.split('/'))
+        filename = Path.cwd() / "tests" / "data" / Path(*path_url.split("/"))
         print(filename)
         os.makedirs(filename.parent, exist_ok=True)
-        with open(filename, 'wb') as f:
+        with open(filename, "wb") as f:
             f.write(response.content)
-        headers_filename = filename.parent / (filename.name + '.headers')
-        with open(headers_filename, 'w') as f:
+        headers_filename = filename.parent / (filename.name + ".headers")
+        with open(headers_filename, "w") as f:
             headers = dict(response.headers)
-            headers['__Status__'] = response.status_code
+            headers["__Status__"] = response.status_code
             json.dump(headers, f, indent=2)
 
     def get_user(self):

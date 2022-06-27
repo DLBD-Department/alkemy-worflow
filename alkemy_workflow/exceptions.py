@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 
 __all__ = [
-    'GenericException',
-    'GenericWarning',
-    'TaskNotFound',
-    'StatusNotFound',
-    'InvalidOption',
-    'CommandNotFound',
-    'ShowHelp',
-    'GitException',
-    'ConfigException',
-    'ClickUpException',
+    "GenericException",
+    "GenericWarning",
+    "TaskNotFound",
+    "StatusNotFound",
+    "InvalidOption",
+    "CommandNotFound",
+    "ShowHelp",
+    "GitException",
+    "ConfigException",
+    "ClickUpException",
 ]
 
 

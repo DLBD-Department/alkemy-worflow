@@ -1,18 +1,21 @@
 #!/usr/bin/env python
 
+try:
+    from functools import cached_property
+except ImportError:
+    from backports.cached_property import cached_property
 import os
 import subprocess
 import configparser
 from pathlib import Path
-from functools import cached_property
 from .clickup import ClickUpClient
 from .exceptions import GitException, ConfigException
 
 
-__all__ = ['Config', 'Git', 'Workflow']
+__all__ = ["Config", "Git", "Workflow"]
 
-CLICKUP_TOKEN = 'CLICKUP_TOKEN'
-DEFAULT_GIT_BASE_BRANCH = 'main'
+CLICKUP_TOKEN = "CLICKUP_TOKEN"
+DEFAULT_GIT_BASE_BRANCH = "main"
 
 
 class Git:
@@ -27,8 +30,8 @@ class Git:
             args = ["git"] + list(args)
         completed_process = subprocess.run(args, capture_output=True)
         if completed_process.returncode != 0:
-            raise GitException(completed_process.stderr.decode('utf-8'))
-        return completed_process.stdout.strip().decode('utf-8')
+            raise GitException(completed_process.stderr.decode("utf-8"))
+        return completed_process.stdout.strip().decode("utf-8")
 
     def get_current_branch(self):
         "Get current branch"
@@ -60,8 +63,8 @@ class Config:
         elif credentials_path.exists():
             cp = configparser.ConfigParser()
             cp.read(credentials_path)
-            self.retrieve_config(cp, 'default', 'clickup_token')
-            self.retrieve_config(cp, 'default', 'clickup_team_id')
+            self.retrieve_config(cp, "default", "clickup_token")
+            self.retrieve_config(cp, "default", "clickup_team_id")
         if not self.default_clickup_token:
             raise ConfigException(
                 f"Please set the ClickUp token in {credentials_path} file or in the {CLICKUP_TOKEN} environment variable"
@@ -71,15 +74,15 @@ class Config:
         "Get project config - load alkemy_workflow.ini file from project root folder"
         git = Git(self)
         self.git_dir = git.get_toplevel(base_path)
-        self.config_path = self.git_dir / 'alkemy_workflow.ini'
+        self.config_path = self.git_dir / "alkemy_workflow.ini"
         if self.config_path.exists():
             cp = configparser.ConfigParser()
             cp.read(self.config_path)
-            self.retrieve_config(cp, 'git', 'base_branch')
+            self.retrieve_config(cp, "git", "base_branch")
 
     def retrieve_config(self, cp, section, key):
         try:
-            setattr(self, section + '_' + key, cp[section][key])
+            setattr(self, section + "_" + key, cp[section][key])
         except KeyError:
             pass
 
@@ -87,22 +90,22 @@ class Config:
     def get_credentials_path(cls):
         "Get credential file path"
         home_dir = Path.home()
-        return home_dir / '.alkemy_workflow' / 'credentials'
+        return home_dir / ".alkemy_workflow" / "credentials"
 
     @classmethod
     def write_credentials(cls, token):
         "Write the token in the credentials file"
-        if not token.startswith('pk_'):
+        if not token.startswith("pk_"):
             raise ConfigException("Tokens will always begin with pk_")
         credentials_path = cls.get_credentials_path()
         cp = configparser.ConfigParser()
         if credentials_path.exists():
             cp.read(credentials_path)
-        if not cp.has_section('default'):
-            cp['default'] = {}
-        cp.set('default', 'clickup_token', token)
+        if not cp.has_section("default"):
+            cp["default"] = {}
+        cp.set("default", "clickup_token", token)
         os.makedirs(credentials_path.parent, exist_ok=True)
-        with open(credentials_path, 'w') as f:
+        with open(credentials_path, "w") as f:
             cp.write(f)
 
 

@@ -5,3 +5,4 @@ black
 twine
 pytest
 pytest-mock
+pre-commit
