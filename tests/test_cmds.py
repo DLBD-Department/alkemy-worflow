@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import io
 import subprocess
 from pathlib import Path
 import pytest
@@ -27,6 +28,11 @@ class TestCmds:
     ):
         monkeypatch.chdir(git_path_credentials_config)
         assert main(["aw", "configure", "--clickup-token", "abcd"]) == EXIT_FAILURE
+
+    def test_configure_stdin(self, git_path_credentials_config, mock_response, monkeypatch):
+        monkeypatch.chdir(git_path_credentials_config)
+        monkeypatch.setattr('sys.stdin', io.StringIO('pk_abcd'))
+        assert main(["aw", "configure"]) == EXIT_SUCCESS
 
     def test_configure(self, git_path_credentials_config, mock_response, monkeypatch):
         monkeypatch.chdir(git_path_credentials_config)

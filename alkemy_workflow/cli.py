@@ -177,7 +177,7 @@ def cmd_configure(kargs, wf):
     Example: configure
     """
     prompt = "ClickUP API token: "
-    token = kargs["clickup-token"] or input(prompt).strip()
+    token = kargs.get("clickup-token") or input(prompt).strip()
     if token:
         Config.write_credentials(token)
     wf.client.get_user()
