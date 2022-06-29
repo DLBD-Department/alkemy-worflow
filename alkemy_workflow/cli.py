@@ -96,7 +96,7 @@ def cmd_tasks(kargs, wf):
 def cmd_branch(kargs, wf):
     """
     Open a task and create a new git branch
-    Example: branch 1234
+    Example: branch '#12abcd45'
     """
     task_id = kargs["positional"][0]
     task = wf.client.get_task_by_id(task_id)
