@@ -44,6 +44,8 @@ def parse_args(args, usage, defaults=None):
     args = list(args)
     if args:
         kargs["exe"] = Path(args.pop(0)).name  # args[0] is the executable file name
+        if kargs["exe"] == "__main__.py":
+            kargs["exe"] = "aw"
     if args:
         kargs["cmd"] = args.pop(0)  # args[0] is the command
     while args:

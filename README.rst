@@ -1,11 +1,19 @@
 alkemy-workflow
 ===============
 
+
 Installation
 ------------
-::
 
-    pip install alkemy-workflow
+.. code:: bash
+
+  $ pip install alkemy-workflow
+
+PowerShell only - Create a function a put it in your profile in order to have it available whenever you run PowerShell.
+
+.. code:: ps
+
+  PS> function aw { cmd /c python3 -m amlkemy_workflow $args }
 
 
 Config
@@ -42,7 +50,7 @@ Switch a task branch (create it not exists)
 
 .. code:: bash
 
-  $ aw branch '#1234'
+  $ aw branch '#12abcd45'
 
 
 Create a new commit an the current feature branch
