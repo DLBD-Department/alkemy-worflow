@@ -147,6 +147,16 @@ def cmd_commit(kargs, wf):
 
 
 @cmd("[-C=cwd]")
+def cmd_pr(kargs, wf):
+    """
+    Push local commits to the remote branch and create a pull request on GitHub
+    Example: pr
+    """
+    wf.git.run("push")
+    wf.git.run_gh("pr", "create", "--fill")
+
+
+@cmd("[-C=cwd]")
 def cmd_status(kargs, wf):
     """
     Status

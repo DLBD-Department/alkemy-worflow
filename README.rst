@@ -1,9 +1,18 @@
 alkemy-workflow
 ===============
 
+Dependencies
+------------
+
+* git
+* `GitHub Cli <https://cli.github.com/>`_
+
 
 Installation
 ------------
+
+Dependencies: git and GitHub Cli - https://cli.github.com/
+* `GitHub Cli <https://cli.github.com/>`
 
 .. code:: bash
 
@@ -58,6 +67,12 @@ Create a new commit an the current feature branch
 .. code:: bash
 
   $ aw commit
+
+Push local commits to the remote branch and create a pull request on GitHub
+
+.. code:: bash
+
+  $ aw pr
 
 
 Links

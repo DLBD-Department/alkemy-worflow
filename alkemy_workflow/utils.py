@@ -33,6 +33,14 @@ class Git:
             raise GitException(completed_process.stderr.decode("utf-8"))
         return completed_process.stdout.strip().decode("utf-8")
 
+    def run_gh(self, *args, git_dir=None):
+        git_dir = git_dir or (self.config and self.config.git_dir) or None
+        args = ["gh"] + list(args)
+        completed_process = subprocess.run(args, capture_output=True, cwd=git_dir)
+        if completed_process.returncode != 0:
+            raise GitException(completed_process.stderr.decode("utf-8"))
+        return completed_process.stdout.strip().decode("utf-8")
+
     def get_current_branch(self):
         "Get current branch"
         return self.run("rev-parse", "--abbrev-ref", "HEAD")
