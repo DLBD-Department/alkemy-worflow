@@ -1,9 +1,15 @@
 #!/usr/bin/env python
 
 import sys
-import fnmatch
 from datetime import datetime
-from .exceptions import GenericWarning, GenericException, GitException, ShowHelp
+from pathlib import Path
+from .exceptions import (
+    GenericWarning,
+    GenericException,
+    GitException,
+    InvalidOption,
+    ShowHelp,
+)
 from .cmds import cmd, cmds, lookup_cmd
 from .utils import Config
 
@@ -14,82 +20,147 @@ EXIT_PARSER_ERROR = 2
 __all__ = ["main"]
 
 
-class AttrDict(dict):
-    def __init__(self, *args, **kwargs):
-        super(AttrDict, self).__init__(*args, **kwargs)
-        self.__dict__ = self
+def pairwise(iterable):
+    return zip(iterable, iterable[1:] + [None])
 
 
-def match(kargs, key, target, target_key=None):
-    if target_key is None:
-        target_key = key
-    pat = kargs.get(key)
-    if not pat:
-        return True
+def prepare_tree(items, enabled=True):
+    if not enabled:
+        for item in items:
+            item["tree"] = str(item["id"])
+            yield item
     else:
-        return fnmatch.fnmatch(target.get(target_key, "").lower(), pat.lower())
+        level = 0
+        for item, next_item in pairwise(items):
+            is_last = (next_item is None) or (item["type"] != next_item["type"])
+            if level == 0:
+                graph = ""
+            elif not is_last:
+                graph = "├─ "
+            else:
+                graph = "└─ "
+            item["tree"] = f"{' ' * level}{graph}{item.id}"
+            if is_last:
+                level = level + 1
+            yield item
 
 
-@cmd("[-C=cwd] [--space=space] [--noheaders]", defaults={"op_noheaders": False})
+@cmd("[-C=cwd] [--filter=filter] [--noheaders]", defaults={"op_noheaders": False})
 def cmd_spaces(kargs, wf):
     """
     List spaces
-    Example: spaces --space 'test*' --noheaders
+    Example: spaces --filter 'test*' --noheaders
     """
     header = not kargs["op_noheaders"]
-    fmt = "{name:40}"
+    result = wf.client.query(filter_type="Space", filter_name=kargs.get("filter"))
+    fmt = "{id:15} {name:40}"
     if header:
-        print(fmt.format(name="Space"))
+        print(fmt.format(id="Id", name="Space"))
         print("-" * 70)
-    spaces = wf.client.get_spaces()
-    for space in spaces:
-        if match(kargs, "space", space, "name"):
-            print(fmt.format(**space))
+    for item in result:
+        print(fmt.format(**item))
 
 
 @cmd(
-    "[-C=cwd] [--noheaders] [--long] [--id=id] [--status=status] [--space=space] [--folder=folder] [--list=list] [--title=title]",
+    "[-C=cwd] [--space=space] [--filter=filter] [--noheaders]",
+    defaults={"op_noheaders": False, "space": None},
+)
+def cmd_folders(kargs, wf):
+    """
+    List folders from a space
+    Example: folders --space 'test' --filter 'abc*' --noheaders
+    """
+    header = not kargs["op_noheaders"]
+    if not kargs["space"]:
+        raise InvalidOption("Missing option space")
+    result = wf.client.query(
+        space=kargs["space"], filter_type="Folder", filter_name=kargs.get("filter")
+    )
+    fmt = "{id:15} {name:40}"
+    if header:
+        print(fmt.format(id="Id", name="Folders"))
+        print("-" * 70)
+    for item in result:
+        print(fmt.format(**item))
+
+
+@cmd(
+    "[-C=cwd] [--space=space] [--folder=folder] [--filter=filter] [--noheaders]",
+    defaults={"op_noheaders": False, "space": None, "folder": None},
+)
+def cmd_lists(kargs, wf):
+    """
+    List lists from a space or folder
+    Example: lists --space 'test' --filter 'abc*' --noheaders
+    """
+    header = not kargs["op_noheaders"]
+    if not kargs["space"] and not kargs["folder"]:
+        raise InvalidOption("Missing option space/folder")
+    result = wf.client.query(
+        space=kargs["space"],
+        folder=kargs["folder"],
+        filter_type="List",
+        filter_name=kargs.get("filter"),
+    )
+    fmt = "{id:15} {name:40}"
+    if header:
+        print(fmt.format(id="Id", name="Lists"))
+        print("-" * 70)
+    for item in result:
+        print(fmt.format(**item))
+
+
+@cmd(
+    "[-C=cwd] [--task_id=task_id] [--space=space] [--folder=folder] [--list=list] [--task=task] [--filter=filter] [--noheaders] [--long]",
     defaults={"op_noheaders": False, "op_long": False},
 )
 def cmd_tasks(kargs, wf):
     """
-    List tasks
-    Example: tasks --title 'test*' --noheaders --long
+    List tasks from a list or subtask
     """
     header = not kargs["op_noheaders"]
-    if kargs["op_long"]:
-        fmt = "{task.task_id:10} {task.status:20} {task.space:20} {task.folder:20} {task.list:30} {task.title:60}"
-    else:
-        fmt = "{task.task_id:10} {task.status:20} {task.title:60}"
+    if not kargs.get("list") and not kargs.get("task"):
+        raise InvalidOption("Missing option list or task")
+    result = wf.client.query(
+        space=kargs.get("space"),
+        folder=kargs.get("folder"),
+        lst=kargs.get("list"),
+        task=kargs.get("task"),
+        filter_name=kargs.get("filter"),
+    )
+    fmt = "{label:15} {id:15} {name:40}"
     if header:
-        print(
-            fmt.format(
-                task=AttrDict(
-                    task_id="Id",
-                    status="Status",
-                    space="Space",
-                    folder="Folder",
-                    list="List",
-                    title="Title",
-                )
-            )
-        )
-        print("-" * 120)
-    tasks = wf.client.get_tasks()
-    for task in tasks:
-        if not match(kargs, "id", task):
-            continue
-        if not match(kargs, "status", task):
-            continue
-        if not match(kargs, "space", task):
-            continue
-        if not match(kargs, "folder", task):
-            continue
-        if not match(kargs, "list", task):
-            continue
-        if not match(kargs, "title", task):
-            continue
-        print(fmt.format(task=task))
+        print(fmt.format(id="Id", label="Status", name="Title"))
+        print("-" * 70)
+    for item in result:
+        print(fmt.format(**item))
+
+
+@cmd(
+    "[-C=cwd] [--space=space] [--folder=folder] [--list=list] [--task=task] [--filter=filter] [--noheaders] [--nohierarchy]",
+    defaults={"op_noheaders": False, "op_nohierarchy": False},
+)
+def cmd_ls(kargs, wf):
+    """
+    List spaces --> folders --> lists --> tasks --> subtasks
+    Example: ls --space 'test' --noheaders
+    """
+    header = not kargs["op_noheaders"]
+    hierarchy = not kargs["op_nohierarchy"]
+    result = wf.client.query(
+        space=kargs.get("space"),
+        folder=kargs.get("folder"),
+        lst=kargs.get("list"),
+        task=kargs.get("task"),
+        filter_name=kargs.get("filter"),
+        hierarchy=hierarchy,
+    )
+    fmt = "{tree:20} {label:15} {name:40}"
+    if header:
+        print(fmt.format(label="Kind/Status", tree="Id", name="Title"))
+        print("-" * 70)
+    for item in prepare_tree(result, enabled=hierarchy):
+        print(fmt.format(**item))
 
 
 @cmd("[-C=cwd] task_id")
@@ -113,11 +184,9 @@ def cmd_branch(kargs, wf):
     except GitException:
         pass
     # Update the task
-    start_date = task.data.get("start_date") or int(
-        datetime.utcnow().timestamp() * 1000
-    )
+    start_date = task.get("start_date") or int(datetime.utcnow().timestamp() * 1000)
     # Open (start) the task
-    task.update(status="in_progress", start_date=start_date)
+    task.update_task(status="in_progress", start_date=start_date)
     # Post a comment
     if not branch_already_exists:
         comment = f"Branch {task.branch_name}"
@@ -139,7 +208,7 @@ def cmd_commit(kargs, wf):
         )
     task = wf.client.get_task_by_id(task_id)
     # Prepare the commit message
-    message = f"[{task.data['id']}] {task.data['name']}"
+    message = f"[{task['id']}] {task['name']}"
     if kargs.get("m"):
         message = message + " - " + kargs["m"]
     # Commit
@@ -220,7 +289,8 @@ def cmd_help(kargs, wf):
         print(f"usage: {kargs['exe']} <command> [parameters]")
         print("")
         print("Commands:")
-        for f in sorted(cmds, key=lambda x: getattr(x, "cmd")):
+        # for f in sorted(cmds, key=lambda x: getattr(x, "cmd")):
+        for f in cmds:
             usage_text = getattr(f, "usage", "")
             help_text = (getattr(f, "__doc__", "") or "").rstrip("\n\t ")
             print(f" {f.cmd} {usage_text} {help_text}")
@@ -233,18 +303,19 @@ def main(argv=None):
     if len(argv) < 2:
         cmd_help(argv)
         return EXIT_PARSER_ERROR
+    exe = Path(argv[0]).name
     try:
         f = lookup_cmd(argv[1])
         f(argv)
         return EXIT_SUCCESS
     except ShowHelp:
-        cmd_help([argv[0], "help", argv[1]])
+        cmd_help([exe, "help", argv[1]])
         return EXIT_SUCCESS
     except GenericWarning as ex:
-        print(f"{argv[0]}: {ex}")
+        print(f"{exe}: {ex}")
         return EXIT_SUCCESS
     except GenericException as ex:
-        print(f"{argv[0]}: {ex}")
+        print(f"{exe}: {ex}")
         return EXIT_FAILURE
 
 

@@ -11,10 +11,10 @@ from requests.structures import CaseInsensitiveDict
 from alkemy_workflow.utils import Config
 
 ENV = {
-    'GIT_AUTHOR_NAME': 'test test',
-    'GIT_AUTHOR_EMAIL': 'test@example.com',
-    'GIT_COMMITTER_NAME': 'test',
-    'GIT_COMMITTER_EMAIL': 'test@example.com',
+    "GIT_AUTHOR_NAME": "test test",
+    "GIT_AUTHOR_EMAIL": "test@example.com",
+    "GIT_COMMITTER_NAME": "test",
+    "GIT_COMMITTER_EMAIL": "test@example.com",
 }
 
 X20 = "x" * 20
@@ -29,29 +29,29 @@ CONFIG = """
 base_branch = main
 """
 
-HEADERS = json.load(open(Path(__file__).parent / 'data' / 'headers'))
+HEADERS = json.load(open(Path(__file__).parent / "data" / "headers"))
 
 
 def write_credentials(path):
     os.makedirs(Config.get_credentials_path().parent)
-    with open(Config.get_credentials_path(), 'w') as f:
+    with open(Config.get_credentials_path(), "w") as f:
         f.write(CREDENTIALS)
 
 
 def write_config(path):
-    config_path = path / 'alkemy_workflow.ini'
-    with open(config_path, 'w') as f:
+    config_path = path / "alkemy_workflow.ini"
+    with open(config_path, "w") as f:
         f.write(CONFIG)
 
 
 @pytest.fixture
 def git_path(tmp_path):
-    subprocess.run(['git', '-C', tmp_path, 'init', '--initial-branch=main'])
-    for name in ['a', 'b', 'c']:
-        with open(tmp_path / name, 'w') as f:
-            f.write(f'{name}\n')
-        subprocess.run(['git', '-C', tmp_path, 'add', name])
-        subprocess.run(['git', '-C', tmp_path, 'commit', '-m', name], env=ENV)
+    subprocess.run(["git", "-C", tmp_path, "init", "--initial-branch=main"])
+    for name in ["a", "b", "c"]:
+        with open(tmp_path / name, "w") as f:
+            f.write(f"{name}\n")
+        subprocess.run(["git", "-C", tmp_path, "add", name])
+        subprocess.run(["git", "-C", tmp_path, "commit", "-m", name], env=ENV)
     return tmp_path
 
 
@@ -69,14 +69,14 @@ class MockResponse:
         self.headers = CaseInsensitiveDict(HEADERS)
         parse_result = urllib.parse.urlparse(url)
         path = Path(
-            *(parse_result.path.strip('/') + '.' + method.lower())
-            .replace('..', '')
-            .split('/')
+            *(parse_result.path.strip("/") + "." + method.lower())
+            .replace("..", "")
+            .split("/")
         )
-        filepath = Path(__file__).parent / 'data' / path
-        self.encoding = 'utf-8'
+        filepath = Path(__file__).parent / "data" / path
+        self.encoding = "utf-8"
         try:
-            with open(filepath, 'rb') as f:
+            with open(filepath, "rb") as f:
                 self.content = f.read()
             self.status_code = 200
         except:

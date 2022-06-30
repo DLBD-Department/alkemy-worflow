@@ -11,9 +11,6 @@ Dependencies
 Installation
 ------------
 
-Dependencies: git and GitHub Cli - https://cli.github.com/
-* `GitHub Cli <https://cli.github.com/>`
-
 .. code:: bash
 
   $ pip install alkemy-workflow
@@ -26,7 +23,7 @@ PowerShell only - Create a function a put it in your profile in order to have it
 
 
 Config
-~~~~~
+~~~~~~
 
 Use the "aw configure command", or set the environment variable CLICKUP_TOKEN with your ClickUp personal token,
 or create the file ~/.alkemy_workflow/credentials like the following:
@@ -43,6 +40,12 @@ Finding ClickUp your token:
 * Click Apps  in the left sidebar
 * Click Generate  to create your API token
 * Click Copy  to copy the key to your clipboard
+
+
+Clickup Hierarchy
+~~~~~~~~~~~~~~~~~
+
+.. image:: https://user-images.githubusercontent.com/1288154/176724465-70ab7eb5-0461-4a71-8ce8-9cc418f2f0ac.png
 
 
 Usage
@@ -68,12 +71,36 @@ Create a new commit an the current feature branch
 
   $ aw commit
 
+
 Push local commits to the remote branch and create a pull request on GitHub
 
 .. code:: bash
 
   $ aw pr
 
+List spaces
+
+.. code:: bash
+
+  $ aw spaces
+
+List folders from a space
+
+.. code:: bash
+
+  $ aw folders --space 'Development'
+
+List lists from a space (or from a folder)
+
+.. code:: bash
+
+  $ aw lists --space 'Development' --folder 'SmartDigitalSignage'
+
+List tasks
+
+.. code:: bash
+
+  $ aw tasks --space 'Development' --folder 'SmartDigitalSignage' --list 'Backlog'
 
 Links
 ~~~~~

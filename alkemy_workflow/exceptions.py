@@ -1,16 +1,19 @@
 #!/usr/bin/env python
 
 __all__ = [
-    'GenericException',
-    'GenericWarning',
-    'TaskNotFound',
-    'StatusNotFound',
-    'InvalidOption',
-    'CommandNotFound',
-    'ShowHelp',
-    'GitException',
-    'ConfigException',
-    'ClickUpException',
+    "GenericException",
+    "GenericWarning",
+    "TaskNotFound",
+    "SpaceNotFound",
+    "FolderNotFound",
+    "ListNotFound",
+    "StatusNotFound",
+    "InvalidOption",
+    "CommandNotFound",
+    "ShowHelp",
+    "GitException",
+    "ConfigException",
+    "ClickUpException",
 ]
 
 
@@ -24,6 +27,18 @@ class GenericWarning(GenericException):
 
 class TaskNotFound(GenericException):
     "Task not found"
+
+
+class SpaceNotFound(GenericException):
+    "Space not found"
+
+
+class FolderNotFound(GenericException):
+    "Folder not found"
+
+
+class ListNotFound(GenericException):
+    "List not found"
 
 
 class StatusNotFound(GenericException):

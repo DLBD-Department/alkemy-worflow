@@ -123,27 +123,27 @@
         "access": true
       },
       "project": {
-        "id": "86494446",
-        "name": "SmartDigitalSignage",
+        "id": "20000001",
+        "name": "Project 1",
         "hidden": false,
         "access": true
       },
       "folder": {
-        "id": "86494446",
-        "name": "SmartDigitalSignage",
+        "id": "20000001",
+        "name": "Project 1",
         "hidden": false,
         "access": true
       },
       "space": {
-        "id": "42380971"
+        "id": "10000001"
       }
     },
     {
       "id": "24cc5nj",
       "custom_id": null,
-      "name": "SPM - Delete Yolo person detection",
-      "text_content": "Simplify the sensor processing module:\nface detection (openCV's DNN)\ntracking (unchanged)\nage/gender classificator (unchanged)",
-      "description": "Simplify the sensor processing module:\nface detection (openCV's DNN)\ntracking (unchanged)\nage/gender classificator (unchanged)",
+      "name": "SPM",
+      "text_content": "",
+      "description": "",
       "status": {
         "status": "done",
         "color": "#2ecd6f",
@@ -156,20 +156,20 @@
       "date_closed": null,
       "archived": false,
       "creator": {
-        "id": 36360498,
-        "username": "davide giannuzzi",
-        "color": "#ea80fc",
-        "email": "davide.giannuzzi@nunatac.it",
-        "profilePicture": "https://attachments.clickup.com/profilePictures/36360498_m1o.jpg"
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
       },
       "assignees": [
         {
-          "id": 36360498,
-          "username": "davide giannuzzi",
-          "color": "#ea80fc",
-          "initials": "DG",
-          "email": "davide.giannuzzi@nunatac.it",
-          "profilePicture": "https://attachments.clickup.com/profilePictures/36360498_m1o.jpg"
+          "id": 99999999,
+          "username": "Test Test",
+          "color": "#e65100",
+          "initials": "TT",
+          "email": "test@example.com",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
         }
       ],
       "watchers": [],
@@ -212,19 +212,19 @@
         "access": true
       },
       "project": {
-        "id": "86494446",
-        "name": "SmartDigitalSignage",
+        "id": "20000001",
+        "name": "Project 1",
         "hidden": false,
         "access": true
       },
       "folder": {
-        "id": "86494446",
-        "name": "SmartDigitalSignage",
+        "id": "20000001",
+        "name": "Project 1",
         "hidden": false,
         "access": true
       },
       "space": {
-        "id": "42380971"
+        "id": "10000001"
       }
     }
   ]
