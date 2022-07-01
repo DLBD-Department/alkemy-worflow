@@ -33,7 +33,7 @@ class TestCmds:
         self, git_path_credentials_config, mock_response, monkeypatch
     ):
         monkeypatch.chdir(git_path_credentials_config)
-        monkeypatch.setattr('sys.stdin', io.StringIO('pk_abcd'))
+        monkeypatch.setattr("sys.stdin", io.StringIO("pk_abcd"))
         assert main(["aw", "configure"]) == EXIT_SUCCESS
 
     def test_configure(self, git_path_credentials_config, mock_response, monkeypatch):
@@ -48,10 +48,6 @@ class TestCmds:
     def test_spaces(self, git_path_credentials_config, mock_response, monkeypatch):
         monkeypatch.chdir(git_path_credentials_config)
         assert main(["aw", "spaces"]) == EXIT_SUCCESS
-
-    def test_tasks(self, git_path_credentials_config, mock_response, monkeypatch):
-        monkeypatch.chdir(git_path_credentials_config)
-        assert main(["aw", "tasks"]) == EXIT_SUCCESS
 
     def test_branch(self, git_path_credentials_config, mock_response, monkeypatch):
         monkeypatch.chdir(git_path_credentials_config)

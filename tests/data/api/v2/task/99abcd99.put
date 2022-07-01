@@ -70,13 +70,13 @@
     "access": true
   },
   "folder": {
-    "id": "20000005",
+    "id": "20000001",
     "name": "hidden",
     "hidden": true,
     "access": true
   },
   "space": {
-    "id": "10000004"
+    "id": "10000001"
   },
   "attachments": []
 }

@@ -1,23 +1,28 @@
 SHELL=/bin/bash -e
 
 help:
-	@echo - make coverage
-	@echo - make test
-	@echo - make lint
-	@echo - make clean
-	@echo - make venc
+	@echo "- make coverage     Run test coverage"
+	@echo "- make test         Run tests"
+	@echo "- make lint         Run lint"
+	@echo "- make black        Format code"
+	@echo "- make clean        Clean"
+	@echo "- make venc         Create virtual environment"
+	@echo "- make tag          Create version tag"
 
 coverage:
-	coverage run --source=alkemy_workflow -m pytest && python3 -m coverage report -m
+	@coverage run --source=alkemy_workflow -m pytest && python3 -m coverage report -m
 
 test:
-	pytest
+	@pytest
 
 lint:
-	flake8 alkemy_workflow
+	@flake8 alkemy_workflow
 
 black:
-	black -S alkemy_workflow setup.py aw.py tests
+	@black alkemy_workflow setup.py aw.py tests
+
+tag:
+	@git tag "v$$(cat alkemy_workflow/VERSION)"
 
 clean:
 	-rm -rf build dist

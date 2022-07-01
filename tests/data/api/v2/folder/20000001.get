@@ -1,0 +1,160 @@
+{
+  "id": "20000001",
+  "name": "Project 1",
+  "orderindex": 1,
+  "override_statuses": true,
+  "hidden": false,
+  "space": {
+    "id": "10000001",
+    "name": "Development",
+    "access": true
+  },
+  "task_count": "44",
+  "archived": false,
+  "statuses": [
+    {
+      "id": "c20000001_DRoshsAn",
+      "status": "to do",
+      "orderindex": 0,
+      "color": "#d3d3d3",
+      "type": "open"
+    },
+    {
+      "id": "c20000001_gybVRoLU",
+      "status": "in_progress",
+      "orderindex": 1,
+      "color": "#FF7FAB",
+      "type": "custom"
+    },
+    {
+      "id": "c20000001_dRTpMRhW",
+      "status": "review",
+      "orderindex": 2,
+      "color": "#A875FF",
+      "type": "custom"
+    },
+    {
+      "id": "c20000001_VevkXJRv",
+      "status": "done",
+      "orderindex": 3,
+      "color": "#2ecd6f",
+      "type": "done"
+    },
+    {
+      "id": "c20000001_eY6fgLKk",
+      "status": "Closed",
+      "orderindex": 4,
+      "color": "#6bc950",
+      "type": "closed"
+    }
+  ],
+  "lists": [
+    {
+      "id": "30000001",
+      "name": "Backlog",
+      "orderindex": 0,
+      "status": null,
+      "priority": null,
+      "assignee": null,
+      "task_count": 27,
+      "due_date": null,
+      "start_date": null,
+      "archived": false,
+      "override_statuses": true,
+      "statuses": [
+        {
+          "id": "sc30000001_OjwQ7V1X",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#d3d3d3",
+          "type": "open"
+        },
+        {
+          "id": "sc30000001_44qIA0Ua",
+          "status": "in_progress",
+          "orderindex": 1,
+          "color": "#FF7FAB",
+          "type": "custom"
+        },
+        {
+          "id": "sc30000001_idQWC4PS",
+          "status": "review",
+          "orderindex": 2,
+          "color": "#A875FF",
+          "type": "custom"
+        },
+        {
+          "id": "sc30000001_jqfd2Ic7",
+          "status": "done",
+          "orderindex": 3,
+          "color": "#2ecd6f",
+          "type": "done"
+        },
+        {
+          "id": "sc30000001_xm2okw6T",
+          "status": "Closed",
+          "orderindex": 4,
+          "color": "#6bc950",
+          "type": "closed"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "30000002",
+      "name": "pilot_preparation",
+      "orderindex": 8,
+      "status": {
+        "status": "yellow",
+        "color": "#f9d900",
+        "hide_label": true
+      },
+      "priority": null,
+      "assignee": null,
+      "task_count": 17,
+      "due_date": null,
+      "start_date": null,
+      "archived": false,
+      "override_statuses": true,
+      "statuses": [
+        {
+          "id": "sc204289258_7BnHoKo2",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#d3d3d3",
+          "type": "open"
+        },
+        {
+          "id": "sc204289258_uDSIrrX8",
+          "status": "in_progress",
+          "orderindex": 1,
+          "color": "#FF7FAB",
+          "type": "custom"
+        },
+        {
+          "id": "sc204289258_61K7v9vb",
+          "status": "review",
+          "orderindex": 2,
+          "color": "#A875FF",
+          "type": "custom"
+        },
+        {
+          "id": "sc204289258_wH81zFyA",
+          "status": "done",
+          "orderindex": 3,
+          "color": "#2ecd6f",
+          "type": "done"
+        },
+        {
+          "id": "sc204289258_lfZvD8Zq",
+          "status": "Closed",
+          "orderindex": 4,
+          "color": "#6bc950",
+          "type": "closed"
+        }
+      ],
+      "permission_level": "create"
+    }
+  ],
+  "permission_level": "create"
+}

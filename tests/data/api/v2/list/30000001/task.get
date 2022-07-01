@@ -1,0 +1,2430 @@
+{
+  "tasks": [
+    {
+      "id": "32ppkv2",
+      "custom_id": null,
+      "name": "Test task",
+      "text_content": null,
+      "description": null,
+      "status": {
+        "status": "in_progress",
+        "color": "#FF7FAB",
+        "type": "custom",
+        "orderindex": 1
+      },
+      "orderindex": "10253132.00099410000000000000000000000000",
+      "date_created": "1655914370489",
+      "date_updated": "1655991040289",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "infrastructure",
+          "tag_fg": "#800000",
+          "tag_bg": "#800000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": "1655949600000",
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/32ppkv2",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "31u22q5",
+      "custom_id": null,
+      "name": "Demo Setup Magic Info",
+      "text_content": null,
+      "description": null,
+      "status": {
+        "status": "done",
+        "color": "#2ecd6f",
+        "type": "done",
+        "orderindex": 3
+      },
+      "orderindex": "1154364.00000000000000000000000000000000",
+      "date_created": "1655194755204",
+      "date_updated": "1655194755204",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "infrastructure",
+          "tag_fg": "#800000",
+          "tag_bg": "#800000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/31u22q5",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "2yrp36u",
+      "custom_id": null,
+      "name": "test new spm generated records",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "to do",
+        "color": "#d3d3d3",
+        "type": "open",
+        "orderindex": 0
+      },
+      "orderindex": "1154233.90737406260000000000000000000000",
+      "date_created": "1653380599621",
+      "date_updated": "1653403146426",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [
+        {
+          "id": 99999999,
+          "username": "Test Test",
+          "color": "#e65100",
+          "initials": "TT",
+          "email": "test@example.com",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+        }
+      ],
+      "watchers": [],
+      "checklists": [],
+      "tags": [],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/2yrp36u",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "296qd0w",
+      "custom_id": null,
+      "name": "SPM - SDS: increase stability of recommendation",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "to do",
+        "color": "#d3d3d3",
+        "type": "open",
+        "orderindex": 0
+      },
+      "orderindex": "1154232.00000000000000000000000000000000",
+      "date_created": "1651503745492",
+      "date_updated": "1651503839270",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "r&d",
+          "tag_fg": "#E50000",
+          "tag_bg": "#E50000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/296qd0w",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "2ewbfqp",
+      "custom_id": null,
+      "name": "Get status of cameras (online/offline) from the edge",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "to do",
+        "color": "#d3d3d3",
+        "type": "open",
+        "orderindex": 0
+      },
+      "orderindex": "1154203.00000000000000000000000000000000",
+      "date_created": "1650451652141",
+      "date_updated": "1650451769178",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "infrastructure",
+          "tag_fg": "#800000",
+          "tag_bg": "#800000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/2ewbfqp",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "265j2zm",
+      "custom_id": null,
+      "name": "SPM - tune tracker",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "to do",
+        "color": "#d3d3d3",
+        "type": "open",
+        "orderindex": 0
+      },
+      "orderindex": "1154138.00000000000000000000000000000000",
+      "date_created": "1649676492262",
+      "date_updated": "1649676626023",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "r&d",
+          "tag_fg": "#E50000",
+          "tag_bg": "#E50000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/265j2zm",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "24ad2f5",
+      "custom_id": null,
+      "name": "Extend notification status to all services",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "to do",
+        "color": "#d3d3d3",
+        "type": "open",
+        "orderindex": 0
+      },
+      "orderindex": "1154137.00000000000000000000000000000000",
+      "date_created": "1649674037759",
+      "date_updated": "1649674074237",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [
+        {
+          "id": 99999999,
+          "username": "Test Test",
+          "initials": "TT",
+          "color": "#e65100",
+          "email": "test@example.com",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+        }
+      ],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "infrastructure",
+          "tag_fg": "#800000",
+          "tag_bg": "#800000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/24ad2f5",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "25m6yn2",
+      "custom_id": null,
+      "name": "Runtime dependency checks from external services",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "to do",
+        "color": "#d3d3d3",
+        "type": "open",
+        "orderindex": 0
+      },
+      "orderindex": "1154060.00000000000000000000000000000000",
+      "date_created": "1648741111224",
+      "date_updated": "1648741189596",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "infrastructure",
+          "tag_fg": "#800000",
+          "tag_bg": "#800000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/25m6yn2",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "25905wt",
+      "custom_id": null,
+      "name": "SPM - test a configuration without docker",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "Closed",
+        "color": "#6bc950",
+        "type": "closed",
+        "orderindex": 4
+      },
+      "orderindex": "1154101.00208260000000000000000000000000",
+      "date_created": "1648474522343",
+      "date_updated": "1649085222366",
+      "date_closed": "1649085222366",
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "r&d",
+          "tag_fg": "#E50000",
+          "tag_bg": "#E50000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/25905wt",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "258tnxt",
+      "custom_id": null,
+      "name": "SPM - implement YOLO face",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "in_progress",
+        "color": "#FF7FAB",
+        "type": "custom",
+        "orderindex": 1
+      },
+      "orderindex": "10253225.00027270000000000000000000000000",
+      "date_created": "1648221904290",
+      "date_updated": "1656493492147",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [],
+      "watchers": [],
+      "tags": [
+        {
+          "name": "r&d",
+          "tag_fg": "#E50000",
+          "tag_bg": "#E50000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [
+        {
+          "task_id": "258tnxt",
+          "depends_on": "258tmp5",
+          "type": 1,
+          "date_created": "1648222689111",
+          "userid": "99999999",
+          "workspace_id": null
+        }
+      ],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/258tnxt",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "258tmp5",
+      "custom_id": null,
+      "name": "SPM - test a lighter version of YOLO",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "in_progress",
+        "color": "#FF7FAB",
+        "type": "custom",
+        "orderindex": 1
+      },
+      "orderindex": "1154190.00175910000000000000000000000000",
+      "date_created": "1648221571411",
+      "date_updated": "1650362201295",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [
+        {
+          "id": 99999999,
+          "username": "Test Test",
+          "color": "#e65100",
+          "initials": "TT",
+          "email": "test@example.com",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+        }
+      ],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "r&d",
+          "tag_fg": "#E50000",
+          "tag_bg": "#E50000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [
+        {
+          "task_id": "258tnxt",
+          "depends_on": "258tmp5",
+          "type": 1,
+          "date_created": "1648222689111",
+          "userid": "99999999",
+          "workspace_id": null
+        }
+      ],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/258tmp5",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "258tmhw",
+      "custom_id": null,
+      "name": "SPM - TF lite for age/gender classificator",
+      "text_content": null,
+      "description": null,
+      "status": {
+        "status": "done",
+        "color": "#2ecd6f",
+        "type": "done",
+        "orderindex": 3
+      },
+      "orderindex": "1154065.00022350000000000000000000000000",
+      "date_created": "1648221534188",
+      "date_updated": "1648799575911",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [
+        {
+          "id": 99999999,
+          "username": "Test Test",
+          "color": "#e65100",
+          "initials": "TT",
+          "email": "test@example.com",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+        }
+      ],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "r&d",
+          "tag_fg": "#E50000",
+          "tag_bg": "#E50000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/258tmhw",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "258tmbw",
+      "custom_id": null,
+      "name": "SPM - openCV GPU optimization",
+      "text_content": null,
+      "description": null,
+      "status": {
+        "status": "review",
+        "color": "#A875FF",
+        "type": "custom",
+        "orderindex": 2
+      },
+      "orderindex": "1154193.00187020000000000000000000000000",
+      "date_created": "1648221466175",
+      "date_updated": "1650362325082",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [
+        {
+          "id": 99999999,
+          "username": "Test Test",
+          "color": "#e65100",
+          "initials": "TT",
+          "email": "test@example.com",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+        }
+      ],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "r&d",
+          "tag_fg": "#E50000",
+          "tag_bg": "#E50000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/258tmbw",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "258tbud",
+      "custom_id": null,
+      "name": "limit access to apis that have an authentication method",
+      "text_content": null,
+      "description": null,
+      "status": {
+        "status": "review",
+        "color": "#A875FF",
+        "type": "custom",
+        "orderindex": 2
+      },
+      "orderindex": "1154253.00040400000000000000000000000000",
+      "date_created": "1648219113203",
+      "date_updated": "1651844218438",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [],
+      "watchers": [],
+      "checklists": [],
+      "tags": [],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/258tbud",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "2536zug",
+      "custom_id": null,
+      "name": "Prometheus and Grafana for monitoring and observability",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "to do",
+        "color": "#d3d3d3",
+        "type": "open",
+        "orderindex": 0
+      },
+      "orderindex": "1154008.00000000000000000000000000000000",
+      "date_created": "1648142106181",
+      "date_updated": "1652782374001",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [
+        {
+          "id": 99999999,
+          "username": "Test Test",
+          "color": "#e65100",
+          "initials": "TT",
+          "email": "test@example.com",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+        }
+      ],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "infrastructure",
+          "tag_fg": "#800000",
+          "tag_bg": "#800000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/2536zug",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "2533jhy",
+      "custom_id": null,
+      "name": "Configure Kibana",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "to do",
+        "color": "#d3d3d3",
+        "type": "open",
+        "orderindex": 0
+      },
+      "orderindex": "1154082.00117150000000000000000000000000",
+      "date_created": "1648119092457",
+      "date_updated": "1655719272733",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [
+        {
+          "id": 99999999,
+          "username": "Test Test",
+          "color": "#e65100",
+          "initials": "TT",
+          "email": "test@example.com",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+        }
+      ],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "infrastructure",
+          "tag_fg": "#800000",
+          "tag_bg": "#800000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/2533jhy",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "2533emv",
+      "custom_id": null,
+      "name": "Native Fluentd logger integration in python app",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "to do",
+        "color": "#d3d3d3",
+        "type": "open",
+        "orderindex": 0
+      },
+      "orderindex": "1154081.00108270000000000000000000000000",
+      "date_created": "1648118230224",
+      "date_updated": "1649084709671",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [
+        {
+          "id": 99999999,
+          "username": "Test Test",
+          "color": "#e65100",
+          "initials": "TT",
+          "email": "test@example.com",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+        }
+      ],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "infrastructure",
+          "tag_fg": "#800000",
+          "tag_bg": "#800000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/2533emv",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "24hxp5r",
+      "custom_id": null,
+      "name": "Historical data retention policies for both Postgres and Elasticsearch",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "to do",
+        "color": "#d3d3d3",
+        "type": "open",
+        "orderindex": 0
+      },
+      "orderindex": "1154078.00094330000000000000000000000000",
+      "date_created": "1647872402252",
+      "date_updated": "1649084661085",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [
+        {
+          "id": 99999999,
+          "username": "Test Test",
+          "color": "#e65100",
+          "initials": "TT",
+          "email": "test@example.com",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+        }
+      ],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "infrastructure",
+          "tag_fg": "#800000",
+          "tag_bg": "#800000",
+          "creator": 99999999
+        },
+        {
+          "name": "tech",
+          "tag_fg": "#F900EA",
+          "tag_bg": "#F900EA",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/24hxp5r",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "24cc8e0",
+      "custom_id": null,
+      "name": "SPM - implement single development branch",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "done",
+        "color": "#2ecd6f",
+        "type": "done",
+        "orderindex": 3
+      },
+      "orderindex": "1154161.00030840000000000000000000000000",
+      "date_created": "1647863893296",
+      "date_updated": "1650360275063",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "r&d",
+          "tag_fg": "#E50000",
+          "tag_bg": "#E50000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/24cc8e0",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "24cc5w8",
+      "custom_id": null,
+      "name": "SPM - Modules performance evaluation",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "done",
+        "color": "#2ecd6f",
+        "type": "done",
+        "orderindex": 3
+      },
+      "orderindex": "1154111.00243830000000000000000000000000",
+      "date_created": "1647863677617",
+      "date_updated": "1649086882192",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [
+        {
+          "id": 99999999,
+          "username": "Test Test",
+          "color": "#e65100",
+          "initials": "TT",
+          "email": "test@example.com",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+        }
+      ],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "r&d",
+          "tag_fg": "#E50000",
+          "tag_bg": "#E50000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/24cc5w8",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "24cc2q7",
+      "custom_id": null,
+      "name": "SPM - Classification model tuning / retraining",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "in_progress",
+        "color": "#FF7FAB",
+        "type": "custom",
+        "orderindex": 1
+      },
+      "orderindex": "10253224.00026560000000000000000000000000",
+      "date_created": "1647863383161",
+      "date_updated": "1656493485667",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [
+        {
+          "id": 99999999,
+          "username": "Test Test",
+          "color": "#e65100",
+          "initials": "TT",
+          "email": "test@example.com",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+        }
+      ],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "r&d",
+          "tag_fg": "#E50000",
+          "tag_bg": "#E50000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/24cc2q7",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "240xhya",
+      "custom_id": null,
+      "name": "check IAM permissions for specific machine/process",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "Closed",
+        "color": "#6bc950",
+        "type": "closed",
+        "orderindex": 4
+      },
+      "orderindex": "1154102.00216890000000000000000000000000",
+      "date_created": "1647537135816",
+      "date_updated": "1649085277438",
+      "date_closed": "1649085277438",
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [
+        {
+          "id": 99999999,
+          "username": "Test Test",
+          "color": "#e65100",
+          "initials": "TT",
+          "email": "test@example.com",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+        }
+      ],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "aws",
+          "tag_fg": "#EA80FC",
+          "tag_bg": "#EA80FC",
+          "creator": 99999999
+        },
+        {
+          "name": "infrastructure",
+          "tag_fg": "#800000",
+          "tag_bg": "#800000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/240xhya",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "240umfb",
+      "custom_id": null,
+      "name": "CI/CD Artifatcts generation",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "done",
+        "color": "#2ecd6f",
+        "type": "done",
+        "orderindex": 3
+      },
+      "orderindex": "1154067.00039940000000000000000000000000",
+      "date_created": "1647516960458",
+      "date_updated": "1649053064202",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [
+        {
+          "id": 99999999,
+          "username": "Test Test",
+          "color": "#e65100",
+          "initials": "TT",
+          "email": "test@example.com",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+        }
+      ],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "infrastructure",
+          "tag_fg": "#800000",
+          "tag_bg": "#800000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/240umfb",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "23ncxf1",
+      "custom_id": null,
+      "name": "Content recommender system generalization",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "to do",
+        "color": "#d3d3d3",
+        "type": "open",
+        "orderindex": 0
+      },
+      "orderindex": "1153895.00070100000000000000000000000000",
+      "date_created": "1647338829654",
+      "date_updated": "1647873267276",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "r&d",
+          "tag_fg": "#E50000",
+          "tag_bg": "#E50000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/23ncxf1",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "1z6bvyz",
+      "custom_id": null,
+      "name": "Edge Unit and camera purchase",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "Closed",
+        "color": "#6bc950",
+        "type": "closed",
+        "orderindex": 4
+      },
+      "orderindex": "1153909.00042350000000000000000000000000",
+      "date_created": "1645434420052",
+      "date_updated": "1647514992285",
+      "date_closed": "1647514992285",
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [
+        {
+          "id": 99999999,
+          "username": "Test Test",
+          "color": "#e65100",
+          "initials": "TT",
+          "email": "test@example.com",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+        }
+      ],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "s&o",
+          "tag_fg": "#FF4081",
+          "tag_bg": "#FF4081",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/1z6bvyz",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "1xwgyht",
+      "custom_id": null,
+      "name": "Viewers Interest Analysis System",
+      "text_content": null,
+      "description": null,
+      "status": {
+        "status": "to do",
+        "color": "#d3d3d3",
+        "type": "open",
+        "orderindex": 0
+      },
+      "orderindex": "1153599.00000000000000000000000000000000",
+      "date_created": "1644245048249",
+      "date_updated": "1644838387415",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "r&d",
+          "tag_fg": "#E50000",
+          "tag_bg": "#E50000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/1xwgyht",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "1xwgydr",
+      "custom_id": null,
+      "name": "Viewers Detection System",
+      "text_content": null,
+      "description": null,
+      "status": {
+        "status": "to do",
+        "color": "#d3d3d3",
+        "type": "open",
+        "orderindex": 0
+      },
+      "orderindex": "1153598.00000000000000000000000000000000",
+      "date_created": "1644245027867",
+      "date_updated": "1644838356899",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "r&d",
+          "tag_fg": "#E50000",
+          "tag_bg": "#E50000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/1xwgydr",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "1xwgrkd",
+      "custom_id": null,
+      "name": "Check with Samsung for available data",
+      "text_content": null,
+      "description": null,
+      "status": {
+        "status": "Closed",
+        "color": "#6bc950",
+        "type": "closed",
+        "orderindex": 4
+      },
+      "orderindex": "1153912.00054700000000000000000000000000",
+      "date_created": "1644242690606",
+      "date_updated": "1647515005468",
+      "date_closed": "1647515005468",
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [
+        {
+          "id": 99999999,
+          "username": "Test Test",
+          "color": "#e65100",
+          "initials": "TT",
+          "email": "test@example.com",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+        }
+      ],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "s&o",
+          "tag_fg": "#FF4081",
+          "tag_bg": "#FF4081",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": "1644375600000",
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/1xwgrkd",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "1weqmv0",
+      "custom_id": null,
+      "name": "Application DB Implementation",
+      "text_content": null,
+      "description": null,
+      "status": {
+        "status": "done",
+        "color": "#2ecd6f",
+        "type": "done",
+        "orderindex": 3
+      },
+      "orderindex": "1153915.00070700000000000000000000000000",
+      "date_created": "1643713734633",
+      "date_updated": "1647515049721",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [
+        {
+          "id": 99999999,
+          "username": "Test Test",
+          "color": "#e65100",
+          "initials": "TT",
+          "email": "test@example.com",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+        }
+      ],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "infrastructure",
+          "tag_fg": "#800000",
+          "tag_bg": "#800000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": "1645153200000",
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/1weqmv0",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "1weqmtu",
+      "custom_id": null,
+      "name": "Context Detection System Implementation",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "done",
+        "color": "#2ecd6f",
+        "type": "done",
+        "orderindex": 3
+      },
+      "orderindex": "1153914.00064150000000000000000000000000",
+      "date_created": "1643713723049",
+      "date_updated": "1647515037956",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [
+        {
+          "id": 99999999,
+          "username": "Test Test",
+          "color": "#e65100",
+          "initials": "TT",
+          "email": "test@example.com",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+        }
+      ],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "r&d",
+          "tag_fg": "#E50000",
+          "tag_bg": "#E50000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/1weqmtu",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "1weqmq3",
+      "custom_id": null,
+      "name": "Data I/O Implementation",
+      "text_content": null,
+      "description": null,
+      "status": {
+        "status": "done",
+        "color": "#2ecd6f",
+        "type": "done",
+        "orderindex": 3
+      },
+      "orderindex": "1153913.00062020000000000000000000000000",
+      "date_created": "1643713711753",
+      "date_updated": "1647515022640",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [
+        {
+          "id": 99999999,
+          "username": "Test Test",
+          "color": "#e65100",
+          "initials": "TT",
+          "email": "test@example.com",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+        }
+      ],
+      "watchers": [],
+      "checklists": [],
+      "tags": [
+        {
+          "name": "infrastructure",
+          "tag_fg": "#800000",
+          "tag_bg": "#800000",
+          "creator": 99999999
+        }
+      ],
+      "parent": null,
+      "priority": null,
+      "due_date": "1645153200000",
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/1weqmq3",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "1u0cp25",
+      "custom_id": null,
+      "name": "Product design and features definition (first session)",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "Closed",
+        "color": "#6bc950",
+        "type": "closed",
+        "orderindex": 4
+      },
+      "orderindex": "1153910.00048830000000000000000000000000",
+      "date_created": "1641809495381",
+      "date_updated": "1647514998587",
+      "date_closed": "1647514998587",
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [],
+      "watchers": [],
+      "checklists": [],
+      "tags": [],
+      "parent": null,
+      "priority": {
+        "id": "2",
+        "priority": "high",
+        "color": "#ffcc00",
+        "orderindex": "2"
+      },
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/1u0cp25",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    },
+    {
+      "id": "1u0cjmb",
+      "custom_id": null,
+      "name": "Competitive Analysis",
+      "text_content": "",
+      "description": "",
+      "status": {
+        "status": "Closed",
+        "color": "#6bc950",
+        "type": "closed",
+        "orderindex": 4
+      },
+      "orderindex": "1153911.00052120000000000000000000000000",
+      "date_created": "1641809230888",
+      "date_updated": "1647515002146",
+      "date_closed": "1647515002146",
+      "archived": false,
+      "creator": {
+        "id": 99999999,
+        "username": "Test Test",
+        "color": "#e65100",
+        "email": "test@example.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+      },
+      "assignees": [
+        {
+          "id": 99999999,
+          "username": "Test Test",
+          "color": "#e65100",
+          "initials": "TT",
+          "email": "test@example.com",
+          "profilePicture": "https://attachments.clickup.com/profilePictures/99999999_mpU.jpg"
+        }
+      ],
+      "watchers": [],
+      "checklists": [],
+      "tags": [],
+      "parent": null,
+      "priority": {
+        "id": "1",
+        "priority": "urgent",
+        "color": "#f50000",
+        "orderindex": "1"
+      },
+      "due_date": "1642734000000",
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "team_id": "11111111",
+      "url": "https://app.clickup.com/t/1u0cjmb",
+      "permission_level": "create",
+      "list": {
+        "id": "30000001",
+        "name": "Backlog",
+        "access": true
+      },
+      "project": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "folder": {
+        "id": "20000001",
+        "name": "Project 1",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "10000001"
+      }
+    }
+  ]
+}
