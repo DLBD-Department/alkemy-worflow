@@ -49,6 +49,25 @@ class Git:
         "Get the path of the top-level directory of the working tree"
         return Path(self.run("rev-parse", "--show-toplevel", git_dir=git_dir))
 
+    def get_remote_url(self):
+        "Get remote url"
+        try:
+            return self.run("remote", "get-url", "origin")
+        except GitException:
+            return None
+
+    def get_github_url(self, branch_name):
+        " Get link to github (if origin is github)"
+        url = self.get_remote_url()
+        if not url or "github.com" not in url:
+            return None
+        if url.startswith("git@github.com:"):
+            url = url.replace("git@github.com:", "https://github.com/")
+        url = url[:-4]
+        if branch_name:
+            url = url + "/tree/" + branch_name
+        return url
+
 
 class Config:
 
