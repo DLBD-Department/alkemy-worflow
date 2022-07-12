@@ -25,7 +25,7 @@ PowerShell only - Create a function a put it in your profile in order to have it
 Config
 ~~~~~~
 
-Use the "aw configure command", or set the environment variable CLICKUP_TOKEN with your ClickUp personal token,
+Use the "aw configure" command, or set the environment variable CLICKUP_TOKEN with your ClickUp personal token,
 or create the file ~/.alkemy_workflow/credentials like the following:
 
 .. code:: ini

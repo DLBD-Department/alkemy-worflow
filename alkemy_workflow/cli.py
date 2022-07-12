@@ -184,12 +184,28 @@ def cmd_branch(kargs, wf):
     except GitException:
         pass
     # Update the task
-    start_date = task.get("start_date") or int(datetime.utcnow().timestamp() * 1000)
-    # Open (start) the task
-    task.update_task(status="in_progress", start_date=start_date)
+    task_update = {}  # task fields to be updated
+    # Start date
+    if not task.get("start_date"):
+        task_update["start_date"] = int(datetime.utcnow().timestamp() * 1000)
+    # Task assignee
+    current_user = wf.client.get_user()
+    if current_user["id"] not in [x["id"] for x in task["assignees"]]:
+        task_update["assignees"] = {
+            "add": [ current_user["id"] ]
+        }
+    # Status
+    if task.get("status", {}).get("status") == "to do":
+        task_update["status"] = "in_progress"
+    # # Open (start) the task
+    task.update_task(**task_update)
     # Post a comment
     if not branch_already_exists:
-        comment = f"Branch {task.branch_name}"
+        github_url = wf.git.get_github_url(task.branch_name)
+        if github_url:
+            comment = f"Branch [{task.branch_name}]({github_url})"
+        else:
+            comment = f"Branch {task.branch_name}"
         task.post_task_comment(comment)
 
 
