@@ -33,13 +33,26 @@ or create the file ~/.alkemy_workflow/credentials like the following:
   [default]
   clickup_token = pk_01234567_ABCDEFGHIJKLMNOPQRSTUVWXYZ
 
-
 Finding ClickUp your token:
 
 * Navigate to your personal Settings
 * Click Apps  in the left sidebar
 * Click Generate  to create your API token
 * Click Copy  to copy the key to your clipboard
+
+Use the "aw init" command to create the project configuration file alkemy_workflow.ini
+
+.. code:: ini
+
+  [git]
+  # Git base branch
+  base_branch = main
+
+  [clickup]
+  # Task status after open
+  status_in_progress = in_progress
+  # Task status after pull request (done or in_review)
+  status_pr = in_review
 
 
 Clickup Hierarchy
@@ -57,20 +70,23 @@ Configure ClickUp token
 
   $ aw configure
 
+Create the alkemy_workflow.ini configuration file in the current directory
 
-Switch a task branch (create it not exists)
+.. code:: bash
+
+  $ aw init
+
+Switch to task branch (create it not exists)
 
 .. code:: bash
 
   $ aw branch '#12abcd45'
-
 
 Create a new commit an the current feature branch
 
 .. code:: bash
 
   $ aw commit
-
 
 Push local commits to the remote branch and create a pull request on GitHub
 
@@ -101,6 +117,19 @@ List tasks
 .. code:: bash
 
   $ aw tasks --space 'Development' --folder 'SmartDigitalSignage' --list 'Backlog'
+
+Get task status
+
+.. code:: bash
+
+  $ aw get-status '#12abcd45'
+
+Set task status
+
+.. code:: bash
+
+  $ aw set-status '#12abcd45' 'done'
+
 
 Links
 ~~~~~

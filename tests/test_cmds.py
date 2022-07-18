@@ -2,8 +2,6 @@
 
 import os
 import io
-from pathlib import Path
-import pytest
 from alkemy_workflow.cli import main, EXIT_SUCCESS, EXIT_FAILURE, EXIT_PARSER_ERROR
 from alkemy_workflow.utils import Workflow
 from .commons import git_path, git_path_credentials_config, mock_response
@@ -73,17 +71,6 @@ class TestCmds:
         wf.git.run("add", "x")
         assert main(["aw", "commit"]) == EXIT_SUCCESS
 
-    def test_status_no_branch(
-        self, git_path_credentials_config, mock_response, monkeypatch
-    ):
-        monkeypatch.chdir(git_path_credentials_config)
-        assert main(["aw", "status"]) == EXIT_SUCCESS
-
-    def test_status(self, git_path_credentials_config, mock_response, monkeypatch):
-        monkeypatch.chdir(git_path_credentials_config)
-        assert main(["aw", "branch", "99abcd99"]) == EXIT_SUCCESS
-        assert main(["aw", "status"]) == EXIT_SUCCESS
-
     def test_init_no_git(self, tmp_path, monkeypatch):
         monkeypatch.chdir(tmp_path)
         assert main(["aw", "init"]) == EXIT_FAILURE
@@ -109,3 +96,8 @@ class TestCmds:
         assert wf.config.config_path.exists()
         wf.config.load_config(wf.config.config_path.parent)
         assert wf.config.git_base_branch == "devel"
+
+    def test_set_status(self, git_path_credentials_config, mock_response, monkeypatch):
+        monkeypatch.chdir(git_path_credentials_config)
+        assert main(["aw", "get-status", "99abcd99"]) == EXIT_SUCCESS
+        assert main(["aw", "set-status", "99abcd99", "done"]) == EXIT_SUCCESS
