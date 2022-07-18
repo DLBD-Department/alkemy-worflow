@@ -1,0 +1,55 @@
+{
+  "id": "60000008",
+  "name": "Infrastructure",
+  "deleted": false,
+  "orderindex": 0,
+  "priority": null,
+  "assignee": null,
+  "due_date": null,
+  "start_date": null,
+  "folder": {
+    "id": "20000001",
+    "name": "Project 1",
+    "hidden": false,
+    "access": true
+  },
+  "space": {
+    "id": "10000001",
+    "name": "Development",
+    "access": true
+  },
+  "inbound_address": "",
+  "archived": false,
+  "override_statuses": true,
+  "statuses": [
+    {
+      "id": "sc60000008_OjwQ7V1X",
+      "status": "to do",
+      "orderindex": 0,
+      "color": "#d3d3d3",
+      "type": "open"
+    },
+    {
+      "id": "sc60000008_44qIA0Ua",
+      "status": "in_progress",
+      "orderindex": 1,
+      "color": "#FF7FAB",
+      "type": "custom"
+    },
+    {
+      "id": "sc60000008_jqfd2Ic7",
+      "status": "done",
+      "orderindex": 2,
+      "color": "#2ecd6f",
+      "type": "done"
+    },
+    {
+      "id": "sc60000008_xm2okw6T",
+      "status": "Closed",
+      "orderindex": 3,
+      "color": "#6bc950",
+      "type": "closed"
+    }
+  ],
+  "permission_level": "create"
+}

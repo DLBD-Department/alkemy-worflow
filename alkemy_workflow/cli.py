@@ -5,6 +5,7 @@ from datetime import datetime
 from pathlib import Path
 import click
 from .exceptions import (
+    ClickUpException,
     GenericWarning,
     GenericException,
     GitException,
@@ -41,6 +42,28 @@ def prepare_tree(items, enabled=True):
             if is_last:
                 level = level + 1
             yield item
+
+
+def get_current_task(wf):
+    current_branch = wf.git.get_current_branch()
+    task_id = current_branch.split("-")[0]
+    if task_id == wf.config.git_base_branch:
+        raise GenericException(
+            f"Please execute from feature branches, not {wf.config.git_base_branch}"
+        )
+    return wf.client.get_task_by_id(task_id)
+
+
+def check_task_status(task, status):
+    statuses = task.get_list().get_statuses()
+    if status in statuses:
+        return True
+    else:
+        click.secho(
+            f"Status '{status}' not found. Valid statuses are: {', '.join(statuses)}",
+            fg="red",
+        )
+        return False
 
 
 @click.group("cli")
@@ -195,14 +218,15 @@ def cmd_branch(ctx, task_id):
     task = wf.client.get_task_by_id(task_id)
     branch_already_exists = False
     # Create a new branch a switch to it
-    wf.git.run("checkout", wf.config.git_base_branch)
+    wf.git.checkout(wf.config.git_base_branch)
+    wf.git.pull()
     try:
-        wf.git.run("checkout", "-b", task.branch_name)
+        wf.git.checkout("-b", task.branch_name)
     except GitException:
         branch_already_exists = True
-        wf.git.run("checkout", task.branch_name)
+        wf.git.checkout(task.branch_name)
     try:
-        wf.git.run("push", "--set-upstream", "origin", task.branch_name)
+        wf.git.push("--set-upstream", "origin", task.branch_name)
     except GitException:
         pass
     # Update the task
@@ -215,9 +239,10 @@ def cmd_branch(ctx, task_id):
     if current_user["id"] not in [x["id"] for x in task["assignees"]]:
         task_update["assignees"] = {"add": [current_user["id"]]}
     # Status
-    if task.get("status", {}).get("status") == "to do":
-        task_update["status"] = "in_progress"
-    # # Open (start) the task
+    new_status = wf.config.clickup_status_in_progress
+    if task["status"].get("type") == "open" and check_task_status(task, new_status):
+        task_update["status"] = new_status
+    # Update the task
     task.update_task(**task_update)
     # Post a comment
     if not branch_already_exists:
@@ -239,14 +264,7 @@ def cmd_commit(ctx, message):
     Example: aw commit
     """
     wf = ctx.obj
-    # Get task_id by branch name
-    current_branch = wf.git.get_current_branch()
-    task_id = current_branch.split("-")[0]
-    if task_id == wf.config.git_base_branch:
-        raise GenericException(
-            f"Please commit from feature branches, not {wf.config.git_base_branch}"
-        )
-    task = wf.client.get_task_by_id(task_id)
+    task = get_current_task(wf)
     # Prepare the commit message
     if message:
         commit_message = f"[{task['id']}] {task['name']} - {message}"
@@ -265,35 +283,60 @@ def cmd_pr(ctx):
     Example: aw pr
     """
     wf = ctx.obj
-    wf.git.run("push")
+    task = get_current_task(wf)
+    # Update status
+    if wf.config.clickup_status_pr:
+        new_status = wf.config.clickup_status_pr
+        if check_task_status(task, new_status):
+            task.update_task(status=new_status)
+    # Push and pull request
+    wf.git.push()
     wf.git.run_gh("pr", "create", "--fill")
 
 
-@cli.command("status")
+@cli.command("get-status")
+@click.argument("task_id")
 @click.pass_context
-def cmd_status(ctx):
+def cmd_get_status(ctx, task_id):
     """
-    Status
+    Get task status
 
-    Example: aw status
+    Example: aw get-status '#12abcd45'
     """
-    # Get task_id by branch name
     wf = ctx.obj
-    current_branch = wf.git.get_current_branch()
-    task_id = current_branch.split("-")[0]
-    # Print task
-    if task_id != wf.config.git_base_branch:
-        task = wf.client.get_task_by_id(task_id)
-        fmt = """\
-Task id: {task.task_id}
-Status:  {task.status}
-Space:   {task.space}
-Folder:  {task.folder}
-List:    {task.list}
-Title:   {task.title}
-"""
-        print(fmt.format(task=task))
-    print(wf.git.run("status"))
+    task = wf.client.get_task_by_id(task_id)
+    space = task.get_space()
+    print(
+        f"""\
+Task id:  {task.task_id}
+Status:   {task.status}
+Space:    {space['name']}
+Folder:   {task['folder']['name']}
+List:     {task['list']['name']}
+Title:    {task['name']}"""
+    )
+
+
+@cli.command("set-status")
+@click.argument("task_id")
+@click.argument("status")
+@click.pass_context
+def cmd_set_status(ctx, task_id, status):
+    """
+    Change task status
+
+    Example: aw set-status '#12abcd45' 'done'
+    """
+    wf = ctx.obj
+    task = wf.client.get_task_by_id(task_id)
+    # Update the task
+    try:
+        task.update_task(status=status)
+    except ClickUpException:
+        statuses = task.get_list().get_statuses()
+        raise GenericException(
+            f"Error setting status. Valid statuses are: {', '.join(statuses)}"
+        )
 
 
 @cli.command("configure")

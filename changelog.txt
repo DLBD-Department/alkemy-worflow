@@ -1,5 +1,13 @@
 # alkemy-workflow changelog
 
+## 0.1.5
+
+2022-07-18
+
+### Added
+
+- Add set status command
+
 ## 0.1.4
 
 2022-07-12

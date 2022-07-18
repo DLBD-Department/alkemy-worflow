@@ -316,6 +316,9 @@ class List(dict):
         )
         return [Task(self.client, data) for data in response["tasks"]]
 
+    def get_statuses(self):
+        return [x["status"] for x in self.get("statuses")]
+
     def __getattr__(self, name):
         if name in self:
             return self[name]
@@ -380,11 +383,18 @@ class Task(dict):
 
     @property
     def status(self):
+        "Task status"
         return self.get("status", {}).get("status", "-")
 
-    @property
-    def title(self):
-        return self.get("name")
+    def get_space(self):
+        "Get task space"
+        space_id = self.get("space", {}).get("id")
+        return self.client.get_space_by_id(space_id)
+
+    def get_list(self):
+        "Get task list"
+        list_id = self.get("list", {}).get("id")
+        return self.client.get_list_by_id(list_id)
 
     def __getattr__(self, name):
         if name in self:
