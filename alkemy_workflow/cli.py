@@ -3,15 +3,13 @@
 import sys
 from datetime import datetime
 from pathlib import Path
+import click
 from .exceptions import (
     GenericWarning,
     GenericException,
     GitException,
-    InvalidOption,
-    ShowHelp,
 )
-from .cmds import cmd, cmds, lookup_cmd
-from .utils import Config
+from .utils import Config, Workflow
 
 EXIT_SUCCESS = 0
 EXIT_FAILURE = 1
@@ -45,131 +43,155 @@ def prepare_tree(items, enabled=True):
             yield item
 
 
-@cmd("[-C=cwd] [--filter=filter] [--noheaders]", defaults={"op_noheaders": False})
-def cmd_spaces(kargs, wf):
+@click.group("cli")
+@click.pass_context
+@click.option(
+    "-C",
+    "--cwd",
+    help="Run as if git was started in <path> instead of the current working directory",
+)
+def cli(ctx, cwd):
+    ctx.obj = Workflow(cwd)
+
+
+@cli.command("spaces")
+@click.option("--filter", help="Filter spaces by name")
+@click.option("--headers/--noheaders", default=True, help="Show/hide headers")
+@click.pass_context
+def cmd_spaces(ctx, filter, headers):
     """
     List spaces
-    Example: spaces --filter 'test*' --noheaders
+
+    Example: aw spaces --filter 'test*' --noheaders
     """
-    header = not kargs["op_noheaders"]
-    result = wf.client.query(filter_type="Space", filter_name=kargs.get("filter"))
+    wf = ctx.obj
+    result = wf.client.query(filter_type="Space", filter_name=filter)
     fmt = "{id:15} {name:40}"
-    if header:
+    if headers:
         print(fmt.format(id="Id", name="Space"))
         print("-" * 70)
     for item in result:
         print(fmt.format(**item))
 
 
-@cmd(
-    "[-C=cwd] [--space=space] [--filter=filter] [--noheaders]",
-    defaults={"op_noheaders": False, "space": None},
-)
-def cmd_folders(kargs, wf):
+@cli.command("folders")
+@click.option("--space", help="Space name", required=True)
+@click.option("--filter", help="Filter folders by name")
+@click.option("--headers/--noheaders", default=True, help="Show/hide headers")
+@click.pass_context
+def cmd_folders(ctx, space, filter, headers):
     """
     List folders from a space
-    Example: folders --space 'test' --filter 'abc*' --noheaders
+
+    Example: aw folders --space 'test' --filter 'abc*' --noheaders
     """
-    header = not kargs["op_noheaders"]
-    if not kargs["space"]:
-        raise InvalidOption("Missing option space")
-    result = wf.client.query(
-        space=kargs["space"], filter_type="Folder", filter_name=kargs.get("filter")
-    )
+    wf = ctx.obj
+    result = wf.client.query(space=space, filter_type="Folder", filter_name=filter)
     fmt = "{id:15} {name:40}"
-    if header:
+    if headers:
         print(fmt.format(id="Id", name="Folders"))
         print("-" * 70)
     for item in result:
         print(fmt.format(**item))
 
 
-@cmd(
-    "[-C=cwd] [--space=space] [--folder=folder] [--filter=filter] [--noheaders]",
-    defaults={"op_noheaders": False, "space": None, "folder": None},
-)
-def cmd_lists(kargs, wf):
+@cli.command("lists")
+@click.option("--space", help="Space name")
+@click.option("--folder", help="Folder name")
+@click.option("--filter", help="Filter lists by name")
+@click.option("--headers/--noheaders", default=True, help="Show/hide headers")
+@click.pass_context
+def cmd_lists(ctx, space, folder, filter, headers):
     """
     List lists from a space or folder
-    Example: lists --space 'test' --filter 'abc*' --noheaders
+
+    Example: aw lists --space 'test' --filter 'abc*' --noheaders
     """
-    header = not kargs["op_noheaders"]
-    if not kargs["space"] and not kargs["folder"]:
-        raise InvalidOption("Missing option space/folder")
+    wf = ctx.obj
+    if not space and not folder:
+        raise click.ClickException("Missing option '--space' or '--folder'")
     result = wf.client.query(
-        space=kargs["space"],
-        folder=kargs["folder"],
+        space=space,
+        folder=folder,
         filter_type="List",
-        filter_name=kargs.get("filter"),
+        filter_name=filter,
     )
     fmt = "{id:15} {name:40}"
-    if header:
+    if headers:
         print(fmt.format(id="Id", name="Lists"))
         print("-" * 70)
     for item in result:
         print(fmt.format(**item))
 
 
-@cmd(
-    "[-C=cwd] [--task_id=task_id] [--space=space] [--folder=folder] [--list=list] [--task=task] [--filter=filter] [--noheaders] [--long]",
-    defaults={"op_noheaders": False, "op_long": False},
-)
-def cmd_tasks(kargs, wf):
+@cli.command("tasks")
+@click.option("--space", help="Space name")
+@click.option("--folder", help="Folder name")
+@click.option("--list", help="List name")
+@click.option("--task", help="Task id")
+@click.option("--filter", help="Filter tasks by name")
+@click.option("--headers/--noheaders", default=True, help="Show/hide headers")
+@click.pass_context
+def cmd_tasks(ctx, space, folder, list, task, filter, headers):
     """
     List tasks from a list or subtask
     """
-    header = not kargs["op_noheaders"]
-    if not kargs.get("list") and not kargs.get("task"):
-        raise InvalidOption("Missing option list or task")
+    wf = ctx.obj
+    if not list and not task:
+        raise click.ClickException("Missing option '--list' or '--task'")
     result = wf.client.query(
-        space=kargs.get("space"),
-        folder=kargs.get("folder"),
-        lst=kargs.get("list"),
-        task=kargs.get("task"),
-        filter_name=kargs.get("filter"),
+        space=space, folder=folder, lst=list, task=task, filter_name=filter
     )
     fmt = "{label:15} {id:15} {name:40}"
-    if header:
+    if headers:
         print(fmt.format(id="Id", label="Status", name="Title"))
         print("-" * 70)
     for item in result:
         print(fmt.format(**item))
 
 
-@cmd(
-    "[-C=cwd] [--space=space] [--folder=folder] [--list=list] [--task=task] [--filter=filter] [--noheaders] [--nohierarchy]",
-    defaults={"op_noheaders": False, "op_nohierarchy": False},
-)
-def cmd_ls(kargs, wf):
+@cli.command("ls")
+@click.option("--space", help="Space name")
+@click.option("--folder", help="Folder name")
+@click.option("--list", help="List name")
+@click.option("--task", help="Task id")
+@click.option("--filter", help="Filter tasks by name")
+@click.option("--headers/--noheaders", default=True, help="Show/hide headers")
+@click.option("--hierarchy/--nohierarchy", default=True, help="Show/hide hierarchy")
+@click.pass_context
+def cmd_ls(ctx, space, folder, list, task, filter, headers, hierarchy):
     """
     List spaces --> folders --> lists --> tasks --> subtasks
-    Example: ls --space 'test' --noheaders
+
+    Example: aw ls --space 'test' --noheaders
     """
-    header = not kargs["op_noheaders"]
-    hierarchy = not kargs["op_nohierarchy"]
+    wf = ctx.obj
     result = wf.client.query(
-        space=kargs.get("space"),
-        folder=kargs.get("folder"),
-        lst=kargs.get("list"),
-        task=kargs.get("task"),
-        filter_name=kargs.get("filter"),
+        space=space,
+        folder=folder,
+        lst=list,
+        task=task,
+        filter_name=filter,
         hierarchy=hierarchy,
     )
     fmt = "{tree:20} {label:15} {name:40}"
-    if header:
+    if headers:
         print(fmt.format(label="Kind/Status", tree="Id", name="Title"))
         print("-" * 70)
     for item in prepare_tree(result, enabled=hierarchy):
         print(fmt.format(**item))
 
 
-@cmd("[-C=cwd] task_id")
-def cmd_branch(kargs, wf):
+@cli.command("branch")
+@click.argument("task_id")
+@click.pass_context
+def cmd_branch(ctx, task_id):
     """
     Open a task and create a new git branch
-    Example: branch '#12abcd45'
+
+    Example: aw branch '#12abcd45'
     """
-    task_id = kargs["positional"][0]
+    wf = ctx.obj
     task = wf.client.get_task_by_id(task_id)
     branch_already_exists = False
     # Create a new branch a switch to it
@@ -191,9 +213,7 @@ def cmd_branch(kargs, wf):
     # Task assignee
     current_user = wf.client.get_user()
     if current_user["id"] not in [x["id"] for x in task["assignees"]]:
-        task_update["assignees"] = {
-            "add": [ current_user["id"] ]
-        }
+        task_update["assignees"] = {"add": [current_user["id"]]}
     # Status
     if task.get("status", {}).get("status") == "to do":
         task_update["status"] = "in_progress"
@@ -209,12 +229,16 @@ def cmd_branch(kargs, wf):
         task.post_task_comment(comment)
 
 
-@cmd("[-C=cwd] [-m=message]")
-def cmd_commit(kargs, wf):
+@cli.command("commit")
+@click.option("-m", "--message", help="Commit message")
+@click.pass_context
+def cmd_commit(ctx, message):
     """
     Create a new commit an the current feature branch
-    Example: commit
+
+    Example: aw commit
     """
+    wf = ctx.obj
     # Get task_id by branch name
     current_branch = wf.git.get_current_branch()
     task_id = current_branch.split("-")[0]
@@ -224,30 +248,37 @@ def cmd_commit(kargs, wf):
         )
     task = wf.client.get_task_by_id(task_id)
     # Prepare the commit message
-    message = f"[{task['id']}] {task['name']}"
-    if kargs.get("m"):
-        message = message + " - " + kargs["m"]
+    if message:
+        commit_message = f"[{task['id']}] {task['name']} - {message}"
+    else:
+        commit_message = f"[{task['id']}] {task['name']}"
     # Commit
-    print(wf.git.run("commit", "-m", message))
+    print(wf.git.run("commit", "-m", commit_message))
 
 
-@cmd("[-C=cwd]")
-def cmd_pr(kargs, wf):
+@cli.command("pr")
+@click.pass_context
+def cmd_pr(ctx):
     """
     Push local commits to the remote branch and create a pull request on GitHub
-    Example: pr
+
+    Example: aw pr
     """
+    wf = ctx.obj
     wf.git.run("push")
     wf.git.run_gh("pr", "create", "--fill")
 
 
-@cmd("[-C=cwd]")
-def cmd_status(kargs, wf):
+@cli.command("status")
+@click.pass_context
+def cmd_status(ctx):
     """
     Status
-    Example: status
+
+    Example: aw status
     """
     # Get task_id by branch name
+    wf = ctx.obj
     current_branch = wf.git.get_current_branch()
     task_id = current_branch.split("-")[0]
     # Print task
@@ -265,73 +296,53 @@ Title:   {task.title}
     print(wf.git.run("status"))
 
 
-@cmd("[--clickup-token=token]")
-def cmd_configure(kargs, wf):
+@cli.command("configure")
+@click.option("--clickup-token", help="Clickup API token")
+@click.pass_context
+def cmd_configure(ctx, clickup_token):
     """
     Configures credentials (Clickup API token).
-    Example: configure
+
+    Example: aw configure
     """
+    wf = ctx.obj
     prompt = "ClickUP API token: "
-    token = kargs.get("clickup-token") or input(prompt).strip()
+    token = clickup_token or input(prompt).strip()
     if token:
         Config.write_credentials(token)
     wf.client.get_user()
 
 
-@cmd("[-C=cwd] [--base-branch=git-base-branch]")
-def cmd_init(kargs, wf):
+@cli.command("init")
+@click.option("--base-branch", help="Git base branch")
+@click.pass_context
+def cmd_init(ctx, base_branch):
     """
     Write alkemy_workflow.ini config file into the project root folder
-    Example: init --base-branch=main
-    """
-    wf.config.write_config(base_branch=kargs.get("base-branch"))
 
-
-@cmd("[command]")
-def cmd_help(kargs, wf):
+    Example: aw init --base-branch=main
     """
-    Display information about commands.
-    """
-    try:
-        command = kargs["positional"][0]
-    except KeyError:
-        command = None
-    if command:
-        f = lookup_cmd(command)
-        usage_text = getattr(f, "usage", "")
-        help_text = (getattr(f, "__doc__", "") or "").rstrip("\n\t ")
-        print(f"usage: {kargs['exe']} {f.cmd} {usage_text} {help_text}")
-    else:
-        print(f"usage: {kargs['exe']} <command> [parameters]")
-        print("")
-        print("Commands:")
-        # for f in sorted(cmds, key=lambda x: getattr(x, "cmd")):
-        for f in cmds:
-            usage_text = getattr(f, "usage", "")
-            help_text = (getattr(f, "__doc__", "") or "").rstrip("\n\t ")
-            print(f" {f.cmd} {usage_text} {help_text}")
-            print("")
+    wf = ctx.obj
+    wf.config.write_config(base_branch=base_branch)
 
 
 def main(argv=None):
-    if argv is None:
-        argv = sys.argv
-    if len(argv) < 2:
-        cmd_help(argv)
-        return EXIT_PARSER_ERROR
-    exe = Path(argv[0]).name
+    if argv:
+        prog_name = Path(argv[0]).name
+        args = argv[1:]
+    else:
+        args = None
+        prog_name = "aw"
     try:
-        f = lookup_cmd(argv[1])
-        f(argv)
+        cli(prog_name=prog_name, args=args)
         return EXIT_SUCCESS
-    except ShowHelp:
-        cmd_help([exe, "help", argv[1]])
-        return EXIT_SUCCESS
+    except SystemExit as err:
+        return err.code
     except GenericWarning as ex:
-        print(f"{exe}: {ex}")
+        click.secho(f"{prog_name}: {ex}", fg="red")
         return EXIT_SUCCESS
     except GenericException as ex:
-        print(f"{exe}: {ex}")
+        click.secho(f"{prog_name}: {ex}", fg="red")
         return EXIT_FAILURE
 
 

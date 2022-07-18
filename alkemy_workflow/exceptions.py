@@ -10,7 +10,6 @@ __all__ = [
     "StatusNotFound",
     "InvalidOption",
     "CommandNotFound",
-    "ShowHelp",
     "GitException",
     "ConfigException",
     "ClickUpException",
@@ -51,10 +50,6 @@ class InvalidOption(GenericException):
 
 class CommandNotFound(GenericException):
     "Command not found"
-
-
-class ShowHelp(GenericException):
-    "Show help message"
 
 
 class GitException(GenericException):

@@ -57,7 +57,7 @@ class Git:
             return None
 
     def get_github_url(self, branch_name):
-        " Get link to github (if origin is github)"
+        "Get link to github (if origin is github)"
         url = self.get_remote_url()
         if not url or "github.com" not in url:
             return None

@@ -19,12 +19,6 @@ def test_import_clickup():
     assert alkemy_workflow.clickup
 
 
-def test_import_cmds():
-    import alkemy_workflow.cmds
-
-    assert alkemy_workflow.cmds
-
-
 def test_import_exceptions():
     import alkemy_workflow.exceptions
 

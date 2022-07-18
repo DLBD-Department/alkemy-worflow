@@ -2,7 +2,6 @@
 
 import os
 import io
-import subprocess
 from pathlib import Path
 import pytest
 from alkemy_workflow.cli import main, EXIT_SUCCESS, EXIT_FAILURE, EXIT_PARSER_ERROR
@@ -13,15 +12,14 @@ from .commons import git_path, git_path_credentials_config, mock_response
 class TestCmds:
     def test_main(self, git_path_credentials_config, mock_response, monkeypatch):
         monkeypatch.chdir(git_path_credentials_config)
-        assert main(["aw"]) == EXIT_PARSER_ERROR
-        assert main(["aw", "help"]) == EXIT_SUCCESS
-        assert main(["aw", "help", "configure"]) == EXIT_SUCCESS
-        assert main(["aw", "help", "mango"]) == EXIT_FAILURE
-        assert main(["aw", "help", "-mango"]) == EXIT_FAILURE
-        assert main(["aw", "help", "--mango"]) == EXIT_FAILURE
+        assert main(["aw"]) == EXIT_SUCCESS
+        assert main(["aw", "--help"]) == EXIT_SUCCESS
+        assert main(["aw", "mango", "--help"]) == EXIT_PARSER_ERROR
+        assert main(["aw", "help", "-mango"]) == EXIT_PARSER_ERROR
+        assert main(["aw", "help", "--mango"]) == EXIT_PARSER_ERROR
         assert main(["aw", "configure", "--help"]) == EXIT_SUCCESS
-        assert main(["aw", "branch", "-h"]) == EXIT_SUCCESS
-        assert main(["aw", "commit", "-?"]) == EXIT_SUCCESS
+        assert main(["aw", "branch", "--help"]) == EXIT_SUCCESS
+        assert main(["aw", "commit", "--help"]) == EXIT_SUCCESS
 
     def test_configure_not_pk(
         self, git_path_credentials_config, mock_response, monkeypatch
