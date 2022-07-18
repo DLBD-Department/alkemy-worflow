@@ -88,7 +88,7 @@ class ClickUpClient:
             data = self.send_request(f"space/{space_id}/")
             return Space(self, data)
         except ClickUpException:
-            raise SpaceNotFound(f"Space '{space_id}'not found")
+            raise SpaceNotFound(f"Space '{space_id}' not found")
 
     def get_list_by_id(self, list_id):
         "Get a list by id"
@@ -96,7 +96,7 @@ class ClickUpClient:
             data = self.send_request(f"list/{list_id}/")
             return List(self, data)
         except ClickUpException:
-            raise ListNotFound(f"List '{list_id}'not found")
+            raise ListNotFound(f"List '{list_id}' not found")
 
     def get_task_by_id(self, task_id):
         "Get a task by id"
@@ -105,7 +105,7 @@ class ClickUpClient:
             data = self.send_request(f"task/{task_id}/")
             return Task(self, data)
         except ClickUpException:
-            raise TaskNotFound(f"Task '{task_id}'not found")
+            raise TaskNotFound(f"Task '{task_id}' not found")
 
     def get_task(self, task_id, lst=None, space=None, folder=None):
         "Get a task by id"
@@ -146,7 +146,7 @@ class ClickUpClient:
             data = self.send_request(f"folder/{folder_id}/")
             return Folder(self, data)
         except ClickUpException:
-            raise FolderNotFound(f"Folder '{folder_id}'not found")
+            raise FolderNotFound(f"Folder '{folder_id}' not found")
 
     def get_list(self, list_id_or_name, space=None, folder=None):
         "Get a list by name or id"
