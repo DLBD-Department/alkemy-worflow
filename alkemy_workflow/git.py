@@ -59,14 +59,32 @@ class Git:
         "Update remote"
         return self.run("push", *args)
 
-    def get_github_url(self, branch_name):
+    def create_branch(self, branch_name, base_branch=None):
+        "Create a new branch a switch to it"
+        base_branch = base_branch or self.config.git_base_branch
+        branch_already_exists = False
+        self.checkout(base_branch)
+        self.pull()
+        try:
+            self.checkout("-b", branch_name)
+        except GitException:
+            branch_already_exists = True
+            self.checkout(branch_name)
+        try:
+            self.push("--set-upstream", "origin", branch_name)
+        except GitException:
+            pass
+        return branch_already_exists
+
+    def get_github_url(self, branch_name, remote_url=None):
         "Get link to github (if origin is github)"
-        url = self.get_remote_url()
+        url = remote_url or self.get_remote_url()
         if not url or "github.com" not in url:
             return None
         if url.startswith("git@github.com:"):
             url = url.replace("git@github.com:", "https://github.com/")
-        url = url[:-4]
+        if url.endswith(".git"):
+            url = url[:-4]
         if branch_name:
             url = url + "/tree/" + branch_name
         return url

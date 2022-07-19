@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import re
-import os
 import json
 import fnmatch
 import requests
@@ -56,11 +55,11 @@ class ClickUpClient:
         )
         filename = Path.cwd() / "tests" / "data" / Path(*path_url.split("/"))
         print(filename)
-        os.makedirs(filename.parent, exist_ok=True)
-        with open(filename, "wb") as f:
+        filename.parent.mkdir(parents=True, exist_ok=True)
+        with filename.open("wb") as f:
             f.write(response.content)
         headers_filename = filename.parent / (filename.name + ".headers")
-        with open(headers_filename, "w") as f:
+        with headers_filename.open("w") as f:
             headers = dict(response.headers)
             headers["__Status__"] = response.status_code
             json.dump(headers, f, indent=2)

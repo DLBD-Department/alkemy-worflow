@@ -8,7 +8,6 @@ from .exceptions import (
     ClickUpException,
     GenericWarning,
     GenericException,
-    GitException,
 )
 from .utils import Config, Workflow
 
@@ -45,6 +44,7 @@ def prepare_tree(items, enabled=True):
 
 
 def get_current_task(wf):
+    "Get task for current git branch"
     current_branch = wf.git.get_current_branch()
     task_id = current_branch.split("-")[0]
     if task_id == wf.config.git_base_branch:
@@ -207,8 +207,9 @@ def cmd_ls(ctx, space, folder, list, task, filter, headers, hierarchy):
 
 @cli.command("branch")
 @click.argument("task_id")
+@click.option("--repo", help="Remote repository URL")
 @click.pass_context
-def cmd_branch(ctx, task_id):
+def cmd_branch(ctx, task_id, repo):
     """
     Open a task and create a new git branch
 
@@ -216,19 +217,12 @@ def cmd_branch(ctx, task_id):
     """
     wf = ctx.obj
     task = wf.client.get_task_by_id(task_id)
-    branch_already_exists = False
-    # Create a new branch a switch to it
-    wf.git.checkout(wf.config.git_base_branch)
-    wf.git.pull()
-    try:
-        wf.git.checkout("-b", task.branch_name)
-    except GitException:
-        branch_already_exists = True
-        wf.git.checkout(task.branch_name)
-    try:
-        wf.git.push("--set-upstream", "origin", task.branch_name)
-    except GitException:
-        pass
+    if repo:
+        # Create a new remote branch
+        branch_already_exists = wf.github.create_branch(repo, task.branch_name)
+    else:
+        # Create a new local branch a switch to it
+        branch_already_exists = wf.git.create_branch(task.branch_name)
     # Update the task
     task_update = {}  # task fields to be updated
     # Start date
@@ -246,7 +240,7 @@ def cmd_branch(ctx, task_id):
     task.update_task(**task_update)
     # Post a comment
     if not branch_already_exists:
-        github_url = wf.git.get_github_url(task.branch_name)
+        github_url = wf.git.get_github_url(task.branch_name, repo)
         if github_url:
             comment = f"Branch [{task.branch_name}]({github_url})"
         else:
@@ -275,23 +269,34 @@ def cmd_commit(ctx, message):
 
 
 @cli.command("pr")
+@click.option("--repo", help="Remote repository URL")
+@click.argument("task_id", required=False)
 @click.pass_context
-def cmd_pr(ctx):
+def cmd_pr(ctx, repo, task_id):
     """
     Push local commits to the remote branch and create a pull request on GitHub
 
     Example: aw pr
     """
     wf = ctx.obj
-    task = get_current_task(wf)
+    if task_id:
+        # Task id argument
+        task = wf.client.get_task_by_id(task_id)
+    else:
+        # Get task from current git branch
+        task = get_current_task(wf)
     # Update status
     if wf.config.clickup_status_pr:
         new_status = wf.config.clickup_status_pr
         if check_task_status(task, new_status):
             task.update_task(status=new_status)
-    # Push and pull request
-    wf.git.push()
-    wf.git.run_gh("pr", "create", "--fill")
+    # Push
+    if not repo:
+        wf.git.push()
+    # Create the pull request
+    repo = repo or wf.git.get_remote_url()
+    title = f"[{task['id']}] {task['name']}"
+    wf.github.create_pull_request(repo, task.branch_name, title)
 
 
 @cli.command("get-status")
@@ -340,20 +345,26 @@ def cmd_set_status(ctx, task_id, status):
 
 
 @cli.command("configure")
-@click.option("--clickup-token", help="Clickup API token")
+@click.option("--clickup-token", help="ClickUp API token")
+@click.option("--github-token", help="GitHub token")
 @click.pass_context
-def cmd_configure(ctx, clickup_token):
+def cmd_configure(ctx, clickup_token, github_token):
     """
-    Configures credentials (Clickup API token).
+    Configures credentials (Clickup and GitHub tokens).
 
     Example: aw configure
     """
     wf = ctx.obj
     prompt = "ClickUP API token: "
-    token = clickup_token or input(prompt).strip()
-    if token:
-        Config.write_credentials(token)
+    clickup_token = clickup_token or input(prompt).strip()
+    prompt = "GitHub token: "
+    github_token = github_token or input(prompt).strip()
+    Config.write_credentials(clickup_token, github_token)
     wf.client.get_user()
+    click.secho("ClickUP API token verified", fg="green")
+    if wf.config.default_github_token:
+        wf.github.get_user()
+        click.secho("GitHub token verified", fg="green")
 
 
 @cli.command("init")
