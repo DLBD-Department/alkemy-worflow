@@ -11,6 +11,7 @@ __all__ = [
     "InvalidOption",
     "CommandNotFound",
     "GitException",
+    "GitHubException",
     "ConfigException",
     "ClickUpException",
 ]
@@ -54,6 +55,10 @@ class CommandNotFound(GenericException):
 
 class GitException(GenericException):
     "Git exception"
+
+
+class GitHubException(GenericException):
+    "GitHub exception"
 
 
 class ConfigException(GenericException):

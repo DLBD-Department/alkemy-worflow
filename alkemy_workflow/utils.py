@@ -7,6 +7,7 @@ except ImportError:
 from .clickup import ClickUpClient
 from .config import Config
 from .git import Git
+from .github import GitHubClient
 
 
 __all__ = ["Workflow"]
@@ -23,6 +24,10 @@ class Workflow:
     @cached_property
     def git(self):
         return Git(self.config)
+
+    @cached_property
+    def github(self):
+        return GitHubClient(self.config)
 
     @cached_property
     def client(self):

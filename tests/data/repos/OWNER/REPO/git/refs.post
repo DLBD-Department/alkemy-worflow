@@ -1,0 +1,10 @@
+{
+  "ref": "refs/heads/99abcd99-workflow-tool-test",
+  "node_id": "REF_abcd",
+  "url": "https://api.github.com/repos/OWNER/REPO/git/refs/heads/99abcd99-workflow-tool-test",
+  "object": {
+    "sha": "a9993e364706816aba3e25717850c26c9cd0d89d",
+    "type": "commit",
+    "url": "https://api.github.com/repos/OWNER/REPO/git/commits/a9993e364706816aba3e25717850c26c9cd0d89d"
+  }
+}

@@ -101,3 +101,14 @@ class TestCmds:
         monkeypatch.chdir(git_path_credentials_config)
         assert main(["aw", "get-status", "99abcd99"]) == EXIT_SUCCESS
         assert main(["aw", "set-status", "99abcd99", "done"]) == EXIT_SUCCESS
+
+    def test_branch_github(self, tmp_path, mock_response, monkeypatch):
+        monkeypatch.chdir(tmp_path)
+        assert main(["aw", "branch", "99abcd99"]) == EXIT_FAILURE
+        assert (
+            main(
+                ["aw", "branch", "99abcd99", "--repo", "https://github.com/OWNER/REPO"]
+            )
+            == EXIT_SUCCESS
+        )
+        assert main(["aw", "commit"]) == EXIT_FAILURE

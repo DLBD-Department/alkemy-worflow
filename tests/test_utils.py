@@ -35,8 +35,11 @@ class TestConfig:
         monkeypatch.setattr(Path, "home", lambda: tmp_path)
         monkeypatch.setenv("CLICKUP_TOKEN", X20)
         assert "CLICKUP_TOKEN" in os.environ
+        config = Config(tmp_path)
+        assert config.git_dir is None
+        assert config.config_path is None
         with pytest.raises(GitException):
-            Config(tmp_path)
+            config.write_config()
 
     def test_credentials(self, git_path, monkeypatch):
         "Read config from file"
