@@ -81,7 +81,9 @@ class MockResponse:
             self.status_code = 200
         except:
             self.status_code = 404
-            self.content = b'{"err":"Route not found","ECODE":"APP_001"}'
+            self.content = (
+                b'{"err":"Route not found","ECODE":"APP_001","message":"Error message"}'
+            )
 
     @property
     def text(self):

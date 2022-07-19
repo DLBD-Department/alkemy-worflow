@@ -1,5 +1,13 @@
 # alkemy-workflow changelog
 
+## 0.1.6
+
+2022-07-19
+
+### Added
+
+- Create remote github branches and pull requests without checking-out projects
+
 ## 0.1.5
 
 2022-07-18

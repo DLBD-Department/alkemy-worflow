@@ -23,23 +23,82 @@ class TestCmds:
         self, git_path_credentials_config, mock_response, monkeypatch
     ):
         monkeypatch.chdir(git_path_credentials_config)
-        assert main(["aw", "configure", "--clickup-token", "abcd"]) == EXIT_FAILURE
+        assert (
+            main(
+                ["aw", "configure", "--clickup-token", "abcd", "--github-token", "abcd"]
+            )
+            == EXIT_FAILURE
+        )
+        assert (
+            main(
+                [
+                    "aw",
+                    "configure",
+                    "--clickup-token",
+                    "pk_abcd",
+                    "--github-token",
+                    "abcd",
+                ]
+            )
+            == EXIT_FAILURE
+        )
+        assert (
+            main(
+                [
+                    "aw",
+                    "configure",
+                    "--clickup-token",
+                    "abcd",
+                    "--github-token",
+                    "ghp_abcd",
+                ]
+            )
+            == EXIT_FAILURE
+        )
 
     def test_configure_stdin(
         self, git_path_credentials_config, mock_response, monkeypatch
     ):
         monkeypatch.chdir(git_path_credentials_config)
-        monkeypatch.setattr("sys.stdin", io.StringIO("pk_abcd"))
+        monkeypatch.setattr("sys.stdin", io.StringIO("pk_abcd\nghp_abcd\n"))
         assert main(["aw", "configure"]) == EXIT_SUCCESS
+        wf = Workflow()
+        assert wf.config.default_clickup_token == "pk_abcd"
 
     def test_configure(self, git_path_credentials_config, mock_response, monkeypatch):
         monkeypatch.chdir(git_path_credentials_config)
-        assert main(["aw", "configure", "--clickup-token", "pk_abcd"]) == EXIT_SUCCESS
+        assert (
+            main(
+                [
+                    "aw",
+                    "configure",
+                    "--clickup-token",
+                    "pk_abcd",
+                    "--github-token",
+                    "ghp_abcd",
+                ]
+            )
+            == EXIT_SUCCESS
+        )
         wf = Workflow()
         assert wf.config.default_clickup_token == "pk_abcd"
-        assert main(["aw", "configure", "--clickup-token", "pk_1234"]) == EXIT_SUCCESS
+        assert wf.config.default_github_token == "ghp_abcd"
+        assert (
+            main(
+                [
+                    "aw",
+                    "configure",
+                    "--clickup-token",
+                    "pk_1234",
+                    "--github-token",
+                    "ghp_1234",
+                ]
+            )
+            == EXIT_SUCCESS
+        )
         wf.config.load_credentials()
         assert wf.config.default_clickup_token == "pk_1234"
+        assert wf.config.default_github_token == "ghp_1234"
 
     def test_spaces(self, git_path_credentials_config, mock_response, monkeypatch):
         monkeypatch.chdir(git_path_credentials_config)
@@ -101,3 +160,14 @@ class TestCmds:
         monkeypatch.chdir(git_path_credentials_config)
         assert main(["aw", "get-status", "99abcd99"]) == EXIT_SUCCESS
         assert main(["aw", "set-status", "99abcd99", "done"]) == EXIT_SUCCESS
+
+    def test_branch_github(self, tmp_path, mock_response, monkeypatch):
+        monkeypatch.chdir(tmp_path)
+        assert main(["aw", "branch", "99abcd99"]) == EXIT_FAILURE
+        assert (
+            main(
+                ["aw", "branch", "99abcd99", "--repo", "https://github.com/OWNER/REPO"]
+            )
+            == EXIT_SUCCESS
+        )
+        assert main(["aw", "commit"]) == EXIT_FAILURE
