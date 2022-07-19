@@ -8,7 +8,6 @@ from .exceptions import (
     ClickUpException,
     GenericWarning,
     GenericException,
-    GitException,
 )
 from .utils import Config, Workflow
 
@@ -207,8 +206,9 @@ def cmd_ls(ctx, space, folder, list, task, filter, headers, hierarchy):
 
 @cli.command("branch")
 @click.argument("task_id")
+@click.option("--repo", help="Remote repository URL")
 @click.pass_context
-def cmd_branch(ctx, task_id):
+def cmd_branch(ctx, task_id, repo):
     """
     Open a task and create a new git branch
 
@@ -216,19 +216,12 @@ def cmd_branch(ctx, task_id):
     """
     wf = ctx.obj
     task = wf.client.get_task_by_id(task_id)
-    branch_already_exists = False
-    # Create a new branch a switch to it
-    wf.git.checkout(wf.config.git_base_branch)
-    wf.git.pull()
-    try:
-        wf.git.checkout("-b", task.branch_name)
-    except GitException:
-        branch_already_exists = True
-        wf.git.checkout(task.branch_name)
-    try:
-        wf.git.push("--set-upstream", "origin", task.branch_name)
-    except GitException:
-        pass
+    if repo:
+        # Create a new remote branch
+        branch_already_exists = wf.github.create_branch(repo, task.branch_name)
+    else:
+        # Create a new local branch a switch to it
+        branch_already_exists = wf.git.create_branch(task.branch_name)
     # Update the task
     task_update = {}  # task fields to be updated
     # Start date
@@ -246,7 +239,7 @@ def cmd_branch(ctx, task_id):
     task.update_task(**task_update)
     # Post a comment
     if not branch_already_exists:
-        github_url = wf.git.get_github_url(task.branch_name)
+        github_url = wf.git.get_github_url(task.branch_name, repo)
         if github_url:
             comment = f"Branch [{task.branch_name}]({github_url})"
         else:
