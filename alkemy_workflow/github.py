@@ -109,10 +109,7 @@ class GitHubClient:
         # base_branch = base_branch or self.config.git_base_branch
         repo = self.extract_repo(repo_url)
         # payload = {"title": title, "head": branch_name, "base": base_branch}
-        response = self.send_request(f"repos/{repo}/pulls")
-        for pr in response:
-            print(pr['number'], "   |   " , pr['title'], "   |   ", pr['diff_url'])
-        # return self.send_request(f"repos/{repo}/pulls")
+        return self.send_request(f"repos/{repo}/pulls")
 
     def merge_pull_request(self, repo_url, pr_nr, base_branch=None):
         "Create a new pull request"

@@ -312,7 +312,10 @@ def cmd_lr(ctx, repo, task_id):
     wf = ctx.obj
     # List the pull request
     repo = repo or wf.git.get_remote_url()
-    print(wf.github.list_pull_request(repo))
+    response = wf.github.list_pull_request(repo)
+
+    for pr in response:
+        print(pr['number'], "   |   " , pr['title'], "   |   ", pr['diff_url'])
 
 @cli.command("merge")
 @click.option("--repo", help="Remote repository URL")
