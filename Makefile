@@ -6,7 +6,7 @@ help:
 	@echo "- make lint         Run lint"
 	@echo "- make black        Format code"
 	@echo "- make clean        Clean"
-	@echo "- make venc         Create virtual environment"
+	@echo "- make venv         Create virtual environment"
 	@echo "- make tag          Create version tag"
 
 coverage:
