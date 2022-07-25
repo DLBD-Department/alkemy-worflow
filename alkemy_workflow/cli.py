@@ -299,6 +299,53 @@ def cmd_pr(ctx, repo, task_id):
     wf.github.create_pull_request(repo, task.branch_name, title)
 
 
+@cli.command("lr")
+@click.option("--repo", help="Remote repository URL")
+@click.argument("task_id", required=False)
+@click.pass_context
+def cmd_lr(ctx, repo, task_id):
+    """
+    List pull requests on repository
+
+    Example: aw lr
+    """
+    wf = ctx.obj
+    # List the pull request
+    repo = repo or wf.git.get_remote_url()
+    response = wf.github.list_pull_request(repo)
+
+    for pr in response:
+        print(pr['number'], "   |   " , pr['title'], "   |   ", pr['diff_url'])
+
+@cli.command("merge")
+@click.option("--repo", help="Remote repository URL")
+@click.option("--pr_nr", help="Pull request number")
+@click.argument("task_id", required=False)
+@click.pass_context
+def cmd_ma(ctx, repo, pr_nr, task_id):
+    """
+    Merge a certain pull request 
+
+    Example: aw merge 1
+    """
+    wf = ctx.obj
+
+    # Merge the pull request
+    repo = repo or wf.git.get_remote_url()
+    wf.github.merge_pull_request(repo, pr_nr)
+
+    if task_id:
+        # Task id argument
+        task = wf.client.get_task_by_id(task_id)
+    else:
+        # Get task from current git branch
+        task = get_current_task(wf)
+    # Update status
+    if wf.config.clickup_status_ma:
+        new_status = wf.config.clickup_status_ma
+        if check_task_status(task, new_status):
+            task.update_task(status=new_status)
+
 @cli.command("get-status")
 @click.argument("task_id")
 @click.pass_context

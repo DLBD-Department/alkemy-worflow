@@ -14,12 +14,13 @@ GITHUB_TOKEN = "GITHUB_TOKEN"
 DEFAULT_GIT_BASE_BRANCH = "main"
 CLICKUP_STATUS_IN_PROGRESS = "in_progress"
 CLICKUP_STATUS_PR = "in_review"
+CLICKUP_STATUS_MA = "done"
 CREDENTIALS_KEYS = (
     "default_clickup_token",
     "default_clickup_team_id",
     "default_github_token",
 )
-CONFIG_KEYS = ("git_base_branch", "clickup_status_in_progress", "clickup_status_pr")
+CONFIG_KEYS = ("git_base_branch", "clickup_status_in_progress", "clickup_status_pr", "clickup_status_ma")
 
 
 class Config:
@@ -32,6 +33,7 @@ class Config:
     git_base_branch = DEFAULT_GIT_BASE_BRANCH
     clickup_status_in_progress = CLICKUP_STATUS_IN_PROGRESS
     clickup_status_pr = CLICKUP_STATUS_PR
+    clickup_status_ma = CLICKUP_STATUS_MA
 
     def __init__(self, base_path=None):
         # Load credentials
@@ -103,6 +105,12 @@ class Config:
                 "clickup",
                 "status_pr",
                 self.clickup_status_pr,
+            )
+        if cp["clickup"].get("clickup_status_ma") is None:
+            cp.set(
+                "clickup",
+                "status_ma",
+                self.clickup_status_ma,
             )
         if base_branch:
             cp.set("git", "base_branch", base_branch)
