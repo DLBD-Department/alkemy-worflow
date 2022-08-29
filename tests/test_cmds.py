@@ -100,6 +100,50 @@ class TestCmds:
         assert wf.config.default_clickup_token == "pk_1234"
         assert wf.config.default_github_token == "ghp_1234"
 
+    def test_configure_credentials_path(
+        self, tmp_path, git_path, mock_response, monkeypatch
+    ):
+        credentials_path = tmp_path / "credentials"
+        monkeypatch.chdir(git_path)
+        print(
+            main(
+                [
+                    "aw",
+                    "--credentials-path",
+                    credentials_path,
+                    "configure",
+                    "--clickup-token",
+                    "pk_abcd",
+                    "--github-token",
+                    "ghp_abcd",
+                ]
+            )
+        )
+        wf = Workflow(credentials_path=credentials_path)
+        assert wf.config.default_clickup_token == "pk_abcd"
+        assert wf.config.default_github_token == "ghp_abcd"
+        assert credentials_path.exists()
+        credentials_path.unlink()
+        assert (
+            main(
+                [
+                    "aw",
+                    "--credentials-path",
+                    credentials_path,
+                    "configure",
+                    "--clickup-token",
+                    "pk_1234",
+                    "--github-token",
+                    "ghp_1234",
+                ]
+            )
+            == EXIT_SUCCESS
+        )
+        wf.config.load_credentials(credentials_path=credentials_path)
+        assert wf.config.default_clickup_token == "pk_1234"
+        assert wf.config.default_github_token == "ghp_1234"
+        assert credentials_path.exists()
+
     def test_spaces(self, git_path_credentials_config, mock_response, monkeypatch):
         monkeypatch.chdir(git_path_credentials_config)
         assert main(["aw", "spaces"]) == EXIT_SUCCESS
