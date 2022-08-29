@@ -20,7 +20,12 @@ CREDENTIALS_KEYS = (
     "default_clickup_team_id",
     "default_github_token",
 )
-CONFIG_KEYS = ("git_base_branch", "clickup_status_in_progress", "clickup_status_pr", "clickup_status_ma")
+CONFIG_KEYS = (
+    "git_base_branch",
+    "clickup_status_in_progress",
+    "clickup_status_pr",
+    "clickup_status_ma",
+)
 
 
 class Config:
@@ -35,9 +40,9 @@ class Config:
     clickup_status_pr = CLICKUP_STATUS_PR
     clickup_status_ma = CLICKUP_STATUS_MA
 
-    def __init__(self, base_path=None):
+    def __init__(self, base_path=None, credentials_path=None):
         # Load credentials
-        self.load_credentials()
+        self.load_credentials(credentials_path)
         # Get project config
         try:
             self.load_config(base_path)
@@ -45,9 +50,9 @@ class Config:
             self.git_dir = None
             self.config_path = None
 
-    def load_credentials(self):
+    def load_credentials(self, credentials_path=None):
         "Load credentials - load token from CLICKUP_TOKEN environment variable or ~/.alkemy_workflow/credentials file"
-        credentials_path = self.get_credentials_path()
+        credentials_path = credentials_path or self.get_credentials_path()
         if credentials_path.exists():
             cp = configparser.ConfigParser()
             cp.read(credentials_path)
@@ -127,7 +132,7 @@ class Config:
         return home_dir / ".alkemy_workflow" / "credentials"
 
     @classmethod
-    def write_credentials(cls, clickup_token, github_token):
+    def write_credentials(cls, clickup_token, github_token, credentials_path):
         "Write the tokens in the credentials file"
         if clickup_token and not clickup_token.startswith("pk_"):
             raise ConfigException("ClickUp API tokens will always begin with pk_")
@@ -135,7 +140,7 @@ class Config:
             raise ConfigException(
                 "GitHub tokens will always begin with gh?_ (e.g. ghp_, gho_)"
             )
-        credentials_path = cls.get_credentials_path()
+        credentials_path = credentials_path or cls.get_credentials_path()
         cp = configparser.ConfigParser()
         if credentials_path.exists():
             cp.read(credentials_path)

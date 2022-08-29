@@ -9,7 +9,8 @@ from .exceptions import (
     GenericWarning,
     GenericException,
 )
-from .utils import Config, Workflow
+from .config import Config
+from .utils import Workflow, VERSION
 
 EXIT_SUCCESS = 0
 EXIT_FAILURE = 1
@@ -67,14 +68,21 @@ def check_task_status(task, status):
 
 
 @click.group("cli")
+@click.version_option(VERSION)
 @click.pass_context
 @click.option(
     "-C",
     "--cwd",
     help="Run as if git was started in <path> instead of the current working directory",
+    type=click.Path(exists=True, file_okay=False, dir_okay=True),
 )
-def cli(ctx, cwd):
-    ctx.obj = Workflow(cwd)
+@click.option(
+    "--credentials-path",
+    help="Credentials file path",
+    type=click.Path(exists=False, file_okay=True, dir_okay=False),
+)
+def cli(ctx, cwd, credentials_path):
+    ctx.obj = Workflow(cwd, credentials_path)
 
 
 @cli.command("spaces")
@@ -315,7 +323,8 @@ def cmd_lr(ctx, repo, task_id):
     response = wf.github.list_pull_request(repo)
 
     for pr in response:
-        print(pr['number'], "   |   " , pr['title'], "   |   ", pr['diff_url'])
+        print(pr["number"], "   |   ", pr["title"], "   |   ", pr["diff_url"])
+
 
 @cli.command("merge")
 @click.option("--repo", help="Remote repository URL")
@@ -324,7 +333,7 @@ def cmd_lr(ctx, repo, task_id):
 @click.pass_context
 def cmd_ma(ctx, repo, pr_nr, task_id):
     """
-    Merge a certain pull request 
+    Merge a certain pull request
 
     Example: aw merge 1
     """
@@ -345,6 +354,7 @@ def cmd_ma(ctx, repo, pr_nr, task_id):
         new_status = wf.config.clickup_status_ma
         if check_task_status(task, new_status):
             task.update_task(status=new_status)
+
 
 @cli.command("get-status")
 @click.argument("task_id")
@@ -406,7 +416,7 @@ def cmd_configure(ctx, clickup_token, github_token):
     clickup_token = clickup_token or input(prompt).strip()
     prompt = "GitHub token: "
     github_token = github_token or input(prompt).strip()
-    Config.write_credentials(clickup_token, github_token)
+    Config.write_credentials(clickup_token, github_token, wf.credentials_path)
     wf.client.get_user()
     click.secho("ClickUP API token verified", fg="green")
     if wf.config.default_github_token:
