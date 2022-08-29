@@ -1,4 +1,12 @@
-# alkemy-workflow changelog (prova pull request merge 3)
+# alkemy-workflow changelog
+
+# 0.1.7
+
+2022-08-29
+
+### Added
+
+- Make credentials path configurable
 
 ## 0.1.6
 
