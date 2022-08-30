@@ -2,6 +2,7 @@
 
 import os
 import configparser
+import tempfile
 from pathlib import Path
 from .exceptions import ConfigException, GitException
 from .git import Git
@@ -63,9 +64,20 @@ class Config:
         if GITHUB_TOKEN in os.environ:
             self.default_github_token = os.environ[GITHUB_TOKEN]
         if not self.default_clickup_token:
-            raise ConfigException(
-                f"Please set the ClickUp token in {credentials_path} file or in the {CLICKUP_TOKEN} environment variable"
-            )
+            # Check if credentials_path is a temporary file
+            if self.is_credentials_path_temporary(credentials_path):
+                raise ConfigException(
+                    f"Please set the ClickUp token in the {CLICKUP_TOKEN} environment variable"
+                )
+            else:
+                raise ConfigException(
+                    f"Please set the ClickUp token in {credentials_path} file or in the {CLICKUP_TOKEN} environment variable"
+                )
+
+    def is_credentials_path_temporary(self, credentials_path):
+        "Return true if credentials_path is temporary file (i.e. is in tempdir)"
+        temp_dir = Path(tempfile.gettempdir())
+        return temp_dir in credentials_path.parents
 
     def load_config(self, base_path):
         "Get project config - load alkemy_workflow.ini file from project root folder"
@@ -128,8 +140,12 @@ class Config:
     @classmethod
     def get_credentials_path(cls):
         "Get credential file path"
-        home_dir = Path.home()
-        return home_dir / ".alkemy_workflow" / "credentials"
+        try:
+            home_dir = Path.home()
+            return home_dir / ".alkemy_workflow" / "credentials"
+        except Exception:
+            with tempfile.NamedTemporaryFile() as f:
+                return Path(f.name)
 
     @classmethod
     def write_credentials(cls, clickup_token, github_token, credentials_path):
