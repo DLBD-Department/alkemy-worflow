@@ -26,6 +26,7 @@ class ClickUpClient:
         self.server = SERVER_URL
         self.config = config
         self.team_id = self.config.default_clickup_team_id
+        self.workspace = None
 
     def send_request(self, part, method="GET", request_args=None, payload=None, **kwargs):
         "Send HTTP Request to ClickUP"
@@ -62,17 +63,6 @@ class ClickUpClient:
     def get_teams(self):
         return self.send_request("team")["teams"]
 
-    def retrieve_team_id(self, index=0):
-        teams = self.get_teams()
-        self.team_id = teams[index].get("id", None)
-
-    def get_spaces(self, archived=False):
-        "Get spaces"
-        if self.team_id is None:
-            self.retrieve_team_id()
-        result = self.send_request(f"team/{self.team_id}/space?archived={archived}")
-        return [Space(self, space) for space in result["spaces"]]
-
     def get_space_by_id(self, space_id):
         "Get a space by id"
         try:
@@ -105,6 +95,14 @@ class ClickUpClient:
         else:
             return self.get_task_by_id(task_id)
 
+    def get_workspace(self, index=0):
+        "Get the workspace"
+        if self.workspace is None:
+            teams = self.get_teams()
+            data = teams[index]
+            self.workspace = Workspace(self, data)
+        return self.workspace
+
     def get_space(self, space_id_or_name):
         "Get a space by name or id"
         if not space_id_or_name:
@@ -112,7 +110,7 @@ class ClickUpClient:
         elif space_id_or_name.isdigit():  # get by id
             return self.get_space_by_id(space_id=space_id_or_name)
         else:  # get by name
-            spaces = self.get_spaces()
+            spaces = self.get_workspace().get_spaces()
             try:
                 return [space for space in spaces if space.get("name") == space_id_or_name][0]
             except Exception:
@@ -168,6 +166,10 @@ class ClickUpClient:
     ):
         "Get spaces/folders/lists/tasks"
         result = []
+        # Workspace
+        if hierarchy:
+            workspace = self.get_workspace()
+            result.append(workspace)
         # Get space
         space = self.get_space(space)
         if space and hierarchy:
@@ -219,7 +221,7 @@ class ClickUpClient:
             result.extend(space.get_space_lists())
         else:
             # Spaces
-            result.extend(self.get_spaces())
+            result.extend(self.get_workspace().get_spaces())
         # Filter result by type
         if filter_type:
             result = [x for x in result if x["type"] == filter_type]
@@ -228,6 +230,26 @@ class ClickUpClient:
             match = lambda x: fnmatch.fnmatch(x["name"].lower(), filter_name.lower())
             result = [x for x in result if match(x)]
         return result
+
+
+class Workspace(dict):
+    def __init__(self, client, data):
+        self.update(data)
+        self.team_id = data["id"]
+        self.client = client
+        self["type"] = "Workspace"
+        self["label"] = self["type"]
+
+    def get_spaces(self, archived=False):
+        "Get spaces"
+        result = self.client.send_request(f"team/{self.team_id}/space?archived={archived}")
+        return [Space(self.client, space) for space in result["spaces"]]
+
+    def __getattr__(self, name):
+        if name in self:
+            return self[name]
+        else:
+            raise AttributeError(f"No such attribute: {name}")
 
 
 class Space(dict):
