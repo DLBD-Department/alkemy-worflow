@@ -156,19 +156,19 @@ def cmd_lists(ctx, space, folder, filter, headers):
 @cli.command("tasks")
 @click.option("--space", help="Space name")
 @click.option("--folder", help="Folder name")
-@click.option("--list", help="List name")
+@click.option("--list", "lst", help="List name")
 @click.option("--task", help="Task id")
 @click.option("--filter", help="Filter tasks by name")
 @click.option("--headers/--noheaders", default=True, help="Show/hide headers")
 @click.pass_context
-def cmd_tasks(ctx, space, folder, list, task, filter, headers):
+def cmd_tasks(ctx, space, folder, lst, task, filter, headers):
     """
     List tasks from a list or subtask
     """
     wf = ctx.obj
     if not list and not task:
         raise click.ClickException("Missing option '--list' or '--task'")
-    result = wf.client.query(space=space, folder=folder, lst=list, task=task, filter_name=filter)
+    result = wf.client.query(space=space, folder=folder, lst=lst, task=task, filter_name=filter)
     fmt = "{label:15} {id:15} {name:40}"
     if headers:
         print(fmt.format(id="Id", label="Status", name="Title"))
@@ -180,13 +180,13 @@ def cmd_tasks(ctx, space, folder, list, task, filter, headers):
 @cli.command("ls")
 @click.option("--space", help="Space name")
 @click.option("--folder", help="Folder name")
-@click.option("--list", help="List name")
+@click.option("--list", "lst", help="List name")
 @click.option("--task", help="Task id")
 @click.option("--filter", help="Filter tasks by name")
 @click.option("--headers/--noheaders", default=True, help="Show/hide headers")
 @click.option("--hierarchy/--nohierarchy", default=True, help="Show/hide hierarchy")
 @click.pass_context
-def cmd_ls(ctx, space, folder, list, task, filter, headers, hierarchy):
+def cmd_ls(ctx, space, folder, lst, task, filter, headers, hierarchy):
     """
     List spaces --> folders --> lists --> tasks --> subtasks
 
@@ -196,7 +196,7 @@ def cmd_ls(ctx, space, folder, list, task, filter, headers, hierarchy):
     result = wf.client.query(
         space=space,
         folder=folder,
-        lst=list,
+        lst=lst,
         task=task,
         filter_name=filter,
         hierarchy=hierarchy,
