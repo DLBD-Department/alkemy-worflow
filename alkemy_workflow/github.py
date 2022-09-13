@@ -17,9 +17,7 @@ class GitHubClient:
         self.server = SERVER_URL
         self.config = config
 
-    def send_request(
-        self, part, method="GET", request_args=None, payload=None, **kwargs
-    ):
+    def send_request(self, part, method="GET", request_args=None, payload=None, **kwargs):
         "Send HTTP Request to GitHub"
         part = part.format(**kwargs)
         url = urllib.parse.urljoin(self.server, part)
@@ -30,9 +28,7 @@ class GitHubClient:
         request_args = request_args or dict()
         if payload is not None:
             request_args["json"] = payload
-        response = requests.request(
-            method=method, url=url, headers=headers, **request_args
-        )
+        response = requests.request(method=method, url=url, headers=headers, **request_args)
         # self.save_response(response)
         payload = response.json()
         if response.status_code < 200 or response.status_code > 299:
@@ -41,11 +37,7 @@ class GitHubClient:
 
     def save_response(self, response):
         rqs = response.request
-        path_url = (
-            rqs.path_url.strip("/").replace("..", "").split("?")[0]
-            + "."
-            + rqs.method.lower()
-        )
+        path_url = rqs.path_url.strip("/").replace("..", "").split("?")[0] + "." + rqs.method.lower()
         filename = Path.cwd() / "tests" / "data" / Path(*path_url.split("/"))
         print(filename)
         filename.parent.mkdir(parents=True, exist_ok=True)
@@ -59,9 +51,7 @@ class GitHubClient:
 
     def extract_repo(self, repo_url):
         if not repo_url.startswith(REPO_BASE_URL):
-            raise GitHubException(
-                f"Invalid repository URL, must starts with {REPO_BASE_URL}"
-            )
+            raise GitHubException(f"Invalid repository URL, must starts with {REPO_BASE_URL}")
         repo_url = repo_url[len(REPO_BASE_URL) :]
         if repo_url.endswith(".git"):
             repo_url = repo_url[:-4]

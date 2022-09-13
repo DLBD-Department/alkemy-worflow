@@ -81,10 +81,7 @@ class TestGit:
         assert git.get_toplevel() == git_path_credentials_config
         monkeypatch.chdir(git_path_credentials_config / "aaaa")
         assert git.get_toplevel() == git_path_credentials_config
-        assert (
-            git.get_toplevel(git_path_credentials_config / "aaaa" / "bbbb")
-            == git_path_credentials_config
-        )
+        assert git.get_toplevel(git_path_credentials_config / "aaaa" / "bbbb") == git_path_credentials_config
 
     def test_status(self, git_path_credentials_config, monkeypatch):
         monkeypatch.chdir(git_path_credentials_config)

@@ -68,11 +68,7 @@ class MockResponse:
         self.url = url
         self.headers = CaseInsensitiveDict(HEADERS)
         parse_result = urllib.parse.urlparse(url)
-        path = Path(
-            *(parse_result.path.strip("/") + "." + method.lower())
-            .replace("..", "")
-            .split("/")
-        )
+        path = Path(*(parse_result.path.strip("/") + "." + method.lower()).replace("..", "").split("/"))
         filepath = Path(__file__).parent / "data" / path
         self.encoding = "utf-8"
         try:
@@ -81,9 +77,7 @@ class MockResponse:
             self.status_code = 200
         except:
             self.status_code = 404
-            self.content = (
-                b'{"err":"Route not found","ECODE":"APP_001","message":"Error message"}'
-            )
+            self.content = b'{"err":"Route not found","ECODE":"APP_001","message":"Error message"}'
 
     @property
     def text(self):

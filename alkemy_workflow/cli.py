@@ -49,9 +49,7 @@ def get_current_task(wf):
     current_branch = wf.git.get_current_branch()
     task_id = current_branch.split("-")[0]
     if task_id == wf.config.git_base_branch:
-        raise GenericException(
-            f"Please execute from feature branches, not {wf.config.git_base_branch}"
-        )
+        raise GenericException(f"Please execute from feature branches, not {wf.config.git_base_branch}")
     return wf.client.get_task_by_id(task_id)
 
 
@@ -170,9 +168,7 @@ def cmd_tasks(ctx, space, folder, list, task, filter, headers):
     wf = ctx.obj
     if not list and not task:
         raise click.ClickException("Missing option '--list' or '--task'")
-    result = wf.client.query(
-        space=space, folder=folder, lst=list, task=task, filter_name=filter
-    )
+    result = wf.client.query(space=space, folder=folder, lst=list, task=task, filter_name=filter)
     fmt = "{label:15} {id:15} {name:40}"
     if headers:
         print(fmt.format(id="Id", label="Status", name="Title"))
@@ -309,9 +305,10 @@ def cmd_pr(ctx, repo, task_id):
 
 @cli.command("lr")
 @click.option("--repo", help="Remote repository URL")
+@click.option("--headers/--noheaders", default=True, help="Show/hide headers")
 @click.argument("task_id", required=False)
 @click.pass_context
-def cmd_lr(ctx, repo, task_id):
+def cmd_lr(ctx, repo, headers, task_id):
     """
     List pull requests on repository
 
@@ -320,29 +317,31 @@ def cmd_lr(ctx, repo, task_id):
     wf = ctx.obj
     # List the pull request
     repo = repo or wf.git.get_remote_url()
-    response = wf.github.list_pull_request(repo)
+    result = wf.github.list_pull_request(repo)
 
-    for pr in response:
-        print(pr["number"], "   |   ", pr["title"], "   |   ", pr["diff_url"])
+    fmt = "{number:6} {title:50} {diff_url}"
+    if headers:
+        print(fmt.format(number="Pr.num", title="Title", diff_url="Diff url"))
+        print("-" * 70)
+    for item in result:
+        print(fmt.format(**item))
 
 
 @cli.command("merge")
 @click.option("--repo", help="Remote repository URL")
-@click.option("--pr_nr", help="Pull request number")
+@click.option("--pr_nr", help="Pull request number", required=True)
 @click.argument("task_id", required=False)
 @click.pass_context
 def cmd_ma(ctx, repo, pr_nr, task_id):
     """
     Merge a certain pull request
 
-    Example: aw merge 1
+    Example: aw merge --pr_nr 1
     """
     wf = ctx.obj
-
     # Merge the pull request
     repo = repo or wf.git.get_remote_url()
     wf.github.merge_pull_request(repo, pr_nr)
-
     if task_id:
         # Task id argument
         task = wf.client.get_task_by_id(task_id)
@@ -396,9 +395,7 @@ def cmd_set_status(ctx, task_id, status):
         task.update_task(status=status)
     except ClickUpException:
         statuses = task.get_list().get_statuses()
-        raise GenericException(
-            f"Error setting status. Valid statuses are: {', '.join(statuses)}"
-        )
+        raise GenericException(f"Error setting status. Valid statuses are: {', '.join(statuses)}")
 
 
 @cli.command("configure")

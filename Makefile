@@ -10,7 +10,7 @@ help:
 	@echo "- make tag          Create version tag"
 
 coverage:
-	@coverage run --source=alkemy_workflow -m pytest && python3 -m coverage report -m
+	@pytest --cov --cov-report=term-missing
 
 test:
 	@pytest

@@ -27,9 +27,7 @@ class ClickUpClient:
         self.config = config
         self.team_id = self.config.default_clickup_team_id
 
-    def send_request(
-        self, part, method="GET", request_args=None, payload=None, **kwargs
-    ):
+    def send_request(self, part, method="GET", request_args=None, payload=None, **kwargs):
         "Send HTTP Request to ClickUP"
         part = part.format(**kwargs)
         url = urllib.parse.urljoin(self.server, part)
@@ -37,9 +35,7 @@ class ClickUpClient:
         request_args = request_args or dict()
         if payload is not None:
             request_args["json"] = payload
-        response = requests.request(
-            method=method, url=url, headers=headers, **request_args
-        )
+        response = requests.request(method=method, url=url, headers=headers, **request_args)
         # self.save_response(response)
         payload = response.json()
         if "err" in payload:
@@ -48,11 +44,7 @@ class ClickUpClient:
 
     def save_response(self, response):
         rqs = response.request
-        path_url = (
-            rqs.path_url.strip("/").replace("..", "").split("?")[0]
-            + "."
-            + rqs.method.lower()
-        )
+        path_url = rqs.path_url.strip("/").replace("..", "").split("?")[0] + "." + rqs.method.lower()
         filename = Path.cwd() / "tests" / "data" / Path(*path_url.split("/"))
         print(filename)
         filename.parent.mkdir(parents=True, exist_ok=True)
@@ -122,9 +114,7 @@ class ClickUpClient:
         else:  # get by name
             spaces = self.get_spaces()
             try:
-                return [
-                    space for space in spaces if space.get("name") == space_id_or_name
-                ][0]
+                return [space for space in spaces if space.get("name") == space_id_or_name][0]
             except Exception:
                 raise SpaceNotFound(f"Space '{space_id_or_name}' not found")
 
@@ -205,11 +195,7 @@ class ClickUpClient:
             if space is None:
                 space = self.get_space_by_id(task["space"]["id"])
                 result.append(space)
-            if (
-                folder is None
-                and task.get("folder")
-                and not task["folder"].get("hidden")
-            ):
+            if folder is None and task.get("folder") and not task["folder"].get("hidden"):
                 folder = Folder(self, task["folder"])
                 result.append(folder)
             if lst is None and task.get("list"):
@@ -310,9 +296,7 @@ class List(dict):
         self["label"] = self["type"]
 
     def get_list_tasks(self, include_closed=False):
-        response = self.client.send_request(
-            f"list/{self.id}/task?include_closed={include_closed}"
-        )
+        response = self.client.send_request(f"list/{self.id}/task?include_closed={include_closed}")
         return [Task(self.client, data) for data in response["tasks"]]
 
     def get_statuses(self):
@@ -357,14 +341,8 @@ class Task(dict):
 
     def get_subtasks(self, include_closed=False):
         "Get subtasks"
-        response = self.client.send_request(
-            f"list/{self.list['id']}/task?subtasks=true&include_closed={include_closed}"
-        )
-        return [
-            Task(self.client, data)
-            for data in response["tasks"]
-            if data.get("parent") == self.id
-        ]
+        response = self.client.send_request(f"list/{self.list['id']}/task?subtasks=true&include_closed={include_closed}")
+        return [Task(self.client, data) for data in response["tasks"] if data.get("parent") == self.id]
 
     @property
     def branch_name(self):
@@ -373,9 +351,7 @@ class Task(dict):
         branch_name = BRANCH_SEPARATOR.join(
             (
                 self.task_id.strip("#"),
-                re.sub(
-                    r"[^A-Za-z0-9_\-]+", "", name.replace(" ", BRANCH_SEPARATOR)
-                ).lower(),
+                re.sub(r"[^A-Za-z0-9_\-]+", "", name.replace(" ", BRANCH_SEPARATOR)).lower(),
             )
         )
         return branch_name

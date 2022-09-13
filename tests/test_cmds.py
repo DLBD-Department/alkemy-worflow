@@ -19,16 +19,9 @@ class TestCmds:
         assert main(["aw", "branch", "--help"]) == EXIT_SUCCESS
         assert main(["aw", "commit", "--help"]) == EXIT_SUCCESS
 
-    def test_configure_not_pk(
-        self, git_path_credentials_config, mock_response, monkeypatch
-    ):
+    def test_configure_not_pk(self, git_path_credentials_config, mock_response, monkeypatch):
         monkeypatch.chdir(git_path_credentials_config)
-        assert (
-            main(
-                ["aw", "configure", "--clickup-token", "abcd", "--github-token", "abcd"]
-            )
-            == EXIT_FAILURE
-        )
+        assert main(["aw", "configure", "--clickup-token", "abcd", "--github-token", "abcd"]) == EXIT_FAILURE
         assert (
             main(
                 [
@@ -56,9 +49,7 @@ class TestCmds:
             == EXIT_FAILURE
         )
 
-    def test_configure_stdin(
-        self, git_path_credentials_config, mock_response, monkeypatch
-    ):
+    def test_configure_stdin(self, git_path_credentials_config, mock_response, monkeypatch):
         monkeypatch.chdir(git_path_credentials_config)
         monkeypatch.setattr("sys.stdin", io.StringIO("pk_abcd\nghp_abcd\n"))
         assert main(["aw", "configure"]) == EXIT_SUCCESS
@@ -100,9 +91,7 @@ class TestCmds:
         assert wf.config.default_clickup_token == "pk_1234"
         assert wf.config.default_github_token == "ghp_1234"
 
-    def test_configure_credentials_path(
-        self, tmp_path, git_path, mock_response, monkeypatch
-    ):
+    def test_configure_credentials_path(self, tmp_path, git_path, mock_response, monkeypatch):
         credentials_path = tmp_path / "credentials"
         monkeypatch.chdir(git_path)
         print(
@@ -152,15 +141,11 @@ class TestCmds:
         monkeypatch.chdir(git_path_credentials_config)
         assert main(["aw", "branch", "99abcd99"]) == EXIT_SUCCESS
 
-    def test_commit_no_branch(
-        self, git_path_credentials_config, mock_response, monkeypatch
-    ):
+    def test_commit_no_branch(self, git_path_credentials_config, mock_response, monkeypatch):
         monkeypatch.chdir(git_path_credentials_config)
         assert main(["aw", "commit"]) == EXIT_FAILURE
 
-    def test_commit_no_file(
-        self, git_path_credentials_config, mock_response, monkeypatch
-    ):
+    def test_commit_no_file(self, git_path_credentials_config, mock_response, monkeypatch):
         monkeypatch.chdir(git_path_credentials_config)
         assert main(["aw", "branch", "99abcd99"]) == EXIT_SUCCESS
         assert main(["aw", "commit"]) == EXIT_FAILURE
@@ -208,10 +193,5 @@ class TestCmds:
     def test_branch_github(self, tmp_path, mock_response, monkeypatch):
         monkeypatch.chdir(tmp_path)
         assert main(["aw", "branch", "99abcd99"]) == EXIT_FAILURE
-        assert (
-            main(
-                ["aw", "branch", "99abcd99", "--repo", "https://github.com/OWNER/REPO"]
-            )
-            == EXIT_SUCCESS
-        )
+        assert main(["aw", "branch", "99abcd99", "--repo", "https://github.com/OWNER/REPO"]) == EXIT_SUCCESS
         assert main(["aw", "commit"]) == EXIT_FAILURE
