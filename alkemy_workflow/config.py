@@ -66,9 +66,7 @@ class Config:
         if not self.default_clickup_token:
             # Check if credentials_path is a temporary file
             if self.is_credentials_path_temporary(credentials_path):
-                raise ConfigException(
-                    f"Please set the ClickUp token in the {CLICKUP_TOKEN} environment variable"
-                )
+                raise ConfigException(f"Please set the ClickUp token in the {CLICKUP_TOKEN} environment variable")
             else:
                 raise ConfigException(
                     f"Please set the ClickUp token in {credentials_path} file or in the {CLICKUP_TOKEN} environment variable"
@@ -102,9 +100,7 @@ class Config:
         "Write project config file alkemy_workflow.ini"
         cp = configparser.ConfigParser()
         if self.config_path is None:
-            raise GitException(
-                "Not a git repository (or any of the parent directories)"
-            )
+            raise GitException("Not a git repository (or any of the parent directories)")
         if self.config_path.exists():
             cp.read(self.config_path)
         if not cp.has_section("git"):
@@ -153,9 +149,7 @@ class Config:
         if clickup_token and not clickup_token.startswith("pk_"):
             raise ConfigException("ClickUp API tokens will always begin with pk_")
         if github_token and not github_token.startswith("gh"):
-            raise ConfigException(
-                "GitHub tokens will always begin with gh?_ (e.g. ghp_, gho_)"
-            )
+            raise ConfigException("GitHub tokens will always begin with gh?_ (e.g. ghp_, gho_)")
         credentials_path = credentials_path or cls.get_credentials_path()
         cp = configparser.ConfigParser()
         if credentials_path.exists():
