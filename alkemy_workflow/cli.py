@@ -46,7 +46,7 @@ def prepare_tree(items, enabled=True):
             yield item
 
 
-def pick(wf, space=None, folder=None, lst=None, task=None):
+def pick_task(wf, space=None, folder=None, lst=None, task=None):
     "Select a task"
     result = wf.client.query(
         space=space,
@@ -67,7 +67,7 @@ def pick(wf, space=None, folder=None, lst=None, task=None):
         )
         if item is None:
             return None
-        if item["type"] == "Space":
+        elif item["type"] == "Space":
             item["space"] = {"id": item["id"]}
         elif item["type"] == "Folder":
             item["folder"] = {"id": item["id"]}
@@ -268,7 +268,7 @@ def cmd_branch(ctx, task_id, repo):
     wf = ctx.obj
     if task_id is None:
         # Show task picker
-        task_id = pick(wf=wf)
+        task_id = pick_task(wf=wf)
         if task_id is None:
             raise MissingParameter(ctx=ctx, param_hint="'TASK_ID'", param_type="argument")
     task = wf.client.get_task_by_id(task_id)
@@ -381,7 +381,7 @@ def cmd_lr(ctx, repo, headers, task_id):
 
 @cli.command("merge")
 @click.option("--repo", help="Remote repository URL")
-@click.option("--pr_nr", help="Pull request number", required=True)
+@click.option("--pr_nr", help="Pull request number")
 @click.argument("task_id", required=False)
 @click.pass_context
 def cmd_ma(ctx, repo, pr_nr, task_id):
@@ -393,6 +393,19 @@ def cmd_ma(ctx, repo, pr_nr, task_id):
     wf = ctx.obj
     # Merge the pull request
     repo = repo or wf.git.get_remote_url()
+    if pr_nr is None:
+        # Show pull request picker
+        fmt = "{number:6} {title:50} {diff_url}"
+        pull_requets = wf.github.list_pull_request(repo)
+        pr = pzp.pzp(
+            pull_requets,
+            format_fn=lambda item: fmt.format(**item),
+            fullscreen=False,
+        )
+        if pr is None:
+            raise MissingParameter(ctx=ctx, param_hint="'--pr_nr'", param_type="option")
+        else:
+            pr_nr = pr['number']
     wf.github.merge_pull_request(repo, pr_nr)
     if task_id:
         # Task id argument
@@ -419,7 +432,7 @@ def cmd_get_status(ctx, task_id):
     wf = ctx.obj
     if task_id is None:
         # Show task picker
-        task_id = pick(wf=wf)
+        task_id = pick_task(wf=wf)
         if task_id is None:
             raise MissingParameter(ctx=ctx, param_hint="'TASK_ID'", param_type="argument")
     task = wf.client.get_task_by_id(task_id)
@@ -449,7 +462,7 @@ def cmd_set_status(ctx, task_id, status):
     wf = ctx.obj
     if task_id is None:
         # Show task picker
-        task_id = pick(wf=wf)
+        task_id = pick_task(wf=wf)
         if task_id is None:
             raise MissingParameter(ctx=ctx, param_hint="'TASK_ID'", param_type="argument")
     task = wf.client.get_task_by_id(task_id)
