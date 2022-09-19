@@ -1,5 +1,13 @@
 # alkemy-workflow changelog
 
+# 0.2.0
+
+2022-09-18
+
+### Added
+
+- Use picker for tasks and pull requests
+
 # 0.1.9
 
 2022-09-13
