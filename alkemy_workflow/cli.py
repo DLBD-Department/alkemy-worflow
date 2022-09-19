@@ -4,11 +4,13 @@ import sys
 from datetime import datetime
 from pathlib import Path
 import click
+import pzp
 from .exceptions import (
     ClickUpException,
     GenericWarning,
     GenericException,
 )
+from click.exceptions import MissingParameter
 from .config import Config
 from .utils import Workflow, VERSION
 
@@ -42,6 +44,50 @@ def prepare_tree(items, enabled=True):
             if is_last:
                 level = level + 1
             yield item
+
+
+def pick(wf, space=None, folder=None, lst=None, task=None):
+    "Select a task"
+    result = wf.client.query(
+        space=space,
+        folder=folder,
+        lst=lst,
+        task=task,
+        hierarchy=True,
+    )
+    fmt = "{tree:20} {label:15} {name:40}"
+    header_str = fmt.format(label="Kind/Status", tree="Id", name="Title")
+    last_item = None
+    while True:
+        items = prepare_tree(result, enabled=True)
+        item = pzp.pzp(
+            items,
+            format_fn=lambda item: fmt.format(**item),
+            header_str=header_str,
+        )
+        if item is None:
+            return None
+        if item["type"] == "Space":
+            item["space"] = {"id": item["id"]}
+        elif item["type"] == "Folder":
+            item["folder"] = {"id": item["id"]}
+        elif item["type"] == "List":
+            item["list"] = {"id": item["id"]}
+        elif item["type"] == "Task":
+            if last_item == item or not item.has_subtasks():
+                return item.id
+            else:
+                item["task"] = {"id": item["id"]}
+        elif item["type"] == "Subtask":
+            return item.id
+        result = wf.client.query(
+            space=item.get("space", {}).get("id"),
+            folder=item.get("folder", {}).get("id"),
+            lst=item.get("list", {}).get("id"),
+            task=item.get("task", {}).get("id"),
+            hierarchy=True,
+        )
+        last_item = item
 
 
 def get_current_task(wf):
@@ -156,19 +202,19 @@ def cmd_lists(ctx, space, folder, filter, headers):
 @cli.command("tasks")
 @click.option("--space", help="Space name")
 @click.option("--folder", help="Folder name")
-@click.option("--list", "lst", help="List name")
+@click.option("--list", help="List name")
 @click.option("--task", help="Task id")
 @click.option("--filter", help="Filter tasks by name")
 @click.option("--headers/--noheaders", default=True, help="Show/hide headers")
 @click.pass_context
-def cmd_tasks(ctx, space, folder, lst, task, filter, headers):
+def cmd_tasks(ctx, space, folder, list, task, filter, headers):
     """
     List tasks from a list or subtask
     """
     wf = ctx.obj
     if not list and not task:
         raise click.ClickException("Missing option '--list' or '--task'")
-    result = wf.client.query(space=space, folder=folder, lst=lst, task=task, filter_name=filter)
+    result = wf.client.query(space=space, folder=folder, lst=list, task=task, filter_name=filter)
     fmt = "{label:15} {id:15} {name:40}"
     if headers:
         print(fmt.format(id="Id", label="Status", name="Title"))
@@ -180,13 +226,13 @@ def cmd_tasks(ctx, space, folder, lst, task, filter, headers):
 @cli.command("ls")
 @click.option("--space", help="Space name")
 @click.option("--folder", help="Folder name")
-@click.option("--list", "lst", help="List name")
+@click.option("--list", help="List name")
 @click.option("--task", help="Task id")
 @click.option("--filter", help="Filter tasks by name")
 @click.option("--headers/--noheaders", default=True, help="Show/hide headers")
 @click.option("--hierarchy/--nohierarchy", default=True, help="Show/hide hierarchy")
 @click.pass_context
-def cmd_ls(ctx, space, folder, lst, task, filter, headers, hierarchy):
+def cmd_ls(ctx, space, folder, list, task, filter, headers, hierarchy):
     """
     List spaces --> folders --> lists --> tasks --> subtasks
 
@@ -196,7 +242,7 @@ def cmd_ls(ctx, space, folder, lst, task, filter, headers, hierarchy):
     result = wf.client.query(
         space=space,
         folder=folder,
-        lst=lst,
+        lst=list,
         task=task,
         filter_name=filter,
         hierarchy=hierarchy,
@@ -210,7 +256,7 @@ def cmd_ls(ctx, space, folder, lst, task, filter, headers, hierarchy):
 
 
 @cli.command("branch")
-@click.argument("task_id")
+@click.argument("task_id", required=False)
 @click.option("--repo", help="Remote repository URL")
 @click.pass_context
 def cmd_branch(ctx, task_id, repo):
@@ -220,6 +266,11 @@ def cmd_branch(ctx, task_id, repo):
     Example: aw branch '#12abcd45'
     """
     wf = ctx.obj
+    if task_id is None:
+        # Show task picker
+        task_id = pick(wf=wf)
+        if task_id is None:
+            raise MissingParameter(ctx=ctx, param_hint="'TASK_ID'", param_type="argument")
     task = wf.client.get_task_by_id(task_id)
     if repo:
         # Create a new remote branch
@@ -250,6 +301,7 @@ def cmd_branch(ctx, task_id, repo):
         else:
             comment = f"Branch {task.branch_name}"
         task.post_task_comment(comment)
+    click.secho(f"Branch {task.branch_name}", fg="green")
 
 
 @cli.command("commit")
@@ -356,7 +408,7 @@ def cmd_ma(ctx, repo, pr_nr, task_id):
 
 
 @cli.command("get-status")
-@click.argument("task_id")
+@click.argument("task_id", required=False)
 @click.pass_context
 def cmd_get_status(ctx, task_id):
     """
@@ -365,22 +417,28 @@ def cmd_get_status(ctx, task_id):
     Example: aw get-status '#12abcd45'
     """
     wf = ctx.obj
+    if task_id is None:
+        # Show task picker
+        task_id = pick(wf=wf)
+        if task_id is None:
+            raise MissingParameter(ctx=ctx, param_hint="'TASK_ID'", param_type="argument")
     task = wf.client.get_task_by_id(task_id)
     space = task.get_space()
+    style = lambda x: click.style(x, "cyan")
     print(
         f"""\
-Task id:  {task.task_id}
-Status:   {task.status}
-Space:    {space['name']}
-Folder:   {task['folder']['name']}
-List:     {task['list']['name']}
-Title:    {task['name']}"""
+{style('Task id:')}  {task.task_id}
+{style('Status:')}   {task.status}
+{style('Space:')}    {space['name']}
+{style('Folder:')}   {task['folder']['name']}
+{style('List:')}     {task['list']['name']}
+{style('Title:')}    {task['name']}"""
     )
 
 
 @cli.command("set-status")
-@click.argument("task_id")
-@click.argument("status")
+@click.argument("task_id", required=False)
+@click.argument("status", required=False)
 @click.pass_context
 def cmd_set_status(ctx, task_id, status):
     """
@@ -389,10 +447,25 @@ def cmd_set_status(ctx, task_id, status):
     Example: aw set-status '#12abcd45' 'done'
     """
     wf = ctx.obj
+    if task_id is None:
+        # Show task picker
+        task_id = pick(wf=wf)
+        if task_id is None:
+            raise MissingParameter(ctx=ctx, param_hint="'TASK_ID'", param_type="argument")
     task = wf.client.get_task_by_id(task_id)
+    if status is None:
+        # Show status picker
+        statuses = task.get_list().get_statuses()
+        status = pzp.pzp(
+            statuses,
+            fullscreen=False,
+        )
+        if status is None:
+            raise MissingParameter(ctx=ctx, param_hint="'STATUS'", param_type="argument")
     # Update the task
     try:
         task.update_task(status=status)
+        click.secho(f"Task {task_id} status changed to {status}", fg="green")
     except ClickUpException:
         statuses = task.get_list().get_statuses()
         raise GenericException(f"Error setting status. Valid statuses are: {', '.join(statuses)}")
