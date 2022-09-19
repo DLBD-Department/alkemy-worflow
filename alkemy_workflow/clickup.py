@@ -251,6 +251,12 @@ class Workspace(dict):
         else:
             raise AttributeError(f"No such attribute: {name}")
 
+    def __eq__(self, other) -> bool:
+        return other is not None and isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other) -> bool:
+        return not self.__eq__(other)
+
 
 class Space(dict):
     def __init__(self, client, data):
@@ -288,6 +294,12 @@ class Space(dict):
         else:
             raise AttributeError(f"No such attribute: {name}")
 
+    def __eq__(self, other) -> bool:
+        return other is not None and isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other) -> bool:
+        return not self.__eq__(other)
+
 
 class Folder(dict):
     def __init__(self, client, data):
@@ -309,6 +321,12 @@ class Folder(dict):
         else:
             raise AttributeError(f"No such attribute: {name}")
 
+    def __eq__(self, other) -> bool:
+        return other is not None and isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other) -> bool:
+        return not self.__eq__(other)
+
 
 class List(dict):
     def __init__(self, client, data):
@@ -329,6 +347,12 @@ class List(dict):
             return self[name]
         else:
             raise AttributeError(f"No such attribute: {name}")
+
+    def __eq__(self, other) -> bool:
+        return other is not None and isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other) -> bool:
+        return not self.__eq__(other)
 
 
 class Task(dict):
@@ -366,6 +390,10 @@ class Task(dict):
         response = self.client.send_request(f"list/{self.list['id']}/task?subtasks=true&include_closed={include_closed}")
         return [Task(self.client, data) for data in response["tasks"] if data.get("parent") == self.id]
 
+    def has_subtasks(self, include_closed=False):
+        "Returns true if the task has subtasks"
+        return any(self.get_subtasks(include_closed))
+
     @property
     def branch_name(self):
         "Branch name"
@@ -398,3 +426,9 @@ class Task(dict):
             return self[name]
         else:
             raise AttributeError(f"No such attribute: {name}")
+
+    def __eq__(self, other) -> bool:
+        return other is not None and isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other) -> bool:
+        return not self.__eq__(other)
