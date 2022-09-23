@@ -20,7 +20,9 @@ class Git:
             args = ["git"] + list(args)
         completed_process = subprocess.run(args, capture_output=True)
         if completed_process.returncode != 0:
-            raise GitException(completed_process.stderr.decode("utf-8"))
+            stdout = completed_process.stdout.decode("utf-8")
+            stderr = completed_process.stderr.decode("utf-8")
+            raise GitException(f"git error: {stdout}\n{stderr}")
         return completed_process.stdout.strip().decode("utf-8")
 
     def run_gh(self, *args, git_dir=None):
@@ -28,7 +30,9 @@ class Git:
         args = ["gh"] + list(args)
         completed_process = subprocess.run(args, capture_output=True, cwd=git_dir)
         if completed_process.returncode != 0:
-            raise GitException(completed_process.stderr.decode("utf-8"))
+            stdout = completed_process.stdout.decode("utf-8")
+            stderr = completed_process.stderr.decode("utf-8")
+            raise GitException(f"gh error: {stdout}\n{stderr}")
         return completed_process.stdout.strip().decode("utf-8")
 
     def get_current_branch(self):
