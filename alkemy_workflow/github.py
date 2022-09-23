@@ -32,7 +32,13 @@ class GitHubClient:
         # self.save_response(response)
         payload = response.json()
         if response.status_code < 200 or response.status_code > 299:
-            raise GitHubException(payload["message"])
+            if self.config.is_verbose():
+                print(json.dumps(payload, indent=2))
+            errors = "\n".join([error["message"] for error in payload.get("errors", []) if error.get("message")])
+            if errors:
+                raise GitHubException(f"GitHub error: {payload['message']}\n{errors}")
+            else:
+                raise GitHubException(f"GitHub error: {payload['message']}")
         return payload
 
     def save_response(self, response):

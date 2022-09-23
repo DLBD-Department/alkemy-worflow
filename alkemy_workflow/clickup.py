@@ -40,6 +40,8 @@ class ClickUpClient:
         # self.save_response(response)
         payload = response.json()
         if "err" in payload:
+            if self.config.is_verbose():
+                print(json.dumps(payload, indent=2))
             raise ClickUpException(payload["err"])
         return payload
 
