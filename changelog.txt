@@ -1,5 +1,14 @@
 # alkemy-workflow changelog
 
+# 0.2.1
+
+2022-09-23
+
+### Added
+
+- Verbose option added
+- Print pull request url
+
 # 0.2.0
 
 2022-09-18

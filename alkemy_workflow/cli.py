@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sys
+import traceback
 from datetime import datetime
 from pathlib import Path
 import click
@@ -105,8 +106,8 @@ def check_task_status(task, status):
         return True
     else:
         click.secho(
-            f"Status '{status}' not found. Valid statuses are: {', '.join(statuses)}",
-            fg="red",
+            f"Warning: Status '{status}' not found. Valid statuses are: {', '.join(statuses)}",
+            fg="yellow",
         )
         return False
 
@@ -125,7 +126,15 @@ def check_task_status(task, status):
     help="Credentials file path",
     type=click.Path(exists=False, file_okay=True, dir_okay=False),
 )
-def cli(ctx, cwd, credentials_path):
+@click.option(
+    "-v", "--verbose",
+    help="Verbose output",
+    default=False,
+    is_flag=True,
+)
+def cli(ctx, cwd, credentials_path, verbose):
+    if verbose:
+        Config.set_verbose()
     ctx.obj = Workflow(cwd, credentials_path)
 
 
@@ -341,18 +350,19 @@ def cmd_pr(ctx, repo, task_id):
     else:
         # Get task from current git branch
         task = get_current_task(wf)
-    # Update status
-    if wf.config.clickup_status_pr:
-        new_status = wf.config.clickup_status_pr
-        if check_task_status(task, new_status):
-            task.update_task(status=new_status)
     # Push
     if not repo:
         wf.git.push()
     # Create the pull request
     repo = repo or wf.git.get_remote_url()
     title = f"[{task['id']}] {task['name']}"
-    wf.github.create_pull_request(repo, task.branch_name, title)
+    response = wf.github.create_pull_request(repo, task.branch_name, title)
+    click.secho(f"Pull request created\n{response['url']}", fg="green")
+    # Update task status
+    if wf.config.clickup_status_pr:
+        new_status = wf.config.clickup_status_pr
+        if check_task_status(task, new_status):
+            task.update_task(status=new_status)
 
 
 @cli.command("lr")
@@ -533,10 +543,14 @@ def main(argv=None):
     except SystemExit as err:
         return err.code
     except GenericWarning as ex:
-        click.secho(f"{prog_name}: {ex}", fg="red")
+        click.secho(f"{prog_name}: {ex}", fg="yellow")
+        if Config.is_verbose():
+            traceback.print_exc(file=sys.stdout)
         return EXIT_SUCCESS
     except GenericException as ex:
         click.secho(f"{prog_name}: {ex}", fg="red")
+        if Config.is_verbose():
+            traceback.print_exc(file=sys.stdout)
         return EXIT_FAILURE
 
 

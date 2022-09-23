@@ -10,6 +10,7 @@ from .git import Git
 
 __all__ = ["Config"]
 
+AW_VERBOSE = "AW_VERBOSE"
 CLICKUP_TOKEN = "CLICKUP_TOKEN"
 GITHUB_TOKEN = "GITHUB_TOKEN"
 DEFAULT_GIT_BASE_BRANCH = "main"
@@ -163,3 +164,13 @@ class Config:
         credentials_path.parent.mkdir(parents=True, exist_ok=True)
         with credentials_path.open("w") as f:
             cp.write(f)
+
+    @classmethod
+    def set_verbose(cls):
+        "Turn on vebose output"
+        os.environ[AW_VERBOSE] = "true"
+
+    @classmethod
+    def is_verbose(cls):
+        "True if verbose output is enabled"
+        return bool(os.environ.get(AW_VERBOSE))
