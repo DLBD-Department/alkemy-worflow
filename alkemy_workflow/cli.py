@@ -357,6 +357,7 @@ def cmd_pr(ctx, repo, task_id):
     repo = repo or wf.git.get_remote_url()
     title = f"[{task['id']}] {task['name']}"
     response = wf.github.create_pull_request(repo, task.branch_name, title)
+
     click.secho(f"Pull request created\n{response['url']}", fg="green")
     # Update task status
     if wf.config.clickup_status_pr:
