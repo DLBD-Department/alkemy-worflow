@@ -93,3 +93,13 @@ def mock_response(monkeypatch):
         return MockResponse(method, url)
 
     monkeypatch.setattr(requests, "request", mock_request)
+
+
+@pytest.fixture
+def git_env(monkeypatch):
+    for k, v in ENV.items():
+        monkeypatch.setenv(k, v)
+
+@pytest.fixture
+def clickup_token_env(monkeypatch):
+    monkeypatch.setenv("CLICKUP_TOKEN", X20)
