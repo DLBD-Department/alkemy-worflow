@@ -4,7 +4,7 @@ import os
 import io
 from alkemy_workflow.cli import main, EXIT_SUCCESS, EXIT_FAILURE, EXIT_PARSER_ERROR
 from alkemy_workflow.utils import Workflow
-from .commons import git_path, git_path_credentials_config, mock_response
+from .commons import clickup_token_env, git_env, git_path, git_path_credentials_config, mock_response
 
 
 class TestCmds:
@@ -150,7 +150,7 @@ class TestCmds:
         assert main(["aw", "branch", "99abcd99"]) == EXIT_SUCCESS
         assert main(["aw", "commit"]) == EXIT_FAILURE
 
-    def test_commit(self, git_path_credentials_config, mock_response, monkeypatch):
+    def test_commit(self, git_env, git_path_credentials_config, mock_response, monkeypatch):
         monkeypatch.chdir(git_path_credentials_config)
         wf = Workflow()
         assert main(["aw", "branch", "99abcd99"]) == EXIT_SUCCESS
@@ -190,7 +190,7 @@ class TestCmds:
         assert main(["aw", "get-status", "99abcd99"]) == EXIT_SUCCESS
         assert main(["aw", "set-status", "99abcd99", "done"]) == EXIT_SUCCESS
 
-    def test_branch_github(self, tmp_path, mock_response, monkeypatch):
+    def test_branch_github(self, clickup_token_env, tmp_path, mock_response, monkeypatch):
         monkeypatch.chdir(tmp_path)
         assert main(["aw", "branch", "99abcd99"]) == EXIT_FAILURE
         assert main(["aw", "branch", "99abcd99", "--repo", "https://github.com/OWNER/REPO"]) == EXIT_SUCCESS
