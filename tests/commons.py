@@ -100,6 +100,8 @@ def git_env(monkeypatch):
     for k, v in ENV.items():
         monkeypatch.setenv(k, v)
 
+
 @pytest.fixture
 def clickup_token_env(monkeypatch):
+    monkeypatch.setenv("AW_TASKS", "clickup")
     monkeypatch.setenv("CLICKUP_TOKEN", X20)

@@ -118,19 +118,19 @@ Create a pull request on GitHub without checking out the project
 
   $ aw pr '#12abcd45' --repo https://github.com/owner/repository
 
-List spaces
+List spaces (ClickUp) or teams (Planner)
 
 .. code:: bash
 
   $ aw spaces
 
-List folders from a space
+List folders from a space (ClickUp)
 
 .. code:: bash
 
   $ aw folders --space 'Development'
 
-List lists from a space (or from a folder)
+List lists of a space/folder (ClickUp) or plans (Planner)
 
 .. code:: bash
 
@@ -159,3 +159,5 @@ Links
 ~~~~~
 
 * `Trunk-based development <https://www.atlassian.com/continuous-delivery/continuous-integration/trunk-based-development>`_
+* `ClickUp <https://clickup.com>`_
+* `Microsoft Planner <https://www.microsoft.com/en-gb/microsoft-365/business/task-management-software>`_

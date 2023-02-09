@@ -11,7 +11,8 @@ try:
 except ImportError:
     import importlib_resources as pkg_resources
 from .clickup import ClickUpClient
-from .config import Config
+from .planner import PlannerClient
+from .config import Config, PLANNER
 from .git import Git
 from .github import GitHubClient
 
@@ -40,4 +41,7 @@ class Workflow:
 
     @cached_property
     def client(self):
-        return ClickUpClient(self.config)
+        if self.config.default_tasks == PLANNER:
+            return PlannerClient(self.config)
+        else:
+            return ClickUpClient(self.config)
