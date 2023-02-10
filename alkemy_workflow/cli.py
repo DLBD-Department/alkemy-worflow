@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
+import os
 import sys
 import traceback
-from datetime import datetime
 from pathlib import Path
 import click
 import pzp
@@ -12,7 +12,7 @@ from .exceptions import (
     GenericException,
 )
 from click.exceptions import MissingParameter
-from .config import Config
+from .config import Config, CLICKUP, PLANNER, AW_SKIP_AUTH
 from .utils import Workflow, VERSION
 
 EXIT_SUCCESS = 0
@@ -56,7 +56,7 @@ def pick_task(wf, space=None, folder=None, lst=None, task=None):
         task=task,
         hierarchy=True,
     )
-    fmt = "{tree:20} {label:15} {name:40}"
+    fmt = "{tree:45} {label:15} {name:40}"
     header_str = fmt.format(label="Kind/Status", tree="Id", name="Title")
     last_item = None
     while True:
@@ -65,6 +65,7 @@ def pick_task(wf, space=None, folder=None, lst=None, task=None):
             items,
             format_fn=lambda item: fmt.format(**item),
             header_str=header_str,
+            layout="reverse-list",
         )
         if item is None:
             return None
@@ -127,7 +128,8 @@ def check_task_status(task, status):
     type=click.Path(exists=False, file_okay=True, dir_okay=False),
 )
 @click.option(
-    "-v", "--verbose",
+    "-v",
+    "--verbose",
     help="Verbose output",
     default=False,
     is_flag=True,
@@ -150,7 +152,7 @@ def cmd_spaces(ctx, filter, headers):
     """
     wf = ctx.obj
     result = wf.client.query(filter_type="Space", filter_name=filter)
-    fmt = "{id:15} {name:40}"
+    fmt = "{id:40.40} {name:40}"
     if headers:
         print(fmt.format(id="Id", name="Space"))
         print("-" * 70)
@@ -171,7 +173,7 @@ def cmd_folders(ctx, space, filter, headers):
     """
     wf = ctx.obj
     result = wf.client.query(space=space, filter_type="Folder", filter_name=filter)
-    fmt = "{id:15} {name:40}"
+    fmt = "{id:40.40} {name:40}"
     if headers:
         print(fmt.format(id="Id", name="Folders"))
         print("-" * 70)
@@ -200,7 +202,7 @@ def cmd_lists(ctx, space, folder, filter, headers):
         filter_type="List",
         filter_name=filter,
     )
-    fmt = "{id:15} {name:40}"
+    fmt = "{id:40.40} {name:40}"
     if headers:
         print(fmt.format(id="Id", name="Lists"))
         print("-" * 70)
@@ -224,7 +226,7 @@ def cmd_tasks(ctx, space, folder, list, task, filter, headers):
     if not list and not task:
         raise click.ClickException("Missing option '--list' or '--task'")
     result = wf.client.query(space=space, folder=folder, lst=list, task=task, filter_name=filter)
-    fmt = "{label:15} {id:15} {name:40}"
+    fmt = "{label:15.15} {id:40.40} {name:40}"
     if headers:
         print(fmt.format(id="Id", label="Status", name="Title"))
         print("-" * 70)
@@ -256,7 +258,7 @@ def cmd_ls(ctx, space, folder, list, task, filter, headers, hierarchy):
         filter_name=filter,
         hierarchy=hierarchy,
     )
-    fmt = "{tree:20} {label:15} {name:40}"
+    fmt = "{tree:45.45} {label:15.15} {name:40}"
     if headers:
         print(fmt.format(label="Kind/Status", tree="Id", name="Title"))
         print("-" * 70)
@@ -288,20 +290,7 @@ def cmd_branch(ctx, task_id, repo):
         # Create a new local branch a switch to it
         branch_already_exists = wf.git.create_branch(task.branch_name)
     # Update the task
-    task_update = {}  # task fields to be updated
-    # Start date
-    if not task.get("start_date"):
-        task_update["start_date"] = int(datetime.utcnow().timestamp() * 1000)
-    # Task assignee
-    current_user = wf.client.get_user()
-    if current_user["id"] not in [x["id"] for x in task["assignees"]]:
-        task_update["assignees"] = {"add": [current_user["id"]]}
-    # Status
-    new_status = wf.config.clickup_status_in_progress
-    if task["status"].get("type") == "open" and check_task_status(task, new_status):
-        task_update["status"] = new_status
-    # Update the task
-    task.update_task(**task_update)
+    task.start_task(show_warnings=True)
     # Post a comment
     if not branch_already_exists:
         github_url = wf.git.get_github_url(task.branch_name, repo)
@@ -381,7 +370,7 @@ def cmd_lr(ctx, repo, headers, task_id):
     repo = repo or wf.git.get_remote_url()
     result = wf.github.list_pull_request(repo)
 
-    fmt = "{number:6} {title:50} {diff_url}"
+    fmt = "{number:6} {title:50.50} {diff_url}"
     if headers:
         print(fmt.format(number="Pr.num", title="Title", diff_url="Diff url"))
         print("-" * 70)
@@ -405,7 +394,7 @@ def cmd_ma(ctx, repo, pr_nr, task_id):
     repo = repo or wf.git.get_remote_url()
     if pr_nr is None:
         # Show pull request picker
-        fmt = "{number:6} {title:50} {diff_url}"
+        fmt = "{number:6} {title:50.50} {diff_url}"
         pull_requets = wf.github.list_pull_request(repo)
         pr = pzp.pzp(
             pull_requets,
@@ -415,7 +404,7 @@ def cmd_ma(ctx, repo, pr_nr, task_id):
         if pr is None:
             raise MissingParameter(ctx=ctx, param_hint="'--pr_nr'", param_type="option")
         else:
-            pr_nr = pr['number']
+            pr_nr = pr["number"]
     wf.github.merge_pull_request(repo, pr_nr)
     if task_id:
         # Task id argument
@@ -485,6 +474,8 @@ def cmd_set_status(ctx, task_id, status):
         )
         if status is None:
             raise MissingParameter(ctx=ctx, param_hint="'STATUS'", param_type="argument")
+    elif not check_task_status(task, status):
+        return
     # Update the task
     try:
         task.update_task(status=status)
@@ -495,23 +486,41 @@ def cmd_set_status(ctx, task_id, status):
 
 
 @cli.command("configure")
+@click.option("--tasks", help="Tasks backend", type=click.Choice([CLICKUP, PLANNER], case_sensitive=False))
 @click.option("--clickup-token", help="ClickUp API token")
 @click.option("--github-token", help="GitHub token")
+@click.option("--tenant_id", help="O365 Directory (tenant) ID")
+@click.option("--client_id", help="O365 Application (client) ID")
+@click.option("--client_secret", help="O365 Application (client) secret")
 @click.pass_context
-def cmd_configure(ctx, clickup_token, github_token):
+def cmd_configure(ctx, tasks, clickup_token, github_token, tenant_id, client_id, client_secret):
     """
-    Configures credentials (Clickup and GitHub tokens).
+    Configures credentials (Clickup/Planner and GitHub).
 
     Example: aw configure
     """
     wf = ctx.obj
-    prompt = "ClickUP API token: "
-    clickup_token = clickup_token or input(prompt).strip()
-    prompt = "GitHub token: "
-    github_token = github_token or input(prompt).strip()
-    Config.write_credentials(clickup_token, github_token, wf.credentials_path)
-    wf.client.get_user()
-    click.secho("ClickUP API token verified", fg="green")
+    prev_config = Config(base_path=wf.base_path, credentials_path=wf.credentials_path, skip_errors=True)
+    tasks = tasks or click.prompt(
+        "Task backend", type=click.Choice([CLICKUP, PLANNER], case_sensitive=False), default=prev_config.default_tasks
+    )
+    if tasks == CLICKUP:
+        clickup_token = clickup_token or click.prompt("ClickUP API token", default=prev_config.default_clickup_token)
+    elif tasks == PLANNER:
+        tenant_id = tenant_id or click.prompt("O365 Directory (tenant) ID", default=prev_config.o365_tenant_id)
+        client_id = client_id or click.prompt("O365 Application (client) ID", default=prev_config.o365_client_id)
+        client_secret = client_secret or click.prompt("O365 Application (client) secret", default=prev_config.o365_client_secret)
+    github_token = github_token or click.prompt("GitHub token", default=prev_config.default_github_token)
+    Config.write_credentials(tasks, clickup_token, github_token, tenant_id, client_id, client_secret, wf.credentials_path)
+    # Check credentials
+    if AW_SKIP_AUTH in os.environ:
+        return
+    if tasks == CLICKUP:
+        wf.client.get_user()
+        click.secho("ClickUP API token verified", fg="green")
+    elif tasks == PLANNER:
+        wf.config.get_o365_account(interactive=True)
+        click.secho("O365 credentials verified", fg="green")
     if wf.config.default_github_token:
         wf.github.get_user()
         click.secho("GitHub token verified", fg="green")
@@ -519,15 +528,16 @@ def cmd_configure(ctx, clickup_token, github_token):
 
 @cli.command("init")
 @click.option("--base-branch", help="Git base branch")
+@click.option("--tasks", help="Tasks backend", type=click.Choice([CLICKUP, PLANNER], case_sensitive=False))
 @click.pass_context
-def cmd_init(ctx, base_branch):
+def cmd_init(ctx, base_branch, tasks):
     """
     Write alkemy_workflow.ini config file into the project root folder
 
-    Example: aw init --base-branch=main
+    Example: aw init --base-branch=main --tasks clickup
     """
     wf = ctx.obj
-    wf.config.write_config(base_branch=base_branch)
+    wf.config.write_config(base_branch=base_branch, tasks=tasks)
 
 
 def main(argv=None):

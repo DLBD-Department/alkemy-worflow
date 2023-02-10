@@ -5,6 +5,8 @@ import json
 import fnmatch
 import requests
 import urllib
+import click
+from datetime import datetime
 from pathlib import Path
 from .exceptions import (
     SpaceNotFound,
@@ -375,7 +377,7 @@ class Task(dict):
         self.update(kargs)
 
     def post_task_comment(self, comment_text, notify_all=None, assignee=None):
-        "Create task command"
+        "Create task comment"
         payload = {"comment_text": comment_text}
         if notify_all is not None:
             payload["notify_all"] = notify_all
@@ -386,6 +388,31 @@ class Task(dict):
             method="POST",
             payload=payload,
         )
+
+    def start_task(self, show_warnings=False):
+        "Start working on a task"
+        # Update the task
+        task_update = {}  # task fields to be updated
+        # Start date
+        if not self.get("start_date"):
+            task_update["start_date"] = int(datetime.utcnow().timestamp() * 1000)
+        # Task assignee
+        current_user = self.client.get_user()
+        if current_user["id"] not in [x["id"] for x in self["assignees"]]:
+            task_update["assignees"] = {"add": [current_user["id"]]}
+        # Status
+        new_status = self.client.config.clickup_status_in_progress
+        if self["status"].get("type") == "open":
+            statuses = self.get_list().get_statuses()
+            if new_status in statuses:
+                task_update["status"] = new_status
+            elif show_warnings:
+                click.secho(
+                    f"Warning: Status '{new_status}' not found. Valid statuses are: {', '.join(statuses)}",
+                    fg="yellow",
+                )
+        # Update the task
+        self.update_task(**task_update)
 
     def get_subtasks(self, include_closed=False):
         "Get subtasks"

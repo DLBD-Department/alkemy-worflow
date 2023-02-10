@@ -21,12 +21,14 @@ class TestCmds:
 
     def test_configure_not_pk(self, git_path_credentials_config, mock_response, monkeypatch):
         monkeypatch.chdir(git_path_credentials_config)
-        assert main(["aw", "configure", "--clickup-token", "abcd", "--github-token", "abcd"]) == EXIT_FAILURE
+        assert main(["aw", "configure", "--tasks", "clickup", "--clickup-token", "abcd", "--github-token", "abcd"]) == EXIT_FAILURE
         assert (
             main(
                 [
                     "aw",
                     "configure",
+                    "--tasks",
+                    "clickup",
                     "--clickup-token",
                     "pk_abcd",
                     "--github-token",
@@ -40,6 +42,8 @@ class TestCmds:
                 [
                     "aw",
                     "configure",
+                    "--tasks",
+                    "clickup",
                     "--clickup-token",
                     "abcd",
                     "--github-token",
@@ -51,20 +55,28 @@ class TestCmds:
 
     def test_configure_stdin(self, git_path_credentials_config, mock_response, monkeypatch):
         monkeypatch.chdir(git_path_credentials_config)
-        monkeypatch.setattr("sys.stdin", io.StringIO("pk_abcd\nghp_abcd\n"))
+        monkeypatch.setattr("sys.stdin", io.StringIO("clickup\npk_abcd\nghp_abcd\n"))
         assert main(["aw", "configure"]) == EXIT_SUCCESS
         wf = Workflow()
+        assert wf.config.default_tasks == "clickup"
         assert wf.config.default_clickup_token == "pk_abcd"
 
     def test_configure(self, git_path_credentials_config, mock_response, monkeypatch):
+        monkeypatch.setenv("AW_SKIP_AUTH", "skip")
         monkeypatch.chdir(git_path_credentials_config)
         assert (
             main(
                 [
                     "aw",
                     "configure",
-                    "--clickup-token",
-                    "pk_abcd",
+                    "--tasks",
+                    "planner",
+                    "--tenant_id",
+                    "tenant_id",
+                    "--client_id",
+                    "client_id",
+                    "--client_secret",
+                    "client_secret",
                     "--github-token",
                     "ghp_abcd",
                 ]
@@ -72,13 +84,17 @@ class TestCmds:
             == EXIT_SUCCESS
         )
         wf = Workflow()
-        assert wf.config.default_clickup_token == "pk_abcd"
-        assert wf.config.default_github_token == "ghp_abcd"
+        assert wf.config.default_tasks == "planner"
+        assert wf.config.o365_tenant_id == "tenant_id"
+        assert wf.config.o365_client_id == "client_id"
+        assert wf.config.o365_client_secret == "client_secret"
         assert (
             main(
                 [
                     "aw",
                     "configure",
+                    "--tasks",
+                    "clickup",
                     "--clickup-token",
                     "pk_1234",
                     "--github-token",
@@ -87,7 +103,8 @@ class TestCmds:
             )
             == EXIT_SUCCESS
         )
-        wf.config.load_credentials()
+        wf = Workflow()
+        assert wf.config.default_tasks == "clickup"
         assert wf.config.default_clickup_token == "pk_1234"
         assert wf.config.default_github_token == "ghp_1234"
 
@@ -101,6 +118,8 @@ class TestCmds:
                     "--credentials-path",
                     credentials_path,
                     "configure",
+                    "--tasks",
+                    "clickup",
                     "--clickup-token",
                     "pk_abcd",
                     "--github-token",
@@ -120,6 +139,8 @@ class TestCmds:
                     "--credentials-path",
                     credentials_path,
                     "configure",
+                    "--tasks",
+                    "clickup",
                     "--clickup-token",
                     "pk_1234",
                     "--github-token",
@@ -173,7 +194,7 @@ class TestCmds:
         os.unlink(wf.config.config_path)
         assert main(["aw", "init"]) == EXIT_SUCCESS
         assert wf.config.config_path.exists()
-        wf.config.load_config(wf.config.config_path.parent)
+        wf.config.load_config()
         assert wf.config.git_base_branch == "main"
 
     def test_init_exists_opt(self, git_path_credentials_config, monkeypatch):
@@ -182,7 +203,7 @@ class TestCmds:
         os.unlink(wf.config.config_path)
         assert main(["aw", "init", "--base-branch=devel"]) == EXIT_SUCCESS
         assert wf.config.config_path.exists()
-        wf.config.load_config(wf.config.config_path.parent)
+        wf.config.load_config()
         assert wf.config.git_base_branch == "devel"
 
     def test_set_status(self, git_path_credentials_config, mock_response, monkeypatch):
