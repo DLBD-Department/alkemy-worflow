@@ -51,7 +51,7 @@ Finding GitHub Personal Access Token:
 ClickUp Hierarchy
 ~~~~~~~~~~~~~~~~~
 
-.. image:: https://user-images.githubusercontent.com/1288154/176724465-70ab7eb5-0461-4a71-8ce8-9cc418f2f0ac.png
+.. image:: https://user-images.githubusercontent.com/1288154/220171328-9a046640-682a-4859-ab39-46bff2fcca2d.png
 
 
 Microsoft Planner Configuration
@@ -93,6 +93,12 @@ After the application configuration, use the "aw configure" command.
     Authenticated!
     O365 credentials verified
     GitHub token verified
+
+
+Planner Hierarchy
+~~~~~~~~~~~~~~~~~
+
+.. image:: https://user-images.githubusercontent.com/1288154/220170767-fb62b237-6ad9-46d5-870f-32d001a776d7.png
 
 
 Project Configuration
