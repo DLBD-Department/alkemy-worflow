@@ -13,6 +13,7 @@ from .exceptions import (
 )
 
 BRANCH_SEPARATOR = "-"
+TASK_ID_LENGTH = 28
 
 __all__ = ["PlannerClient"]
 
@@ -180,6 +181,10 @@ class PlannerClient:
             match = lambda x: fnmatch.fnmatch(x["name"].lower(), filter_name.lower())
             result = [x for x in result if match(x)]
         return result
+
+    def get_task_from_branch(self, current_branch):
+        "Get task ID from branch name"
+        return current_branch[0:TASK_ID_LENGTH]
 
 
 class Organization(dict):
