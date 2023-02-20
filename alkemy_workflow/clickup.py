@@ -235,6 +235,10 @@ class ClickUpClient:
             result = [x for x in result if match(x)]
         return result
 
+    def get_task_from_branch(self, current_branch):
+        "Get task ID from branch name"
+        return current_branch.split("-")[0]
+
 
 class Workspace(dict):
     def __init__(self, client, data):

@@ -95,7 +95,7 @@ def pick_task(wf, space=None, folder=None, lst=None, task=None):
 def get_current_task(wf):
     "Get task for current git branch"
     current_branch = wf.git.get_current_branch()
-    task_id = current_branch.split("-")[0]
+    task_id = wf.client.get_task_from_branch(current_branch)
     if task_id == wf.config.git_base_branch:
         raise GenericException(f"Please execute from feature branches, not {wf.config.git_base_branch}")
     return wf.client.get_task_by_id(task_id)
