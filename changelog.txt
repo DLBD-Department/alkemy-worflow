@@ -1,5 +1,13 @@
 # alkemy-workflow changelog
 
+# 0.3.3
+
+2023-09-21
+
+### Fix
+
+- Config fix
+
 # 0.3.1
 
 2023-02-16
