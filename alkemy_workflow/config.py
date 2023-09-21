@@ -24,7 +24,7 @@ PLANNER = "planner"
 DEFAULT_TASKS = CLICKUP
 DEFAULT_GIT_BASE_BRANCH = "main"
 CLICKUP_STATUS_IN_PROGRESS = "in_progress"
-CLICKUP_STATUS_PR = "in_review"
+CLICKUP_STATUS_PR = "review"
 CLICKUP_STATUS_MA = "done"
 CREDENTIALS_KEYS = (
     "default_tasks",
